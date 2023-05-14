@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TemanSawit</string>
+    <string name="home_nav">Home</string>
+    <string name="about_nav">About</string>
+    <string name="faq_nav">FAQ</string>
+    <string name="profile_nav">Profil</string>
+</resources>
