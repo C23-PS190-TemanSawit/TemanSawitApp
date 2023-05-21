@@ -5,17 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +22,8 @@ import com.example.temansawit.components.home.CardTransaction
 import com.example.temansawit.components.home.Pendapatan
 import com.example.temansawit.components.home.Welcome
 import com.example.temansawit.components.navigation.BottomBar
+import com.example.temansawit.model.CardTransaction
+import com.example.temansawit.model.dummyTransaction
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -61,15 +62,16 @@ fun TemanSawitApp() {
         content = { it
             Row(
                 modifier = Modifier.fillMaxSize()
+                    .padding(it)
             ) {
                 Column(
                     modifier = Modifier
-                        .verticalScroll(rememberScrollState())
+//                        .verticalScroll(rememberScrollState())
                 ) {
                     Component1()
                     Spacer(modifier = Modifier.padding(top = 100.dp))
                     Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                        CardTransaction()
+                        Transaction(dummyTransaction)
                     }
                 }
             }
@@ -118,6 +120,31 @@ fun Component1() {
         }
     }
     }
+
+@Composable
+fun Transaction(
+    listTransaction: List<CardTransaction>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(listTransaction, key = { it.deskripsi }) { trx ->
+            CardTransaction(transaction = trx)
+        }
+    }
+//    val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//        LocalDateTime.now()
+//    } else {
+//        TODO("VERSION.SDK_INT < O")
+//    }
+//    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//    val formatted = current.format(formatter)
+//    CardTransaction(
+//        transaction =
+//    )
+}
 
 
 @Preview(showBackground = true)
