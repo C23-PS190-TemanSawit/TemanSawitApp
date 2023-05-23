@@ -1,4 +1,4 @@
-package com.example.temansawit.components.transaction
+package com.example.temansawit.ui.components.transaction
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -66,6 +65,12 @@ fun CardNoTransaksi(
 
 @Composable
 fun CardDetail(
+    berat: String,
+    hargaPerKg: String,
+    total: String,
+    tanggal: String,
+    deskripsi: String,
+    tint: Color,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -96,7 +101,7 @@ fun CardDetail(
                         )
                         Spacer(modifier.padding(8.dp))
                         Text(
-                            text = "21 Juli 2023",
+                            text = tanggal,
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp
                         )
@@ -113,7 +118,7 @@ fun CardDetail(
                         color = Color(0xFF727970),
                         )
                     Text(
-                        text = "Rp 12.127.500",
+                        text = hargaPerKg,
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -130,7 +135,7 @@ fun CardDetail(
 
                         )
                     Text(
-                        text = "1575 Kilogram",
+                        text = "$berat Kilogram",
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -146,7 +151,7 @@ fun CardDetail(
                         fontSize = 20.sp,
                         )
                     Text(
-                        text = "Rp 7.700.542.975.532",
+                        text = total,
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -167,7 +172,7 @@ fun CardDetail(
                             fontSize = 14.sp,
                         )
                         Text(
-                            text = "-",
+                            text = deskripsi,
                             modifier.padding(top = 8.dp),
                             fontSize = 14.sp,
                         )
@@ -186,7 +191,7 @@ fun DefaultPreview() {
         Column {
             CardNoTransaksi()
             Spacer(modifier = Modifier.padding(16.dp))
-            CardDetail()
+            CardDetail("120", "2.500", "Rp 2.000.000", "Selasa, 21 Juli 2023", "yyyy", GreenPrimary)
         }
     }
 }

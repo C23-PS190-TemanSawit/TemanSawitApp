@@ -1,6 +1,5 @@
-package com.example.temansawit.components.home
+package com.example.temansawit.ui.components.home
 
-import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -19,18 +18,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.temansawit.R
-import com.example.temansawit.model.CardTransaction
 import com.example.temansawit.ui.theme.GreenPrimary
 import com.example.temansawit.ui.theme.TemanSawitTheme
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun CardTransaction(
-    transaction: CardTransaction
+//    transaction: CardTransaction,
+    berat: String,
+    total: String,
+    tanggal: String,
+    tint: Color,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .shadow(2.dp, RoundedCornerShape(18.dp))
             .fillMaxWidth()
             .height(64.dp),
@@ -43,7 +44,7 @@ fun CardTransaction(
         ) {
             Column {
                 Text(
-                    text = transaction.deskripsi,
+                    text = berat,
                     textAlign = TextAlign.Center,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
@@ -62,7 +63,7 @@ fun CardTransaction(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = transaction.total,
+                    text = total,
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
@@ -80,7 +81,7 @@ fun CardTransaction(
                     )
                     Spacer(modifier = Modifier.padding(start = 4.dp))
                     Text(
-                        text = transaction.tanggal,
+                        text = tanggal,
                         color = Color(0xFF68707C),
                         fontWeight = FontWeight.Medium,
                         fontSize = 10.sp)
@@ -90,25 +91,33 @@ fun CardTransaction(
                 modifier = Modifier.size(48.dp),
                 painter = painterResource(id = R.drawable.baseline_arrow_circle_down_24),
                 contentDescription = "Notifikasi",
-                tint = transaction.tint
+                tint = tint
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    TemanSawitTheme {
+//        val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            LocalDateTime.now()
+//        } else {
+//            TODO("VERSION.SDK_INT < O")
+//        }
+//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//        val formatted = current.format(formatter)
+//        CardTransaction(
+//            transaction = CardTransaction(1, "120\nKilogram", "Rp 2.000.000", formatted, GreenPrimary)
+//        )
+//    }
+//}
+
 @Composable
-fun DefaultPreview() {
-    TemanSawitTheme {
-        val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now()
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val formatted = current.format(formatter)
-        CardTransaction(
-            transaction = CardTransaction("120\nKilogram", "Rp 2.000.000", formatted, GreenPrimary)
-        )
+@Preview(showBackground = true)
+fun CardTransaction() {
+    TemanSawitTheme() {
+        CardTransaction(berat = "y", total = "y", tanggal = "2", tint = GreenPrimary)
     }
 }
