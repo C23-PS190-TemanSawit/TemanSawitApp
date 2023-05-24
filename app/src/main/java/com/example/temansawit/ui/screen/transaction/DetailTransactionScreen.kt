@@ -31,6 +31,7 @@ fun DetailTrxScreen(
     viewmodel: TransactiomViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository())
     ),
+    navigateBack: () -> Unit,
     ) {
     viewmodel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
@@ -46,7 +47,7 @@ fun DetailTrxScreen(
                             title = {
                             },
                             navigationIcon = {
-                                IconButton(onClick = { navController.navigateUp() }) {
+                                IconButton(onClick =  navigateBack) {
                                     Icon(
                                         painter = painterResource(id = R.drawable.baseline_navigate_before_24),
                                         contentDescription = "Kembali",

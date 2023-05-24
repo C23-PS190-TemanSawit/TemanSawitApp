@@ -91,6 +91,7 @@ fun TemanSawitApp(
                     val id = it.arguments?.getLong("transactionId") ?: -1L
                     DetailTrxScreen(
                         trxId = id,
+                        navigateBack = { navHostController.navigateUp() },
                     )
                 }
             }
