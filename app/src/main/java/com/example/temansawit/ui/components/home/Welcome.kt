@@ -1,4 +1,4 @@
-package com.example.temansawit.components.home
+package com.example.temansawit.ui.components.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
