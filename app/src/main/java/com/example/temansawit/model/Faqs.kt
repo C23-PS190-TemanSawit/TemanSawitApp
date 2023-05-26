@@ -2,7 +2,7 @@ package com.example.temansawit.model
 
 
 object Faqs {
-    val faqs = listOf(
+    val FAQS = listOf(
         faqData(
            1, "Bagaimana cara membuat akun", "Aku tidak tau"
        ),

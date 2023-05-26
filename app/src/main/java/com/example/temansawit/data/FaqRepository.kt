@@ -10,7 +10,7 @@ class FaqRepository {
 
     init {
         if (FaqList.isEmpty()) {
-            Faqs.faqs.forEach {
+            Faqs.FAQS.forEach {
                 FaqList.add(FaqModel(it, 0))
             }
         }
