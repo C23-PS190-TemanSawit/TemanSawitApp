@@ -1,21 +1,19 @@
-package com.example.temansawit.ui.screen
+package com.example.temansawit.ui.screen.faq
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.temansawit.data.FaqRepository
 import com.example.temansawit.data.Repository
-import com.example.temansawit.ui.screen.faq.FaqViewModel
 import com.example.temansawit.ui.screen.home.HomeViewModel
 import com.example.temansawit.ui.screen.transaction.TransactiomViewModel
 
-class ViewModelFactory(private val repository: Repository) :
+class VMFaq (private val repository: FaqRepository) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(repository) as T
-        }else if (modelClass.isAssignableFrom(TransactiomViewModel::class.java)) {
-            return TransactiomViewModel(repository) as T
+        if(modelClass.isAssignableFrom(FaqViewModel :: class.java)){
+            return FaqViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
