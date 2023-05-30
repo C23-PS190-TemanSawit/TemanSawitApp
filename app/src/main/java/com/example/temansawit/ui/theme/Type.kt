@@ -18,8 +18,24 @@ val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    body2 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp
+    ),
+    subtitle1 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp
-    )
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp
+    ),
+
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,

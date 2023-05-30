@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.temansawit.R
 import com.example.temansawit.ui.navigation.NavigationItem
 import com.example.temansawit.ui.navigation.Screen
+import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
 fun BottomBar(
@@ -64,6 +65,8 @@ fun BottomBar(
                 }
                 BottomNavigationItem(
                     selected = currentRoute == item.screen.route,
+                    selectedContentColor = GreenPrimary,
+                    unselectedContentColor = Color.Gray,
                     onClick = {
                         navHostController.navigate(item.screen.route) {
                             popUpTo(navHostController.graph.findStartDestination().id) {

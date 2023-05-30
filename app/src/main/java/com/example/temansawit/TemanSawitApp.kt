@@ -1,5 +1,6 @@
 package com.example.temansawit
 
+import BottomSheet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -33,6 +34,7 @@ import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TemanSawitApp(
     modifier: Modifier = Modifier,
@@ -40,105 +42,85 @@ fun TemanSawitApp(
     ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
-    Scaffold(
-        bottomBar = {
-            if (currentRoute != Screen.DetailTransaction.route) {
-            BottomBar(navHostController)
-        } },
-        floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true,
-        scaffoldState = rememberScaffoldState(),
-        floatingActionButton = {
-            if (currentRoute != Screen.DetailTransaction.route) {
-                FloatingActionButton(
-                    shape = CircleShape,
-                    onClick = {  },
-                    backgroundColor = Green700,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_camera_alt_24),
-                        contentDescription = "Deteksi Sawit")
-                }
-            }
-        },
-        content = { it
-            NavHost(
-                navController = navHostController,
-                startDestination = Screen.Home.route,
-                modifier = modifier.padding(it)
-            ) {
-                composable(Screen.Home.route) {
-                    HomeScreen(
-                        navigateToDetail = { transactionId ->
-                            navHostController.navigate(Screen.DetailTransaction.createRoute(transactionId))
-                        }
-                    )
-                }
-                composable(Screen.Transaction.route) {
-                    TransactionScreen()
-                }
-                composable(Screen.Faq.route) {
-                    FaqScreen()
-                }
-                composable(Screen.Profile.route) {
-                    ProfileScreen()
-                }
-                composable(
-                    route = Screen.DetailTransaction.route,
-                    arguments = listOf(navArgument("transactionId") { type = NavType.LongType }),
-                ) {
-                    val id = it.arguments?.getLong("transactionId") ?: -1L
-                    DetailTrxScreen(
-                        trxId = id,
-                        navigateBack = { navHostController.navigateUp() },
-                    )
-                }
-            }
-
-        }
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
     )
-}
+    BottomSheet(modalSheetState = modalSheetState) {
+        Scaffold(
+            bottomBar = {
+                if (currentRoute != Screen.DetailTransaction.route) {
+                    BottomBar(navHostController)
+                }
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+            isFloatingActionButtonDocked = true,
+            scaffoldState = rememberScaffoldState(),
+            floatingActionButton = {
+                if (currentRoute != Screen.DetailTransaction.route) {
+                    FloatingActionButton(
+                        shape = CircleShape,
+                        onClick = { },
+                        backgroundColor = Green700,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_camera_alt_24),
+                            contentDescription = "Deteksi Sawit"
+                        )
+                    }
+                }
+            },
+            content = { it ->
+                NavHost(
+                    navController = navHostController,
+                    startDestination = Screen.Home.route,
+                    modifier = modifier.padding(it)
+                ) {
+                    composable(Screen.Home.route) {
+                        HomeScreen(
+                            navigateToDetail = { transactionId ->
+                                navHostController.navigate(
+                                    Screen.DetailTransaction.createRoute(
+                                        transactionId
+                                    )
+                                )
+                            },
+                            modalSheetState = modalSheetState
+                        )
+                    }
+                    composable(Screen.Transaction.route) {
+                        TransactionScreen(
+                            navigateToDetail = { transactionId ->
+                                navHostController.navigate(
+                                    Screen.DetailTransaction.createRoute(
+                                        transactionId
+                                    )
+                                )
+                            }
+                        )
+                    }
+                    composable(Screen.Faq.route) {
+                        FaqScreen()
+                    }
+                    composable(Screen.Profile.route) {
+                        ProfileScreen()
+                    }
+                    composable(
+                        route = Screen.DetailTransaction.route,
+                        arguments = listOf(navArgument("transactionId") {
+                            type = NavType.LongType
+                        }),
+                    ) {
+                        val id = it.arguments?.getLong("transactionId") ?: -1L
+                        DetailTrxScreen(
+                            trxId = id,
+                            navigateBack = { navHostController.navigateUp() },
+                        )
+                    }
+                }
 
-@Composable
-fun Component1() {
-    Pendapatan(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(184.dp)
-                .background(
-                    GreenPressed,
-                    RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                )
-        ) {
-            Welcome(name = "Jasmine")
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .height(97.dp)
-                .background(GreenSurface, RoundedCornerShape(8.dp))
-        ) {
-            Column(
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp)
-            ) {
-                Text(
-                    text = "Pendapatan Anda",
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = "Rp 268.304.000",
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp)
             }
-        }
+        )
     }
 }
-
