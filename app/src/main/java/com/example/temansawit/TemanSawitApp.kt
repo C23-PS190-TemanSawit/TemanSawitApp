@@ -26,6 +26,8 @@ import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomeScreen
+import com.example.temansawit.ui.screen.profile.AboutUs
+import com.example.temansawit.ui.screen.profile.ChangePassword
 import com.example.temansawit.ui.screen.profile.ProfileScreen
 import com.example.temansawit.ui.screen.transaction.DetailTrxScreen
 import com.example.temansawit.ui.screen.transaction.TransactionScreen
@@ -84,6 +86,13 @@ fun TemanSawitApp(
                 composable(Screen.Profile.route) {
                     ProfileScreen()
                 }
+                composable(Screen.AboutUs.route) {
+                   AboutUs()
+                }
+                composable(Screen.ChangePassword.route) {
+                    ChangePassword()
+                }
+
                 composable(
                     route = Screen.DetailTransaction.route,
                     arguments = listOf(navArgument("transactionId") { type = NavType.LongType }),

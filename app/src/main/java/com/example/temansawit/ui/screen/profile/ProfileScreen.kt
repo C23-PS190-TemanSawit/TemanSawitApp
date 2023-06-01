@@ -1,23 +1,31 @@
 package com.example.temansawit.ui.screen.profile
 
-import android.widget.ScrollView
+import android.content.Intent
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.temansawit.R
+import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.theme.GreenPressed
 
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen( modifier: Modifier = Modifier) {
     Scaffold(
@@ -92,6 +100,7 @@ fun AppBar(title: String) {
 
 @Composable
 fun ProfileCard() {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -100,21 +109,140 @@ fun ProfileCard() {
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            ProfileItem(icon = R.drawable.ic_editing_profile, text = "Edit Profil")
-            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
-            ProfileItem(icon = R.drawable.ic_change_password_profile, text = "Ganti Password")
-            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
-            ProfileItem(icon = R.drawable.ic_privacy_policy, text = "Kebijakan Privasi")
-            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
-            ProfileItem(icon = R.drawable.ic_terms_conditions, text = "Syarat dan Ketentuan")
-            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
-            ProfileItem(icon = R.drawable.ic_contact, text = "Hubungi Kami")
-            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
-            ProfileItem(icon = R.drawable.ic_about_us, text = "Tentang Kami")
-        }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_editing_profile),
+                    contentDescription = "Edit Profil",
+                    modifier = Modifier
+                        .size(24.dp)
 
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                ClickableText(
+                    text = AnnotatedString("Edit Profil"),
+                    onClick = {
+                        val intent = Intent(context, EditProfileActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_change_password_profile),
+                    contentDescription = "Ganti Password",
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                ClickableText(
+                    text = AnnotatedString("Ganti Password"),
+                    onClick = {
+                        val intent = Intent(context, ChangePasswordActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_privacy_policy),
+                    contentDescription = "Kebijakan Privasi",
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                ClickableText(
+                    text = AnnotatedString("Kebijakan Privasi"),
+                    onClick = {
+                        val intent = Intent(context, PrivasiPolicyActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_terms_conditions),
+                    contentDescription = "Syarat dan Ketentuan",
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                ClickableText(
+                    text = AnnotatedString("Syarat dan Ketentuan"),
+                    onClick = {
+                        val intent = Intent(context, TermsandConditionsActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_contact),
+                    contentDescription = "Hubungi Kami",
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                ClickableText(
+                    text = AnnotatedString("Hubungi Kami"),
+                    onClick = {
+                        val intent = Intent(context, ContactUsActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(top = 8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_about_us),
+                    contentDescription = "Tentang Kami",
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                ClickableText(
+                    text = AnnotatedString("Tentang Kami"),
+
+                    onClick = {
+                        val intent = Intent(context, AboutUsActivty::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+            }
+        }
     }
 }
+
 
 @Composable
 fun LogoutButton() {
@@ -129,7 +257,7 @@ fun LogoutButton() {
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.ic_log_out),
                 contentDescription = "Icon",
                 modifier = Modifier.size(24.dp)
@@ -137,26 +265,9 @@ fun LogoutButton() {
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = "Keluar",
-                color = Color.Gray,
-                fontSize = 12.sp
             )
         }
     }
 }
 
-@Composable
-fun ProfileItem(icon: Int, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 20.dp)) {
-        Image(
-            painter = painterResource(icon),
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = text,
-            color = Color.Gray,
-            fontSize = 12.sp
-        )
-    }
-}
+
