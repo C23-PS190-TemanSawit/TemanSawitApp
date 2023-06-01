@@ -1,24 +1,34 @@
 package com.example.temansawit.ui.screen.home
 
+import BottomSheet
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
+import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.di.Injection
+import com.example.temansawit.main
 import com.example.temansawit.model.Trx
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.SectionText
@@ -26,11 +36,66 @@ import com.example.temansawit.ui.components.home.CardTransaction
 import com.example.temansawit.ui.components.home.Chart
 import com.example.temansawit.ui.components.home.Pendapatan
 import com.example.temansawit.ui.components.home.Welcome
+import com.example.temansawit.ui.components.navigation.BottomBar
+import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
 import com.example.temansawit.ui.theme.Typography
 import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun HomePage(
+    navHostController: NavHostController = rememberNavController(),
+) {
+    val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
+    BottomSheet(modalSheetState = modalSheetState) {
+        ScaffoldApp(
+            bottomBar = {
+                if (currentRoute != Screen.DetailTransaction.route) {
+                    BottomBar(navHostController)
+                }
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+            isFloatingActionButtonDocked = true,
+            floatingActionButton = {
+                if (currentRoute != Screen.DetailTransaction.route) {
+                    FloatingActionButton(
+                        shape = CircleShape,
+                        onClick = { },
+                        backgroundColor = Green700,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_camera_alt_24),
+                            contentDescription = "Deteksi Sawit"
+                        )
+                    }
+                }
+            },
+
+            content = {
+                HomeScreen(
+                    navigateToDetail = { transactionId ->
+                        navHostController.navigate(
+                            Screen.DetailTransaction.createRoute(
+                                transactionId
+                            )
+                        )
+                    },
+                    modalSheetState = modalSheetState
+                )
+            }
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
