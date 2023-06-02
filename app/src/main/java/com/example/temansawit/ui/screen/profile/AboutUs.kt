@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.temansawit.Component1
@@ -128,7 +129,7 @@ fun aboutR() {
         )
 
         Text(text = "TemanSawit merupakan aplikasi blablabbla. Aplikasi ini dikembangkan oleh tim capstone Bangkit Academy 2023, dengan anggota tim:",
-            modifier = Modifier.padding(vertical = 8.dp))
+            textAlign = TextAlign.Justify,  modifier = Modifier.padding(vertical = 8.dp))
     }
 }
 
