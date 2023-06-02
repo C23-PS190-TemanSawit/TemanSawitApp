@@ -7,7 +7,9 @@ sealed class Screen(val route: String) {
     object Onboarding: Screen("onboarding")
     object Home: Screen("home")
     object Transaction: Screen("transaction")
-    object Faq: Screen("faq")
+    object Faq: Screen("faq") {
+        fun creteRoute(faqId : Long) = "faq/$faqId"
+    }
     object Profile: Screen("profile")
     object AboutUs: Screen("about")
     object ChangePassword: Screen("about")

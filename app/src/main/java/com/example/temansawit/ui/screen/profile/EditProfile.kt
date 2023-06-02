@@ -36,7 +36,7 @@ fun EditProfile(modifier: Modifier = Modifier) {
         topBar = {
             TopAppBar(
                 title = { Text(text = "Edit Profile") },
-                backgroundColor = GreenPressed,
+                backgroundColor = MaterialTheme.colors.primaryVariant,
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {

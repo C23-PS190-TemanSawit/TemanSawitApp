@@ -24,7 +24,7 @@ fun PrivacyPolicy( modifier: Modifier = Modifier){
         topBar = {
             TopAppBar(
                 title = { Text(text = "Kebijakan Privasi") },
-                backgroundColor = GreenPressed,
+                backgroundColor =MaterialTheme.colors.primaryVariant,
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {
