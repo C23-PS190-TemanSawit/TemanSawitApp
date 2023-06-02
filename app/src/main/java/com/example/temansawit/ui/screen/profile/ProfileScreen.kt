@@ -80,7 +80,6 @@ fun ProfileScreen( modifier: Modifier = Modifier) {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-
             ProfileCard()
             Spacer(modifier = Modifier.height(10.dp))
             LogoutButton()
