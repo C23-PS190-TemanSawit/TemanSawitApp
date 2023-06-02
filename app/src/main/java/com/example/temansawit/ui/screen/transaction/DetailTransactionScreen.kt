@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.di.Injection
 import com.example.temansawit.ui.common.UiState
@@ -32,6 +33,7 @@ fun DetailTrxScreen(
         factory = ViewModelFactory(Injection.provideRepository())
     ),
     navigateBack: () -> Unit,
+    navHostController: NavHostController = rememberNavController()
     ) {
     viewmodel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {

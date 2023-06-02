@@ -31,6 +31,7 @@ import com.example.temansawit.ui.theme.GreenPrimary
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FaqScreen(
+    navHostController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     val openIndexs = remember { mutableStateOf(-1) }
