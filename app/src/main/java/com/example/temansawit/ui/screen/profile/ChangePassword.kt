@@ -35,7 +35,7 @@ fun ChangePassword(modifier: Modifier = Modifier) {
         topBar = {
             TopAppBar(
                 title = { Text(text = "Ganti Password") },
-                backgroundColor = GreenPressed,
+                backgroundColor = MaterialTheme.colors.primaryVariant,
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {

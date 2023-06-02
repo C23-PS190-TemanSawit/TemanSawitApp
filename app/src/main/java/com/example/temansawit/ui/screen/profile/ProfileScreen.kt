@@ -117,7 +117,7 @@ fun ProfileScreen( modifier: Modifier = Modifier, navHostController: NavHostCont
 fun AppBar(title: String) {
     TopAppBar(
         title = { Text(text = title) },
-        backgroundColor = GreenPressed,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
         contentColor = Color.White,
         elevation = 10.dp
     )

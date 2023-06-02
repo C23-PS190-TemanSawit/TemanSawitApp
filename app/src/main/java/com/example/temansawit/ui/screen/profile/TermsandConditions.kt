@@ -23,7 +23,7 @@ fun TermsandConditions( modifier: Modifier = Modifier){
         topBar = {
             TopAppBar(
                 title = { Text(text = "Syarat & Ketentuan") },
-                backgroundColor = GreenPressed,
+                backgroundColor = MaterialTheme.colors.primaryVariant,
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {

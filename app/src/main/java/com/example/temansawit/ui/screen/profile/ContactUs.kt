@@ -29,7 +29,7 @@ fun ContactUs( modifier: Modifier = Modifier){
         topBar = {
             TopAppBar(
                 title = { Text(text = "Hubungi Kami") },
-                backgroundColor = GreenPressed,
+                backgroundColor = MaterialTheme.colors.primaryVariant,
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {
