@@ -40,10 +40,11 @@ fun AboutUs(modifier: Modifier = Modifier) {
                 }
             )
         },
-    ) {it
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(it)
                 .background(Color(0xFFC0DBCE))
                 .verticalScroll(rememberScrollState())
         ) {
@@ -68,7 +69,7 @@ fun Component4() {
                     RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
                 )
         ) {
-            aboutR()
+            AboutR()
         }
         AboutCart()
 
@@ -107,7 +108,7 @@ fun Ukuran(
 }
 
 @Composable
-fun aboutR() {
+fun AboutR() {
     Column(
         modifier = Modifier
             .fillMaxSize()

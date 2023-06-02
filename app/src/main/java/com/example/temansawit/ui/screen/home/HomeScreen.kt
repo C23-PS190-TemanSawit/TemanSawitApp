@@ -22,13 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.di.Injection
-import com.example.temansawit.main
 import com.example.temansawit.model.Trx
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.SectionText
