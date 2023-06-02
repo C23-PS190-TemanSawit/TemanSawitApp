@@ -1,7 +1,6 @@
 package com.example.temansawit.ui.screen.profile
 
 import android.content.Intent
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,7 +9,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,15 +18,14 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.temansawit.R
-import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.theme.GreenPressed
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen( modifier: Modifier = Modifier) {
+fun ProfileScreen( modifier: Modifier = Modifier, navHostController: NavHostController) {
     Scaffold(
         topBar = {
             AppBar(title = "Profile")

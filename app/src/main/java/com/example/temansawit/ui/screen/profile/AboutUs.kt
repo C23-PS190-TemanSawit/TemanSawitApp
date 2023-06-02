@@ -1,12 +1,10 @@
 package com.example.temansawit.ui.screen.profile
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -15,19 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.temansawit.Component1
 import com.example.temansawit.R
-import com.example.temansawit.ui.components.home.Pendapatan
-import com.example.temansawit.ui.components.home.Welcome
 import com.example.temansawit.ui.theme.GreenPressed
-import com.example.temansawit.ui.theme.GreenPrimary
-import com.example.temansawit.ui.theme.GreenSurface
 
 @Composable
 fun AboutUs(modifier: Modifier = Modifier) {

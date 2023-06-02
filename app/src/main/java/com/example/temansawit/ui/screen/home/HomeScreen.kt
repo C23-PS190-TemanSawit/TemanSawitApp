@@ -218,7 +218,8 @@ fun GrafikPendapatan(
                         if (modalSheetState.isVisible)
                             modalSheetState.show()
                         else
-                            modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+//                            modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                            modalSheetState.hide()
                     }
                 },
             ) {

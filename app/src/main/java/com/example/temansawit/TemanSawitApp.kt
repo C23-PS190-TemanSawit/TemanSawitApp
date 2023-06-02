@@ -21,9 +21,6 @@ import com.example.temansawit.ui.components.auth.Register
 import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.faq.FaqScreen
-import com.example.temansawit.ui.screen.home.HomeScreen
-import com.example.temansawit.ui.screen.profile.AboutUs
-import com.example.temansawit.ui.screen.profile.ChangePassword
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
 import com.example.temansawit.ui.screen.transaction.DetailTrxScreen
@@ -32,10 +29,10 @@ import com.example.temansawit.ui.screen.transaction.TransactionScreen
 @Composable
 fun TemanSawitApp() {
     val navHostController: NavHostController = rememberNavController()
-        val context = LocalContext.current
-        val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-        val isOnBoarded = remember { mutableStateOf(Preferences.isOnboarded(sharedPreferences)) }
-        val isLogeedIn = remember { mutableStateOf(Preferences.isLoggedIn(sharedPreferences)) }
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+    val isOnBoarded = remember { mutableStateOf(Preferences.isOnboarded(sharedPreferences)) }
+    val isLogeedIn = remember { mutableStateOf(Preferences.isLoggedIn(sharedPreferences)) }
 
 
     NavHost(
@@ -47,10 +44,9 @@ fun TemanSawitApp() {
             } else {
                 "loginScreen"
             }
-
         } else {
             "onboardingScreen"
-               },
+        },
     ) {
 //        splashScreen(navHostController)
         onboarding(navHostController = navHostController)
@@ -81,7 +77,7 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
             FaqScreen(navHostController)
         }
         composable(Screen.Profile.route) {
-            ProfileScreen(navHostController)
+            ProfileScreen(navHostController = navHostController)
         }
         composable(
             route = Screen.DetailTransaction.route,
@@ -131,7 +127,7 @@ fun ScaffoldApp(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     isFloatingActionButtonDocked: Boolean = false,
-    ) {
+) {
     Scaffold(
         topBar = topBar,
         bottomBar = bottomBar,
@@ -145,4 +141,3 @@ fun ScaffoldApp(
         }
     }
 }
-
