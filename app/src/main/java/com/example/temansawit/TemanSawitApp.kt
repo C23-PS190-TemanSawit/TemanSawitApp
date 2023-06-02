@@ -16,6 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.di.Preferences
+import com.example.temansawit.ui.components.auth.Login
+import com.example.temansawit.ui.components.auth.Register
 import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.faq.FaqScreen
@@ -30,18 +32,25 @@ fun TemanSawitApp() {
         val context = LocalContext.current
         val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val isOnBoarded = remember { mutableStateOf(Preferences.isOnboarded(sharedPreferences)) }
+        val isLogeedIn = remember { mutableStateOf(Preferences.isLoggedIn(sharedPreferences)) }
 
 
     NavHost(
         navController = navHostController,
-        startDestination = if (isOnBoarded.value) {
-            "mainScreen"
+        startDestination =
+        if (isOnBoarded.value) {
+            if (isLogeedIn.value) {
+                "mainScreen"
+            } else {
+                "loginScreen"
+            }
         } else {
             "onboardingScreen"
-        },
+               },
     ) {
 //        splashScreen(navHostController)
         onboarding(navHostController = navHostController)
+        auth(navHostController = navHostController)
         main(navHostController = navHostController)
     }
 }
@@ -91,6 +100,20 @@ fun NavGraphBuilder.onboarding(navHostController: NavHostController) {
     ) {
         composable(Screen.Onboarding.route) {
             OnboardingUI(navHostController = navHostController)
+        }
+    }
+}
+
+fun NavGraphBuilder.auth(navHostController: NavHostController) {
+    navigation(
+        startDestination = Screen.Login.route,
+        route = "loginScreen"
+    ) {
+        composable(Screen.Login.route) {
+            Login(navHostController = navHostController)
+        }
+        composable(Screen.Register.route) {
+            Register(navHostController = navHostController)
         }
     }
 }

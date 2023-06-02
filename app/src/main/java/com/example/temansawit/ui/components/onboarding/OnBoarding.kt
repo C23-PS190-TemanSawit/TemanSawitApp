@@ -43,7 +43,7 @@ fun OnboardingUI(
     val pagerState = rememberPagerState(initialPage = 0)
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
-        HorizontalPager(state = pagerState, pageCount = 3) { it ->
+        HorizontalPager(state = pagerState, pageCount = 3) {
             OnboardingPage(page = pages[it])
         }
         Row(
@@ -88,7 +88,8 @@ fun OnboardingUI(
                     onClick = {
                         val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         Preferences.setOnboarded(sharedPreferences, true)
-                        navHostController.navigate("home")
+                        navHostController.popBackStack()
+                        navHostController.navigate("login")
                     },
                 ) {
                     Text(text = "Mulai")
@@ -109,13 +110,12 @@ fun OnboardingUI(
                     onClick = {
                         val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                         Preferences.setOnboarded(sharedPreferences, true)
-                        navHostController.navigate("home")
+                        navHostController.popBackStack()
+                        navHostController.navigate("login")
                     },
                 ) {
                     Text(text = "Lewati")
                 }
-
-
             }
         }
     }
@@ -172,12 +172,12 @@ fun OnBoardingText(
     }
 }
 
-@Composable
-fun BtnGetStarted(
-    modifier: Modifier = Modifier,
-) {
-
-}
+//@Composable
+//fun BtnGetStarted(
+//    modifier: Modifier = Modifier,
+//) {
+//
+//}
 
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
