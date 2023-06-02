@@ -21,6 +21,9 @@ import com.example.temansawit.ui.components.auth.Register
 import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.faq.FaqScreen
+import com.example.temansawit.ui.screen.home.HomeScreen
+import com.example.temansawit.ui.screen.profile.AboutUs
+import com.example.temansawit.ui.screen.profile.ChangePassword
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
 import com.example.temansawit.ui.screen.transaction.DetailTrxScreen
@@ -44,6 +47,7 @@ fun TemanSawitApp() {
             } else {
                 "loginScreen"
             }
+
         } else {
             "onboardingScreen"
                },
