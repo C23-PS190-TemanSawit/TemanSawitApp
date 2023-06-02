@@ -14,6 +14,11 @@ val Roboto = FontFamily(
     Font(R.font.roboto_medium, FontWeight.Medium),
     Font(R.font.roboto_bold, FontWeight.Bold)
 )
+
+val Raleway = FontFamily(
+//    Font(R.font.raleway),
+    Font(R.font.raleway_bold)
+)
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Roboto,
@@ -35,6 +40,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     ),
+    h5 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
+        fontSize = 24.sp
+    )
 
     /* Other default text styles to override
     button = TextStyle(
