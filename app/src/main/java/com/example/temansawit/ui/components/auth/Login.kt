@@ -5,12 +5,10 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -26,9 +24,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -37,23 +33,7 @@ import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
-fun Login(
-    modifier: Modifier = Modifier,
-    navHostController: NavHostController
-) {
-    Scaffold {
-        Column(
-            modifier
-                .padding(it)
-                .verticalScroll(rememberScrollState())) {
-            WelcomeLogin()
-            LoginInput(navHostController = navHostController)
-        }
-    }
-}
-
-@Composable
-private fun WelcomeLogin(modifier: Modifier = Modifier) {
+fun WelcomeLogin(modifier: Modifier = Modifier) {
     Box(
         modifier
             .background(GreenPrimary.copy(alpha = 0.2F))
@@ -74,7 +54,10 @@ private fun WelcomeLogin(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun LoginInput(modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun LoginInput(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+) {
     val focusManager = LocalFocusManager.current
     val showPassword = remember { mutableStateOf(false) }
     var username by remember{ mutableStateOf(TextFieldValue(""))}
@@ -145,6 +128,10 @@ private fun LoginInput(modifier: Modifier = Modifier, navHostController: NavHost
                     )
                 }
             },
+            visualTransformation = if (showPassword.value)
+                VisualTransformation.None
+            else
+                PasswordVisualTransformation()
         )
         ClickableText(
             text = AnnotatedString("Lupa password"),
@@ -161,7 +148,7 @@ private fun LoginInput(modifier: Modifier = Modifier, navHostController: NavHost
 }
 
 @Composable
-private fun BtnLogin(modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun BtnLogin(modifier: Modifier = Modifier, navHostController: NavHostController) {
     val context = LocalContext.current
 
     Button(

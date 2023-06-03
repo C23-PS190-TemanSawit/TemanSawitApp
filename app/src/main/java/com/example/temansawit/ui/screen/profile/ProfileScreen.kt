@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,10 +26,8 @@ import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.theme.Green700
-import com.example.temansawit.ui.theme.GreenPressed
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen( modifier: Modifier = Modifier, navHostController: NavHostController) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()

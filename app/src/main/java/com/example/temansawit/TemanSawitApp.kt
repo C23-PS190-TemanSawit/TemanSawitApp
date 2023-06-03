@@ -16,10 +16,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.di.Preferences
-import com.example.temansawit.ui.components.auth.Login
-import com.example.temansawit.ui.components.auth.Register
 import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
+import com.example.temansawit.ui.screen.auth.login.LoginScreen
+import com.example.temansawit.ui.screen.auth.register.RegisterScreen
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
@@ -110,10 +110,10 @@ fun NavGraphBuilder.auth(navHostController: NavHostController) {
         route = "loginScreen"
     ) {
         composable(Screen.Login.route) {
-            Login(navHostController = navHostController)
+            LoginScreen(navHostController = navHostController)
         }
         composable(Screen.Register.route) {
-            Register(navHostController = navHostController)
+            RegisterScreen(navHostController = navHostController)
         }
     }
 }
