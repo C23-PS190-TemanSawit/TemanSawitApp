@@ -14,6 +14,6 @@ sealed class Screen(val route: String) {
     object AboutUs: Screen("about")
     object ChangePassword: Screen("about")
     object DetailTransaction: Screen("home/{transactionId}") {
-        fun createRoute(transactionId: Long) = "home/$transactionId"
+        fun createRoute(transactionId: Int) = "home/$transactionId"
     }
 }

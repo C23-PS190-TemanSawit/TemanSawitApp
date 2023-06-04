@@ -12,25 +12,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.temansawit.di.Injection
+import com.example.temansawit.R
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.transaction.CardDetail
 import com.example.temansawit.ui.components.transaction.CardNoTransaksi
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenPrimary
-import com.example.temansawit.R
 
 @Composable
 fun DetailTrxScreen(
-    trxId: Long,
+    trxId: Int,
     viewmodel: TransactiomViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideRepository())
+        factory = ViewModelFactory(LocalContext.current)
     ),
     navigateBack: () -> Unit,
     navHostController: NavHostController = rememberNavController()

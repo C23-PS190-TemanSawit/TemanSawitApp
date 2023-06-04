@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,8 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
-import com.example.temansawit.di.Injection
-import com.example.temansawit.model.Trx
+import com.example.temansawit.network.response.IncomeResponseItem
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.SectionText
 import com.example.temansawit.ui.components.home.CardTransaction
@@ -100,9 +100,9 @@ fun HomePage(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideRepository())
+        factory = ViewModelFactory(LocalContext.current)
     ),
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (Int) -> Unit,
     modalSheetState: ModalBottomSheetState,
     ) {
         Column(
@@ -229,9 +229,9 @@ fun GrafikPendapatan(
 
 @Composable
 fun Transaction(
-    listTransaction: List<Trx>,
+    listTransaction: List<IncomeResponseItem>,
     modifier: Modifier = Modifier,
-    navigateToDetail: (Long) -> Unit
+    navigateToDetail: (Int) -> Unit
 ) {
     Column(
 //        modifier = modifier.fillMaxSize(),
@@ -240,11 +240,11 @@ fun Transaction(
 //        items(listTransaction, key = { it.cardTransaction.id }) { trx ->
             listTransaction.forEach { trx ->
                 CardTransaction(
-                    berat = trx.cardTransaction.berat,
-                    total = trx.cardTransaction.total,
-                    tanggal = trx.cardTransaction.tanggal,
-                    tint = trx.cardTransaction.tint,
-                    modifier = modifier.clickable{ navigateToDetail(trx.cardTransaction.id) }
+                    berat = trx.totalWeight,
+                    total = trx.price,
+                    tanggal = trx.transactionTime,
+                    tint = Color.Green,
+                    modifier = modifier.clickable{ navigateToDetail(trx.incomeId) }
                 )
             }
 //        }

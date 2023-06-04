@@ -85,9 +85,9 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
                 type = NavType.LongType
             }),
         ) {
-            val id = it.arguments?.getLong("transactionId") ?: -1L
+            val id = it.arguments?.getInt("transactionId") ?: -1L
             DetailTrxScreen(
-                trxId = id,
+                trxId = id as Int,
                 navigateBack = { navHostController.navigateUp() },
             )
         }

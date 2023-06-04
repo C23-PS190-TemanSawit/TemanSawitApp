@@ -1,8 +1,13 @@
 package com.example.temansawit.di
 
+import android.content.Context
 import android.content.SharedPreferences
 
 object Preferences {
+    fun initPref(context: Context, name: String): SharedPreferences {
+        return context.getSharedPreferences(name, Context.MODE_PRIVATE)
+    }
+
     private const val KEY_IS_ONBOARDED = "is_onboarded"
     private const val KEY_IS_LOGGED_IN = "is_logged_in"
 

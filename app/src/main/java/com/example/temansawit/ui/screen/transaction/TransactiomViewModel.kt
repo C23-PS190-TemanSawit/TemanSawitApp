@@ -15,7 +15,7 @@ class TransactiomViewModel(private val repository: Repository) : ViewModel() {
     val uiState: StateFlow<UiState<Trx>>
         get() = _uiState
 
-    fun getTrxById(rewardId: Long) {
+    fun getTrxById(rewardId: Int) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             _uiState.value = UiState.Success(repository.getTrxById(rewardId))
