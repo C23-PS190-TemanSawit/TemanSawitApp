@@ -5,12 +5,10 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -27,9 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -38,23 +34,7 @@ import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
-fun Register(
-    modifier: Modifier = Modifier,
-    navHostController: NavHostController
-) {
-    Scaffold {
-        Column(
-            modifier
-                .padding(it)
-                .verticalScroll(rememberScrollState())) {
-            WelcomeRegister()
-            RegisterInput(navHostController = navHostController)
-        }
-    }
-}
-
-@Composable
-private fun WelcomeRegister(modifier: Modifier = Modifier) {
+fun WelcomeRegister(modifier: Modifier = Modifier) {
     Box(
         modifier
             .background(GreenPrimary.copy(alpha = 0.2F))
@@ -75,9 +55,10 @@ private fun WelcomeRegister(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostController) {
     val focusManager = LocalFocusManager.current
     val showPassword = remember { mutableStateOf(false) }
+    val showKonfirmasiPassword = remember { mutableStateOf(false) }
     var username by remember{ mutableStateOf(TextFieldValue("")) }
     var email by remember{ mutableStateOf(TextFieldValue("")) }
     var password by remember{ mutableStateOf(TextFieldValue("")) }
@@ -168,6 +149,10 @@ private fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavH
                     )
                 }
             },
+            visualTransformation = if (showPassword.value)
+                VisualTransformation.None
+            else
+                PasswordVisualTransformation()
         )
         OutlinedTextField(
             modifier = modifier
@@ -189,7 +174,7 @@ private fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavH
             ),
             singleLine = true,
             trailingIcon = {
-                val (icon, iconColor) = if (showPassword.value) {
+                val (icon, iconColor) = if (showKonfirmasiPassword.value) {
                     Pair(
                         painterResource(id = R.drawable.baseline_visibility_24),
                         colorResource(id = R.color.black)
@@ -198,7 +183,7 @@ private fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavH
                     Pair(painterResource(id = R.drawable.baseline_visibility_off_24), colorResource(id = R.color.black))
                 }
 
-                IconButton(onClick = { showPassword.value = !showPassword.value }) {
+                IconButton(onClick = { showKonfirmasiPassword.value = !showKonfirmasiPassword.value }) {
                     Icon(
                         icon,
                         contentDescription = "Visibility",
@@ -206,6 +191,10 @@ private fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavH
                     )
                 }
             },
+            visualTransformation = if (showKonfirmasiPassword.value)
+                VisualTransformation.None
+            else
+                PasswordVisualTransformation()
         )
         ClickableText(
             text = AnnotatedString("Lupa password"),
@@ -222,7 +211,7 @@ private fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavH
 }
 
 @Composable
-private fun BtnRegister(modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun BtnRegister(modifier: Modifier = Modifier, navHostController: NavHostController) {
     val context = LocalContext.current
 
     Button(
