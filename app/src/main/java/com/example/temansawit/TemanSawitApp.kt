@@ -33,13 +33,15 @@ fun TemanSawitApp() {
     val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
     val isOnBoarded = remember { mutableStateOf(Preferences.isOnboarded(sharedPreferences)) }
     val isLogeedIn = remember { mutableStateOf(Preferences.isLoggedIn(sharedPreferences)) }
+    val pref = Preferences.initPref(context, "isLoggedIn")
+    val token = pref.getString("context", null).toString()
 
 
     NavHost(
         navController = navHostController,
         startDestination =
         if (isOnBoarded.value) {
-            if (isLogeedIn.value) {
+            if (isLogeedIn.value && token != "") {
                 "mainScreen"
             } else {
                 "loginScreen"
@@ -82,12 +84,12 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
         composable(
             route = Screen.DetailTransaction.route,
             arguments = listOf(navArgument("transactionId") {
-                type = NavType.LongType
+                type = NavType.IntType
             }),
         ) {
-            val id = it.arguments?.getLong("transactionId") ?: -1L
+            val id = it.arguments?.getInt("transactionId") ?: -1L
             DetailTrxScreen(
-                trxId = id,
+                trxId = id as Int,
                 navigateBack = { navHostController.navigateUp() },
             )
         }

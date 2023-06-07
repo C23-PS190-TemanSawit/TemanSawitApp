@@ -12,15 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
-import com.example.temansawit.di.Injection
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
@@ -34,9 +33,9 @@ fun TransactionScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     viewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideRepository())
+        factory = ViewModelFactory(LocalContext.current)
     ),
-    navigateToDetail: (Long) -> Unit
+    navigateToDetail: (Int) -> Unit
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -75,11 +74,11 @@ fun TransactionScreen(
                     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
                         when (uiState) {
                             is UiState.Loading -> {
-                                viewModel.getAllTrx()
+                                viewModel.getIncome()
                             }
                             is UiState.Success -> {
                                 Transaction(
-                                    listTransaction = uiState.data,
+                                    listIncome = uiState.data,
                                     modifier = modifier.padding(),
                                     navigateToDetail = navigateToDetail
                                 )
