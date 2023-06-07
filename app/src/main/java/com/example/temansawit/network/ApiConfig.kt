@@ -25,11 +25,12 @@ class ApiConfig {
         }
 
         fun getApiService(context: Context): ApiService {
-            val preferences = Preferences.initPref(context, "onSignIn")
-            val token = preferences.getString("token", null).toString()
+            val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            val preferences = Preferences.initPref(context, "isLoggedIn")
+            val token = Preferences.getToken(sharedPreferences)
 
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://story-api.dicoding.dev/v1/")
+                .baseUrl("https://temansawit-api-sqmlxtcfma-ts.a.run.app")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getInterceptor(token))
                 .build()

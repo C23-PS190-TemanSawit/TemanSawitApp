@@ -20,7 +20,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
-import com.example.temansawit.di.Injection
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
@@ -75,11 +74,11 @@ fun TransactionScreen(
                     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
                         when (uiState) {
                             is UiState.Loading -> {
-                                viewModel.getAllTrx()
+                                viewModel.getIncome()
                             }
                             is UiState.Success -> {
                                 Transaction(
-                                    listTransaction = uiState.data,
+                                    listIncome = uiState.data,
                                     modifier = modifier.padding(),
                                     navigateToDetail = navigateToDetail
                                 )

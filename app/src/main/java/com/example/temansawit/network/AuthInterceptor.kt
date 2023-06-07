@@ -9,7 +9,7 @@ class AuthInterceptor(private var token: String): Interceptor {
         var request: Request = chain.request()
 
         request = if (request.header("No-Authentication") == null && token.isNotEmpty()) {
-            val token = "Bearer $token"
+            val token = "$token"
             request.newBuilder()
                 .addHeader("Authorization", token)
                 .build()

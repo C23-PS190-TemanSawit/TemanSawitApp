@@ -1,21 +1,36 @@
 package com.example.temansawit.network
 
-import com.example.temansawit.network.response.AuthResponse
-import com.example.temansawit.network.response.IncomeResponse
+import com.example.temansawit.network.response.*
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 
 interface ApiService {
-    @FormUrlEncoded
-    @POST("login")
+    @POST("/api/login")
     suspend fun login(
-        @Field("username") email:String,
-        @Field("password") password: String
+        @Body loginInfo: RequestBody
     ): AuthResponse
 
+    @POST("/api/users")
+    suspend fun register(
+        @Body registerInfo: RequestBody
+    ): RegisterResponse
 
-    @FormUrlEncoded
-    @POST("createIncome")
+    @GET("/api/token")
+    suspend fun getNewToken(): NewTokenResponse
+
+    @GET("/api/profile")
+    suspend fun userProfile(): UserResponse
+
+    @POST("/api/income")
     suspend fun createIncome(
-    ): List<IncomeResponse>
+        @Body incomeInput: RequestBody
+    ): IncomeResponse
+    @GET("/api/income")
+    suspend fun getIncome(): List<IncomeResponseItem>
+    @GET("/api/income/{id}")
+    suspend fun getIncomeById(
+        @Path("incomeId") incomeId: Int
+    ): IncomeResponseItem
+
 }

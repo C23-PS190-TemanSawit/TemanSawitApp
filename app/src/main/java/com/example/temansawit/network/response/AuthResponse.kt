@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class AuthResponse(
 
-	@field:SerializedName("acccessToken")
-	val acccessToken: String,
+	@field:SerializedName("accessToken")
+	val accessToken: String,
 
 	@field:SerializedName("name")
 	val name: String,
@@ -15,7 +15,20 @@ data class AuthResponse(
 
 	@field:SerializedName("email")
 	val email: String,
+)
 
-	@field:SerializedName("refreshToken")
-	val refreshToken: String
+data class NewTokenResponse(
+	@field:SerializedName("status")
+	val status: String,
+
+	@field:SerializedName("accessToken")
+	val accessToken: String
+)
+
+data class RegisterResponse(
+	@field:SerializedName("status")
+	val status: String,
+
+	@field:SerializedName("message")
+	val message: String
 )

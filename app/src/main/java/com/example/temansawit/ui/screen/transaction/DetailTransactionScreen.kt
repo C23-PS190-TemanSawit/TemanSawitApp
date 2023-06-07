@@ -38,7 +38,7 @@ fun DetailTrxScreen(
     viewmodel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
-                viewmodel.getTrxById(trxId)
+                viewmodel.getIncomeById(trxId)
             }
             is UiState.Success -> {
                 val data = uiState.data
@@ -89,12 +89,12 @@ fun DetailTrxScreen(
                                     .clip(shape = RoundedCornerShape(8.dp))
                             ) {
                                 CardDetail(
-                                    berat = data.cardTransaction.berat,
-                                    hargaPerKg = data.cardTransaction.hargaPerKg,
-                                    total = data.cardTransaction.total,
-                                    tanggal = data.cardTransaction.tanggal,
-                                    deskripsi = data.cardTransaction.deskripsi,
-                                    tint = data.cardTransaction.tint
+                                    berat = data.totalWeight.toString(),
+                                    hargaPerKg = data.price.toString(),
+                                    total = (data.totalWeight * data.price).toString(),
+                                    tanggal = data.updatedAt,
+                                    deskripsi = data.description ?: "-",
+                                    tint = Color.Green
                                 )
                             }
                         }
