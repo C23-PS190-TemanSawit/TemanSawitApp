@@ -8,7 +8,7 @@ data class Trx(
 )
 
 data class CardTransaction(
-    val id: Long,
+    val id: Int,
     val berat: String,
     val hargaPerKg: String,
     val total: String,

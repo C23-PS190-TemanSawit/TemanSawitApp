@@ -24,8 +24,8 @@ import com.example.temansawit.ui.theme.TemanSawitTheme
 @Composable
 fun CardTransaction(
 //    transaction: CardTransaction,
-    berat: String,
-    total: String,
+    berat: Int,
+    total: Int,
     tanggal: String,
     tint: Color,
     modifier: Modifier = Modifier
@@ -44,7 +44,7 @@ fun CardTransaction(
         ) {
             Column {
                 Text(
-                    text = berat,
+                    text = berat.toString(),
                     textAlign = TextAlign.Center,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
@@ -63,7 +63,7 @@ fun CardTransaction(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = total,
+                    text = total.toString(),
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
@@ -113,11 +113,3 @@ fun CardTransaction(
 //        )
 //    }
 //}
-
-@Composable
-@Preview(showBackground = true)
-fun CardTransaction() {
-    TemanSawitTheme() {
-        CardTransaction(berat = "y", total = "y", tanggal = "2", tint = GreenPrimary)
-    }
-}

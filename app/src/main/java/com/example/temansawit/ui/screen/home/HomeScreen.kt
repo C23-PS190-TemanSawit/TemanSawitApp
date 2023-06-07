@@ -8,13 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,8 +25,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
-import com.example.temansawit.di.Injection
-import com.example.temansawit.model.Trx
+import com.example.temansawit.data.Result
+import com.example.temansawit.network.response.IncomeResponseItem
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.SectionText
 import com.example.temansawit.ui.components.home.CardTransaction
@@ -52,7 +51,7 @@ fun HomePage(
     val currentRoute = navBackStackEntry?.destination?.route
     val modalSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
     BottomSheet(modalSheetState = modalSheetState) {
@@ -100,9 +99,9 @@ fun HomePage(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideRepository())
+        factory = ViewModelFactory(LocalContext.current)
     ),
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (Int) -> Unit,
     modalSheetState: ModalBottomSheetState,
     ) {
         Column(
@@ -113,12 +112,6 @@ fun HomeScreen(
             Spacer(modifier = Modifier.padding(top = 56.dp))
             GrafikPendapatan(modalSheetState = modalSheetState)
             Chart()
-//            Image(
-//                modifier = modifier
-//                    .padding(horizontal = 16.dp),
-//                painter = painterResource(id = R.drawable.eample_chart),
-//                contentDescription = null
-//            )
             SectionText(title = stringResource(R.string.riwayat_transaksi))
             Box(modifier = Modifier
                 .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
@@ -126,11 +119,11 @@ fun HomeScreen(
                 viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
                     when (uiState) {
                         is UiState.Loading -> {
-                            viewModel.getAllTrx()
+                            viewModel.getIncome()
                         }
                         is UiState.Success -> {
                             Transaction(
-                                listTransaction = uiState.data,
+                                listIncome = uiState.data,
                                 modifier = modifier.padding(),
                                 navigateToDetail = navigateToDetail
                             )
@@ -143,7 +136,15 @@ fun HomeScreen(
 }
 
 @Composable
-fun Component1() {
+fun Component1(
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    var name by remember { mutableStateOf("y") }
+
     Pendapatan(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -156,7 +157,38 @@ fun Component1() {
                     RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
                 )
         ) {
-            Welcome(name = "Ucup")
+            Welcome(name = name)
+            
+            LaunchedEffect(Unit) {
+//                viewModel.getNewToken().observe(lifecycleOwner, {token ->
+//                    when (token) {
+//                        is Result.Loading -> {}
+//                        is Result.Success -> {
+//                            val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+//                            Preferences.newToken(token.data.accessToken, sharedPreferences)
+//                        }
+//                        is Result.Error -> {}
+//                    }
+//                })
+
+                viewModel.getUserProfile().observe(lifecycleOwner, { user ->
+                    when (user) {
+                        is Result.Loading -> {
+
+                        }
+                        is Result.Success -> {
+                            if (user.data.fullName != null) {
+                                name = user.data.fullName.toString()
+                            } else {
+                                name = "bau"
+                            }
+                        }
+                        is Result.Error -> {
+                            name = "Temansawit User"
+                        }
+                    }
+                })
+            }
         }
         Box(
             modifier = Modifier
@@ -183,8 +215,6 @@ fun Component1() {
         }
     }
 }
-
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -214,10 +244,10 @@ fun GrafikPendapatan(
                 onClick = {
                     coroutineScope.launch {
                         if (modalSheetState.isVisible)
-                            modalSheetState.show()
-                        else
-//                            modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
                             modalSheetState.hide()
+                        else
+                        modalSheetState.show()
+
                     }
                 },
             ) {
@@ -229,25 +259,23 @@ fun GrafikPendapatan(
 
 @Composable
 fun Transaction(
-    listTransaction: List<Trx>,
+    listIncome: List<IncomeResponseItem>,
     modifier: Modifier = Modifier,
-    navigateToDetail: (Long) -> Unit
+    navigateToDetail: (Int) -> Unit,
 ) {
     Column(
 //        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-//        items(listTransaction, key = { it.cardTransaction.id }) { trx ->
-            listTransaction.forEach { trx ->
-                CardTransaction(
-                    berat = trx.cardTransaction.berat,
-                    total = trx.cardTransaction.total,
-                    tanggal = trx.cardTransaction.tanggal,
-                    tint = trx.cardTransaction.tint,
-                    modifier = modifier.clickable{ navigateToDetail(trx.cardTransaction.id) }
-                )
-            }
-//        }
+        listIncome.forEach() {
+            CardTransaction(
+                berat = it.totalWeight,
+                total = it.price * it.totalWeight,
+                tanggal = it.updatedAt,
+                tint = Color.Green,
+                modifier = modifier.clickable{ navigateToDetail(it.incomeId) }
+            )
+        }
     }
 //    val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //        LocalDateTime.now()
