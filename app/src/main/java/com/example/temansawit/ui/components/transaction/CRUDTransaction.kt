@@ -134,8 +134,7 @@ fun Income(
                 .clip(shape = RoundedCornerShape(100.dp)),
             onClick = {
                 viewModel.createIncome(userId, trxTime, price, berat, deskripsi).observe(lifecycleOwner, { saveTrx ->
-                    when (saveTrx) {
-                        is Result.Loading -> {}
+                    when(saveTrx){is Result.Loading -> {}
                         is Result.Success -> {
                             coroutineScope.launch {
                                     modalSheetState.hide()

@@ -1,6 +1,7 @@
 package com.example.temansawit.ui.screen.home
 
 import BottomSheet
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -36,6 +37,7 @@ import com.example.temansawit.ui.components.home.Welcome
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.screen.profile.EditProfileActivity
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -45,6 +47,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomePage(
+
     navHostController: NavHostController = rememberNavController(),
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
@@ -67,7 +70,11 @@ fun HomePage(
                 if (currentRoute != Screen.DetailTransaction.route) {
                     FloatingActionButton(
                         shape = CircleShape,
-                        onClick = { },
+                        onClick = {
+                            navHostController.navigate(
+                                Screen.Camera.route
+                            )
+                        },
                         backgroundColor = Green700,
                     ) {
                         Icon(
@@ -160,21 +167,9 @@ fun Component1(
             Welcome(name = name)
             
             LaunchedEffect(Unit) {
-//                viewModel.getNewToken().observe(lifecycleOwner, {token ->
-//                    when (token) {
-//                        is Result.Loading -> {}
-//                        is Result.Success -> {
-//                            val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-//                            Preferences.newToken(token.data.accessToken, sharedPreferences)
-//                        }
-//                        is Result.Error -> {}
-//                    }
-//                })
-
                 viewModel.getUserProfile().observe(lifecycleOwner, { user ->
                     when (user) {
                         is Result.Loading -> {
-
                         }
                         is Result.Success -> {
                             if (user.data.fullName != null) {
@@ -264,7 +259,6 @@ fun Transaction(
     navigateToDetail: (Int) -> Unit,
 ) {
     Column(
-//        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         listIncome.forEach() {
@@ -277,14 +271,4 @@ fun Transaction(
             )
         }
     }
-//    val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//        LocalDateTime.now()
-//    } else {
-//        TODO("VERSION.SDK_INT < O")
-//    }
-//    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//    val formatted = current.format(formatter)
-//    CardTransaction(
-//        transaction =
-//    )
 }

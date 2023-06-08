@@ -1,5 +1,6 @@
 package com.example.temansawit
 
+import CameraScreen
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -74,6 +75,9 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
                 },
                 navHostController = navHostController
             )
+        }
+        composable(Screen.Camera.route) {
+            CameraScreen(navHostController = navHostController)
         }
         composable(Screen.Faq.route) {
             FaqScreen(navHostController)
