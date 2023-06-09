@@ -7,6 +7,9 @@ sealed class Screen(val route: String) {
     object Onboarding: Screen("onboarding")
     object Home: Screen("home")
 
+    object BottomCamera : Screen("bottomcamera")
+    object CameraScreen: Screen("cameraapi")
+
     object CameraApi: Screen("cameraapi")
     object CameraTflite: Screen("cameratflite")
 

@@ -4,6 +4,7 @@ import CameraScreen
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -21,6 +22,7 @@ import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.auth.login.LoginScreen
 import com.example.temansawit.ui.screen.auth.register.RegisterScreen
+import com.example.temansawit.ui.screen.camera.BottomCamera
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
@@ -58,6 +60,7 @@ fun TemanSawitApp() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.main(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Home.route,
@@ -76,7 +79,7 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
                 navHostController = navHostController
             )
         }
-        composable(Screen.Camera.route) {
+        composable(Screen.CameraScreen.route) {
             CameraScreen(navHostController = navHostController)
         }
         composable(Screen.Faq.route) {
@@ -99,6 +102,11 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
         }
     }
 }
+
+//fun BottomCamera(navHostController: NavHostController) {
+//
+//}
+
 fun NavGraphBuilder.onboarding(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Onboarding.route,

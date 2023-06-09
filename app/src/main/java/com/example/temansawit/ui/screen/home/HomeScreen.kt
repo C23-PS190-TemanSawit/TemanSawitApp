@@ -72,7 +72,7 @@ fun HomePage(
                         shape = CircleShape,
                         onClick = {
                             navHostController.navigate(
-                                Screen.Camera.route
+                                Screen.CameraScreen.route
                             )
                         },
                         backgroundColor = Green700,

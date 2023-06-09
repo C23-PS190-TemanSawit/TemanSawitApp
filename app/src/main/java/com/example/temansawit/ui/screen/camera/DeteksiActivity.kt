@@ -46,6 +46,7 @@ class DeteksiActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         binding = ActivityDeteksiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -57,8 +58,9 @@ class DeteksiActivity : AppCompatActivity() {
             )
         }
 
-        binding.cameraXButton.setOnClickListener { startCameraX() }
-        binding.cameraButton.setOnClickListener { startTakePhoto() }
+//        binding.cameraXButton.setOnClickListener { startCameraX() }
+        binding.cameraButton.setOnClickListener { startCameraX() }
+        binding.upload.setOnClickListener { startTakePhoto() }
 
 
     }
@@ -70,7 +72,7 @@ class DeteksiActivity : AppCompatActivity() {
 
 
     private fun startTakePhoto() {
-        val intent = Intent(this, CameraTActivity::class.java)
+        val intent = Intent(this, HasilActivity::class.java)
         launcherIntentCameraX.launch(intent)
     }
 

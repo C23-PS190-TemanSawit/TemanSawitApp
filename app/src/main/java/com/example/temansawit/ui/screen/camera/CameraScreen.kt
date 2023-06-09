@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.temansawit.R
 import com.example.temansawit.ui.navigation.Screen
+import com.example.temansawit.ui.screen.camera.CameraTActivity
 import com.example.temansawit.ui.screen.camera.DeteksiActivity
 
 @Composable
@@ -41,10 +42,11 @@ fun CameraScreen(navHostController: NavHostController) {
                 Button(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     onClick = {
-                        navHostController.navigate(Screen.CameraApi.route)
+                        val intent = Intent(context, CameraTActivity::class.java)
+                        context.startActivity(intent)
                     }
                 ) {
-                    Text(text = "Button 1")
+                    Text(text = "DETEKSI GENDER BIBIT")
                 }
 
                 Button(
@@ -54,7 +56,7 @@ fun CameraScreen(navHostController: NavHostController) {
                         context.startActivity(intent)
                     }
                 ) {
-                    Text(text = "Button 2")
+                    Text(text = "DATEKSI KEMATANGAN BUAH")
                 }
             }
         }
