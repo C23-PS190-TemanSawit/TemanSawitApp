@@ -1,9 +1,11 @@
 package com.example.temansawit
 
+import CameraScreen
 import android.content.Context
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -23,6 +25,7 @@ import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.auth.login.LoginScreen
 import com.example.temansawit.ui.screen.auth.register.RegisterScreen
+import com.example.temansawit.ui.screen.camera.BottomCamera
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
@@ -64,7 +67,11 @@ fun TemanSawitApp() {
     }
 }
 
-fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewModel: TransactionViewModel) {
+// <<<<<<< apiRoy
+// fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewModel: TransactionViewModel) {
+// =======
+@OptIn(ExperimentalMaterialApi::class)
+fun NavGraphBuilder.main(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Home.route,
         route = "mainScreen"
@@ -84,6 +91,9 @@ fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewMo
                 viewModel2 =  transactionViewModel,
                 navHostController = navHostController
             )
+        }
+        composable(Screen.CameraScreen.route) {
+            CameraScreen(navHostController = navHostController)
         }
         composable(Screen.Faq.route) {
             FaqScreen(navHostController)
@@ -105,6 +115,11 @@ fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewMo
         }
     }
 }
+
+//fun BottomCamera(navHostController: NavHostController) {
+//
+//}
+
 fun NavGraphBuilder.onboarding(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Onboarding.route,

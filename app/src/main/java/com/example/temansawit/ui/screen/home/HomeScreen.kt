@@ -2,6 +2,7 @@ package com.example.temansawit.ui.screen.home
 
 import BottomSheet
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -33,6 +34,7 @@ import com.example.temansawit.ui.components.home.*
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.screen.profile.EditProfileActivity
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -43,6 +45,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomePage(
+
     navHostController: NavHostController = rememberNavController(),
     transactionViewModel: TransactionViewModel
 ) {
@@ -66,7 +69,11 @@ fun HomePage(
                 if (currentRoute != Screen.DetailTransaction.route) {
                     FloatingActionButton(
                         shape = CircleShape,
-                        onClick = { },
+                        onClick = {
+                            navHostController.navigate(
+                                Screen.CameraScreen.route
+                            )
+                        },
                         backgroundColor = Green700,
                     ) {
                         Icon(
@@ -290,7 +297,6 @@ fun Transaction(
     navigateToDetail: (Int) -> Unit,
 ) {
     Column(
-//        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         listIncome.forEach {
@@ -302,14 +308,4 @@ fun Transaction(
             )
         }
     }
-//    val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//        LocalDateTime.now()
-//    } else {
-//        TODO("VERSION.SDK_INT < O")
-//    }
-//    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//    val formatted = current.format(formatter)
-//    CardTransaction(
-//        transaction =
-//    )
 }
