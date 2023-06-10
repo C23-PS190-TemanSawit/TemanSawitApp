@@ -1,16 +1,14 @@
 package com.example.temansawit.ui.screen.transaction
 
+import BottomSheet
+import BottomSheetType
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,10 +26,11 @@ import com.example.temansawit.ui.components.home.OutcomeCard
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
-import com.example.temansawit.ui.screen.home.HomeViewModel
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.util.TransactionViewModel
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TransactionScreen(
     modifier: Modifier = Modifier,
@@ -42,42 +41,63 @@ fun TransactionScreen(
     viewModel2: TransactionViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
-
     navigateToDetail: (Int) -> Unit
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
+    val coroutineScope = rememberCoroutineScope()
+    var selectedBottomSheet by remember { mutableStateOf(BottomSheetType.None) }
 
-    ScaffoldApp(
-        modifier = modifier.padding(vertical = 36.dp),
-        bottomBar = {
-            if (currentRoute != Screen.DetailTransaction.route) {
-                BottomBar(navHostController)
+    BottomSheet(
+        modalSheetState = modalSheetState,
+        selectedBottomSheet = selectedBottomSheet,
+        onBottomSheetSelected = { sheetType ->
+            selectedBottomSheet = sheetType
+            coroutineScope.launch {
+                modalSheetState.show()
             }
-        },
-        floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true,
-        floatingActionButton = {
-            if (currentRoute != Screen.DetailTransaction.route) {
-                FloatingActionButton(
-                    shape = CircleShape,
-                    onClick = { },
-                    backgroundColor = Green700,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_camera_alt_24),
-                        contentDescription = "Deteksi Sawit"
-                    )
+        }
+    ) {
+        ScaffoldApp(
+            modifier = modifier.padding(vertical = 36.dp),
+            bottomBar = {
+                if (currentRoute != Screen.DetailTransaction.route) {
+                    BottomBar(navHostController)
                 }
-            }
-        },
-        content = {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+            isFloatingActionButtonDocked = true,
+            floatingActionButton = {
+                if (currentRoute != Screen.DetailTransaction.route) {
+                    FloatingActionButton(
+                        shape = CircleShape,
+                        onClick = {
+                            selectedBottomSheet = BottomSheetType.Camera
+                            coroutineScope.launch {
+                                modalSheetState.show()
+                            }
+                        },
+                        backgroundColor = Green700,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.outline_camera_alt_24),
+                            contentDescription = "Deteksi Sawit"
+                        )
+                    }
+                }
+            },
+            content = {
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
                     viewModel2.income.collectAsState(initial = UiState.Loading).value.let { uiState ->
                         when (uiState) {
                             is UiState.Loading -> {
@@ -95,7 +115,9 @@ fun TransactionScreen(
                     }
                     viewModel.outcome.collectAsState(initial = UiState.Loading).value.let { outcome ->
                         when (outcome) {
-                            is UiState.Loading -> { viewModel.getOutcome() }
+                            is UiState.Loading -> {
+                                viewModel.getOutcome()
+                            }
                             is UiState.Success -> {
                                 OutcomeData(
                                     lisOutcome = outcome.data,
@@ -105,9 +127,10 @@ fun TransactionScreen(
                             is UiState.Error -> {}
                         }
                     }
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable

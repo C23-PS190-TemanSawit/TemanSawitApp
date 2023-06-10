@@ -48,7 +48,6 @@ fun HomePage(
     navHostController: NavHostController = rememberNavController(),
     transactionViewModel: TransactionViewModel
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val modalSheetState = rememberModalBottomSheetState(
@@ -56,6 +55,7 @@ fun HomePage(
         confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
+    val coroutineScope = rememberCoroutineScope()
     var selectedBottomSheet by remember { mutableStateOf(BottomSheetType.None) }
     BottomSheet(
         modalSheetState = modalSheetState,
@@ -67,7 +67,6 @@ fun HomePage(
             }
         }
     ) {
-//        BottomSheet(modalSheetState = modalSheetState) {
             ScaffoldApp(
                 bottomBar = {
                     if (currentRoute != Screen.DetailTransaction.route) {
