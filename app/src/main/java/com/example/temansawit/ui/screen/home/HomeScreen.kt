@@ -1,6 +1,7 @@
 package com.example.temansawit.ui.screen.home
 
 import BottomSheet
+import android.content.Context
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -10,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -25,14 +25,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
-import com.example.temansawit.data.Result
+import com.example.temansawit.di.Preferences
 import com.example.temansawit.network.response.IncomeResponseItem
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.SectionText
-import com.example.temansawit.ui.components.home.CardTransaction
-import com.example.temansawit.ui.components.home.Chart
-import com.example.temansawit.ui.components.home.Pendapatan
-import com.example.temansawit.ui.components.home.Welcome
+import com.example.temansawit.ui.components.home.*
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
@@ -40,12 +37,14 @@ import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
 import com.example.temansawit.ui.theme.Typography
+import com.example.temansawit.util.TransactionViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomePage(
     navHostController: NavHostController = rememberNavController(),
+    transactionViewModel: TransactionViewModel
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -87,6 +86,8 @@ fun HomePage(
                             )
                         )
                     },
+                    viewModel = transactionViewModel,
+                    navHostController = navHostController,
                     modalSheetState = modalSheetState
                 )
             }
@@ -98,9 +99,10 @@ fun HomePage(
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(
+    viewModel: TransactionViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
+    navHostController: NavHostController,
     navigateToDetail: (Int) -> Unit,
     modalSheetState: ModalBottomSheetState,
     ) {
@@ -108,7 +110,7 @@ fun HomeScreen(
             modifier = Modifier
                         .verticalScroll(rememberScrollState())
         ) {
-            Component1()
+            Component1(navHostController = navHostController)
             Spacer(modifier = Modifier.padding(top = 56.dp))
             GrafikPendapatan(modalSheetState = modalSheetState)
             Chart()
@@ -116,7 +118,7 @@ fun HomeScreen(
             Box(modifier = Modifier
                 .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
             ) {
-                viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                viewModel.income.collectAsState(initial = UiState.Loading).value.let { uiState ->
                     when (uiState) {
                         is UiState.Loading -> {
                             viewModel.getIncome()
@@ -128,7 +130,9 @@ fun HomeScreen(
                                 navigateToDetail = navigateToDetail
                             )
                         }
-                        is UiState.Error -> {}
+                        is UiState.Error -> {
+                            Alert403(navHostController = navHostController)
+                        }
                     }
                 }
             }
@@ -136,14 +140,50 @@ fun HomeScreen(
 }
 
 @Composable
+fun Alert403(navHostController: NavHostController) {
+    Column() {
+        val openDialog = remember { mutableStateOf(true)  }
+        val context = LocalContext.current
+        AlertDialog(
+            onDismissRequest = {
+                // Dismiss the dialog when the user clicks outside the dialog or on the back
+                // button. If you want to disable that functionality, simply use an empty
+                // onCloseRequest.
+                openDialog.value = true
+            },
+            title = {
+                Text(text = "Sesi anda telah berakhir")
+            },
+            text = {
+                Text("Silahkan login ulang untuk melanjutkan")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        openDialog.value = false
+                        val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+                        Preferences.setLoggedIn(sharedPreferences, false)
+                        navHostController.popBackStack()
+                        navHostController.navigate("loginScreen")
+                    }) {
+                    Text("Oke")
+                }
+            },
+        )
+    }
+}
+
+@Composable
 fun Component1(
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
+    navHostController: NavHostController
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
-    var name by remember { mutableStateOf("y") }
+    var name by remember { mutableStateOf("Temansawit Guest") }
 
     Pendapatan(
         modifier = Modifier.fillMaxWidth()
@@ -158,36 +198,22 @@ fun Component1(
                 )
         ) {
             Welcome(name = name)
-            
-            LaunchedEffect(Unit) {
-//                viewModel.getNewToken().observe(lifecycleOwner, {token ->
-//                    when (token) {
-//                        is Result.Loading -> {}
-//                        is Result.Success -> {
-//                            val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-//                            Preferences.newToken(token.data.accessToken, sharedPreferences)
-//                        }
-//                        is Result.Error -> {}
-//                    }
-//                })
-
-                viewModel.getUserProfile().observe(lifecycleOwner, { user ->
-                    when (user) {
-                        is Result.Loading -> {
-
-                        }
-                        is Result.Success -> {
-                            if (user.data.fullName != null) {
-                                name = user.data.fullName.toString()
-                            } else {
-                                name = "bau"
-                            }
-                        }
-                        is Result.Error -> {
-                            name = "Temansawit User"
+            viewModel.name.collectAsState(initial = UiState.Loading).value.let { user ->
+                when (user) {
+                    is UiState.Loading -> {
+                        viewModel.getUserProfile()
+                    }
+                    is UiState.Success -> {
+                        name = if (user.data.fullName != null) {
+                            user.data.fullName.toString()
+                        } else {
+                            "User name null"
                         }
                     }
-                })
+                    is UiState.Error -> {
+                        Alert403(navHostController = navHostController)
+                    }
+                }
             }
         }
         Box(
@@ -238,21 +264,21 @@ fun GrafikPendapatan(
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 8.dp)
-                    .clip(shape = RoundedCornerShape(100.dp)),
+                    .padding(end = 16.dp)
+                    .padding(top = 8.dp),
+                shape = RoundedCornerShape(50),
                 onClick = {
                     coroutineScope.launch {
                         if (modalSheetState.isVisible)
-                            modalSheetState.hide()
+                                modalSheetState.hide()
                         else
-                        modalSheetState.show()
+                                modalSheetState.show()
 
                     }
                 },
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "tambah transaksi")
-                Text(text = "TRANSAKSI BARU")
+                Text(text = "CATATAN BARU")
             }
         }
 }
@@ -267,12 +293,11 @@ fun Transaction(
 //        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        listIncome.forEach() {
-            CardTransaction(
+        listIncome.forEach {
+            IncomeCard(
                 berat = it.totalWeight,
                 total = it.price * it.totalWeight,
                 tanggal = it.updatedAt,
-                tint = Color.Green,
                 modifier = modifier.clickable{ navigateToDetail(it.incomeId) }
             )
         }

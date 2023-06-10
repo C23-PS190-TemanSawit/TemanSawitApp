@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.components.auth
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,7 +23,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -36,29 +34,30 @@ import com.example.temansawit.R
 import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
-fun WelcomeRegister(modifier: Modifier = Modifier) {
-    Box(
-        modifier
-            .background(GreenPrimary.copy(alpha = 0.2F))
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.pattern),
-            contentDescription = "pattern temansawit",
-            contentScale = ContentScale.Crop,
-            modifier = modifier.height(298.dp)
-        )
-        LogoTemanSawit()
-        AuthText(
-            modifier = modifier.padding(top = 100.dp),
-            loginText = "Selamat Datang ,",
-            loginBodyText = "Silakan lengkapi formulir pendaftaran untuk membuat akun."
-        )
+fun WelcomeRegister() {
+    Box {
+        Box(
+            Modifier
+                .background(GreenPrimary.copy(alpha = 0.2F))
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.pattern),
+                contentDescription = "pattern temansawit",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(200.dp)
+            )
+            LogoTemanSawit()
+            AuthText(
+                modifier = Modifier.padding(top = 100.dp),
+                loginText = "Selamat Datang ,",
+                loginBodyText = "Silakan lengkapi formulir pendaftaran untuk membuat akun."
+            )
+        }
     }
 }
 
 @Composable
 fun RegisterInput(
-    modifier: Modifier = Modifier,
     username: String,
     email: String,
     password: String,
@@ -73,16 +72,15 @@ fun RegisterInput(
     val showKonfirmasiPassword = remember { mutableStateOf(false) }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .offset(y = (-100).dp)
-            .background(Color.White)
             .clip(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)),
     ) {
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 50.dp)
+                .padding(bottom = 8.dp)
                 .padding(horizontal = 16.dp),
             value = username,
             label = { Text(text = "Username") },
@@ -101,7 +99,7 @@ fun RegisterInput(
             singleLine = true,
         )
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             value = email,
@@ -121,7 +119,7 @@ fun RegisterInput(
             singleLine = true,
         )
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             value = password,
@@ -163,7 +161,7 @@ fun RegisterInput(
                 PasswordVisualTransformation()
         )
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             value = konfirmasiPassword,
@@ -204,38 +202,28 @@ fun RegisterInput(
             else
                 PasswordVisualTransformation()
         )
-        ClickableText(
-            text = AnnotatedString("Lupa password"),
-            modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp, horizontal = 16.dp),
-            style = TextStyle(textAlign = TextAlign.End),
-            onClick = {
-                Log.d("ClickableText", "$it-th character is clicked.")
-            }
-        )
     }
 }
 
 @Composable
 fun BtnRegister(
-    modifier: Modifier = Modifier,
     navHostController: NavHostController,
     onClick: () -> Unit
 ) {
     Button(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
+            .padding(top = 24.dp, bottom = 16.dp)
             .height(40.dp),
         shape = RoundedCornerShape(50),
         onClick = onClick
     ) {
         Text(text = "Daftar")
     }
-    Text(text = "Atau", modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+    Text(text = "Atau", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
     Button(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .height(40.dp),
@@ -252,12 +240,12 @@ fun BtnRegister(
                 tint = Color.Unspecified
 
             )
-            Spacer(modifier = modifier.padding(horizontal = 8.dp))
+            Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Text(text = "Daftar dengan akun Google")
         }
     }
     Row(
-        modifier.fillMaxWidth(),
+        Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Text(text = "Sudah punya akun?")

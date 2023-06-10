@@ -22,19 +22,28 @@ object Preferences {
         editor.apply()
     }
 
-    fun saveToken(token: String, sharedPreferences: SharedPreferences) {
+    fun saveAccessToken(accessToken: String, sharedPreferences: SharedPreferences) {
         val editor = sharedPreferences.edit()
-        editor.putString("token", token)
+        editor.putString("access_token", accessToken)
+        editor.apply()
+    }
+    fun saveRefreshToken(refreshToken: String, sharedPreferences: SharedPreferences) {
+        val editor = sharedPreferences.edit()
+        editor.putString("refresh_token", refreshToken)
         editor.apply()
     }
 
-    fun getToken(sharedPreferences: SharedPreferences): String {
-        return sharedPreferences.getString("token", null).toString()
+
+    fun getRefreshToken(sharedPreferences: SharedPreferences): String {
+        return sharedPreferences.getString("refresh_token", null).toString()
+    }
+    fun getAccessToken(sharedPreferences: SharedPreferences): String {
+        return sharedPreferences.getString("access_token", null).toString()
     }
 
-    fun newToken(token: String, sharedPreferences: SharedPreferences) {
+    fun newAccessToken(accessToken: String, sharedPreferences: SharedPreferences) {
         val editor = sharedPreferences.edit()
-        editor.putString("token", token)
+        editor.putString("access_token", accessToken)
         editor.apply()
     }
 

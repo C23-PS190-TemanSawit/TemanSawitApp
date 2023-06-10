@@ -1,8 +1,10 @@
 package com.example.temansawit.ui.screen.profile
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,21 +12,28 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
+import com.example.temansawit.data.Result
+import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
+import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.theme.Green700
 
 
@@ -104,7 +113,7 @@ fun ProfileScreen( modifier: Modifier = Modifier, navHostController: NavHostCont
                 Spacer(modifier = Modifier.height(10.dp))
                 ProfileCard()
                 Spacer(modifier = Modifier.height(10.dp))
-                LogoutButton()
+                LogoutButton(navHostController = navHostController)
             }
         }
     )
@@ -267,7 +276,9 @@ fun ProfileCard() {
 
 
 @Composable
-fun LogoutButton() {
+fun LogoutButton(
+    navHostController: NavHostController
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -275,8 +286,12 @@ fun LogoutButton() {
         backgroundColor = Color.White,
         shape = RoundedCornerShape(16.dp)
     ) {
+        val showDialog = remember { mutableStateOf(false) }
+
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable { showDialog.value = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -285,9 +300,70 @@ fun LogoutButton() {
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Keluar",
-            )
+            Text(text = "Keluar")
+            if (showDialog.value) {
+                AlertLogout(navHostController = navHostController)
+            }
         }
+    }
+}
+
+@Composable
+fun AlertLogout(
+    navHostController: NavHostController,
+    viewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+) {
+    Column() {
+        val openDialog = remember { mutableStateOf(true) }
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val context = LocalContext.current
+        AlertDialog(
+            onDismissRequest = {
+                // Dismiss the dialog when the user clicks outside the dialog or on the back
+                // button. If you want to disable that functionality, simply use an empty
+                // onCloseRequest.
+                openDialog.value = false
+            },
+            title = {
+                Text(text = "Keluar dari akun")
+            },
+            text = {
+                Text("Apakah anda yakin ingin keluar?")
+            },
+            confirmButton = {
+                OutlinedButton(
+                    onClick = {
+                        viewModel.logoutUser().observe(lifecycleOwner, {
+                            when (it) {
+                                is Result.Loading -> {
+                                    // Handle loading state if needed
+                                }
+                                is Result.Success -> {
+                                    val sharedPreferences =
+                                        context.getSharedPreferences(
+                                            "my_preferences",
+                                            Context.MODE_PRIVATE
+                                        )
+                                    Preferences.setLoggedIn(sharedPreferences, true)
+                                    navHostController.popBackStack()
+                                    navHostController.navigate("loginScreen")
+                                }
+                                is Result.Error -> {
+                                    // Handle error state if needed
+                                }
+                            }
+                        })
+                    }) {
+                    Text("Konfirmasi Keluar")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { openDialog.value = false }) {
+                    Text(text = "Batal")
+                }
+            }
+        )
     }
 }

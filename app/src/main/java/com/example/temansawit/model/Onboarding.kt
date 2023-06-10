@@ -12,5 +12,5 @@ data class OnboardingPage(
 val pages = listOf(
     OnboardingPage(R.drawable.onboarding1, "Bibit", "Optimalkan produksi kelapa sawit Anda dengan teknologi terbaru dalam deteksi abnormalitas pada tanaman."),
     OnboardingPage(R.drawable.onboarding2, "Buah", "Ciptakan keuntungan lebih dengan deteksi kematangan buah kelapa sawit yang akurat dan efisien."),
-    OnboardingPage(R.drawable.onboarding2, "Keuntungan", "Catat setiap pemasukan dan pengeluaran penjualan kelapa sawit Anda dengan mudah dan akurat."),
+    OnboardingPage(R.drawable.onboarding3, "Keuntungan", "Catat setiap pemasukan dan pengeluaran penjualan kelapa sawit Anda dengan mudah dan akurat."),
 )
