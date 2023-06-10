@@ -1,5 +1,6 @@
 package com.example.temansawit.ui.screen.camera
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,19 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.temansawit.R
+import java.io.File
 
 
 @Composable
-fun HasilScreen(modifier: Modifier = Modifier) {
-    val income1 = remember { mutableStateOf("") }
-    val income2 = remember { mutableStateOf("") }
-    val income3 = remember { mutableStateOf("") }
-    val income4 = remember { mutableStateOf("") }
-    val genderOptions = listOf("Laki-laki", "Wanita")
+fun HasilScreen(
+    file : File?,
+    modifier: Modifier = Modifier) {
+
     val selectedGender = remember { mutableStateOf("")
     }
 
@@ -63,7 +67,13 @@ fun HasilScreen(modifier: Modifier = Modifier) {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(4.dp),
-                        painter = painterResource(id = R.drawable.sawit),
+//                        painter = BitmapFactory.decodeFile(file),
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(file)
+                                .size(coil.size.Size.ORIGINAL)
+                                .build()
+                        ),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
 

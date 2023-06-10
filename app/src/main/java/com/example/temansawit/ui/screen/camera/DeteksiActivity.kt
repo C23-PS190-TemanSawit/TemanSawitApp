@@ -16,6 +16,7 @@ import java.io.File
 
 class DeteksiActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDeteksiBinding
+    private  var myFile : File? = null
     companion object {
         const val CAMERA_X_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
@@ -58,7 +59,6 @@ class DeteksiActivity : AppCompatActivity() {
             )
         }
 
-//        binding.cameraXButton.setOnClickListener { startCameraX() }
         binding.cameraButton.setOnClickListener { startCameraX() }
         binding.upload.setOnClickListener { startTakePhoto() }
 
@@ -73,6 +73,7 @@ class DeteksiActivity : AppCompatActivity() {
 
     private fun startTakePhoto() {
         val intent = Intent(this, HasilActivity::class.java)
+        intent.putExtra("picture", myFile)
         launcherIntentCameraX.launch(intent)
     }
 
@@ -81,7 +82,7 @@ class DeteksiActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == CAMERA_X_RESULT) {
-            val myFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+             myFile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.data?.getSerializableExtra("picture", File::class.java)
             } else {
                 @Suppress("DEPRECATION")
