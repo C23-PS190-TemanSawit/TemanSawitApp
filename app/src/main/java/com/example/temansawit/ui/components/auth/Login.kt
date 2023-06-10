@@ -23,7 +23,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -141,7 +143,7 @@ fun LoginInput(
             text = AnnotatedString("Lupa password"),
             modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp, horizontal = 16.dp),
+                .padding(horizontal = 16.dp),
             style = TextStyle(textAlign = TextAlign.End),
             onClick = {
                 Log.d("ClickableText", "$it-th character is clicked.")
@@ -160,6 +162,7 @@ fun BtnLogin(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
+            .padding(bottom = 16.dp)
             .height(40.dp),
         shape = RoundedCornerShape(50),
         onClick = onClick
@@ -180,10 +183,10 @@ fun BtnLogin(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
+                modifier = Modifier.size(32.dp),
                 painter = painterResource(id = R.drawable.google_icon),
                 contentDescription = "login dengan google",
                 tint = Color.Unspecified
-
             )
             Spacer(modifier = modifier.padding(horizontal = 8.dp))
             Text(text = "Lanjutkan dengan akun Google")
@@ -195,7 +198,7 @@ fun BtnLogin(
     ) {
         Text(text = "Belum punya akun?")
         ClickableText(
-            text = AnnotatedString(text = " Daftar disini"),
+            text = AnnotatedString(text = " Daftar disini", spanStyle = SpanStyle(fontWeight = FontWeight.Bold)),
             onClick = { navHostController.navigate("register") }
         )
     }

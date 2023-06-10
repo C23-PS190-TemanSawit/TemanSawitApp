@@ -14,6 +14,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ import com.example.temansawit.model.OnboardingPage
 import com.example.temansawit.model.pages
 import com.example.temansawit.ui.theme.GreenPrimary
 import com.example.temansawit.ui.theme.Typography
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,6 +43,7 @@ fun OnboardingUI(
 ) {
     val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = 0)
+    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         HorizontalPager(state = pagerState, pageCount = 3) {
@@ -83,6 +86,7 @@ fun OnboardingUI(
             ) {
                 Button(
                     modifier = modifier
+                        .height(40.dp)
                         .weight(1F),
                     shape = RoundedCornerShape(50),
                     onClick = {
@@ -104,8 +108,9 @@ fun OnboardingUI(
             ) {
                 OutlinedButton(
                     modifier = modifier
-                        .width(136.dp),
-                    border = BorderStroke(1.dp, GreenPrimary.copy(alpha = 0.2F)),
+                        .height(40.dp)
+                        .width(156.dp),
+                    border = BorderStroke(1.dp, Color.Gray),
                     shape = RoundedCornerShape(50),
                     onClick = {
                         val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
@@ -115,6 +120,19 @@ fun OnboardingUI(
                     },
                 ) {
                     Text(text = "Lewati")
+                }
+                Button(
+                    modifier = modifier
+                        .height(40.dp)
+                        .width(156.dp),
+                    shape = RoundedCornerShape(50),
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(page = pagerState.currentPage + 1)
+                        }
+                    }
+                ) {
+                    Text(text = "Selanjutnya")
                 }
             }
         }

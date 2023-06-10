@@ -1,10 +1,10 @@
 package com.example.temansawit.ui.screen.transaction
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -20,21 +20,29 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
+import com.example.temansawit.network.response.IncomeResponseItem
+import com.example.temansawit.network.response.OutcomeResponseItem
 import com.example.temansawit.ui.common.UiState
+import com.example.temansawit.ui.components.home.IncomeCard
+import com.example.temansawit.ui.components.home.OutcomeCard
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.home.HomeViewModel
-import com.example.temansawit.ui.screen.home.Transaction
 import com.example.temansawit.ui.theme.Green700
+import com.example.temansawit.util.TransactionViewModel
 
 @Composable
 fun TransactionScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: HomeViewModel = viewModel(
+    viewModel: TransactiomViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
+    viewModel2: TransactionViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+
     navigateToDetail: (Int) -> Unit
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
@@ -65,19 +73,18 @@ fun TransactionScreen(
         },
         content = {
             Column(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
-                Box(
-                    modifier = Modifier
-                        .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
-                ) {
-                    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                    viewModel2.income.collectAsState(initial = UiState.Loading).value.let { uiState ->
                         when (uiState) {
                             is UiState.Loading -> {
-                                viewModel.getIncome()
+                                viewModel2.getIncome()
                             }
                             is UiState.Success -> {
-                                Transaction(
+                                IncomeData(
                                     listIncome = uiState.data,
                                     modifier = modifier.padding(),
                                     navigateToDetail = navigateToDetail
@@ -86,8 +93,60 @@ fun TransactionScreen(
                             is UiState.Error -> {}
                         }
                     }
-                }
+                    viewModel.outcome.collectAsState(initial = UiState.Loading).value.let { outcome ->
+                        when (outcome) {
+                            is UiState.Loading -> { viewModel.getOutcome() }
+                            is UiState.Success -> {
+                                OutcomeData(
+                                    lisOutcome = outcome.data,
+                                    navigateToDetail = navigateToDetail
+                                )
+                            }
+                            is UiState.Error -> {}
+                        }
+                    }
             }
         }
     )
+}
+
+@Composable
+fun IncomeData(
+    listIncome: List<IncomeResponseItem>,
+    modifier: Modifier = Modifier,
+    navigateToDetail: (Int) -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        listIncome.forEach {
+            IncomeCard(
+                berat = it.totalWeight,
+                total = it.price * it.totalWeight,
+                tanggal = it.updatedAt,
+                modifier = modifier.clickable{ navigateToDetail(it.incomeId) }
+            )
+        }
+    }
+
+}@Composable
+fun OutcomeData(
+    lisOutcome: List<OutcomeResponseItem>,
+    modifier: Modifier = Modifier,
+    navigateToDetail: (Int) -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        lisOutcome.forEach {
+            OutcomeCard(
+                total_outcome = it.total_outcome,
+                tanggal = it.transactionTime,
+                description = it.description
+            )
+        }
+    }
 }

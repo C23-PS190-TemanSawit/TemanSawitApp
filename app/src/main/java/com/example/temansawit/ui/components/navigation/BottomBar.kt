@@ -35,8 +35,8 @@ fun BottomBar(
                 screen = Screen.Home
             ),
             NavigationItem(
-                title = stringResource(id = R.string.trx_nav),
-                icon = painterResource(id = R.drawable.baseline_quiz_24),
+                title = stringResource(id = R.string.catatan),
+                icon = painterResource(id = R.drawable.catatan),
                 screen = Screen.Transaction
             ),
             NavigationItem(

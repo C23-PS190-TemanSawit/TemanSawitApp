@@ -16,6 +16,7 @@ import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.home.HomeViewModel
 import com.example.temansawit.ui.screen.splash.SplashViewModel
 import com.example.temansawit.ui.theme.TemanSawitTheme
+import com.example.temansawit.util.TransactionViewModel
 
 class MainActivity : ComponentActivity() {
     private val viewModel: SplashViewModel by viewModels()

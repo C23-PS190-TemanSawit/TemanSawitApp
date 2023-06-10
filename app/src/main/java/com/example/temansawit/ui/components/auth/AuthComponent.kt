@@ -37,7 +37,7 @@ fun LogoTemanSawit(
 //            .shadow(1.dp, clip = true)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo_mark_color_green),
+                painter = painterResource(id = R.drawable.logo_temansawit2),
                 contentDescription = "logo teman sawit",
                 modifier
                     .padding(4.dp)

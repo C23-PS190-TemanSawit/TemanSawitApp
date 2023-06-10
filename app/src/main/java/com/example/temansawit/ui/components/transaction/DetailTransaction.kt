@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.temansawit.R
+import com.example.temansawit.network.response.IncomeResponseItem
 import com.example.temansawit.ui.theme.GreenPrimary
 import com.example.temansawit.ui.theme.TemanSawitTheme
 
@@ -65,12 +66,7 @@ fun CardNoTransaksi(
 
 @Composable
 fun CardDetail(
-    berat: String,
-    hargaPerKg: String,
-    total: String,
-    tanggal: String,
-    deskripsi: String,
-    tint: Color,
+    detailTrx: IncomeResponseItem,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -101,7 +97,7 @@ fun CardDetail(
                         )
                         Spacer(modifier.padding(8.dp))
                         Text(
-                            text = tanggal,
+                            text = detailTrx.updatedAt,
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp
                         )
@@ -118,7 +114,7 @@ fun CardDetail(
                         color = Color(0xFF727970),
                         )
                     Text(
-                        text = hargaPerKg,
+                        text = detailTrx.price.toString(),
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -135,7 +131,7 @@ fun CardDetail(
 
                         )
                     Text(
-                        text = "$berat Kilogram",
+                        text = "${detailTrx.totalWeight} Kilogram",
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -151,7 +147,7 @@ fun CardDetail(
                         fontSize = 20.sp,
                         )
                     Text(
-                        text = total,
+                        text = (detailTrx.price * detailTrx.totalWeight).toString(),
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -172,7 +168,7 @@ fun CardDetail(
                             fontSize = 14.sp,
                         )
                         Text(
-                            text = deskripsi,
+                            text = detailTrx.description,
                             modifier.padding(top = 8.dp),
                             fontSize = 14.sp,
                         )
@@ -184,14 +180,14 @@ fun CardDetail(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF09642F)
-@Composable
-fun DefaultPreview() {
-    TemanSawitTheme {
-        Column {
-            CardNoTransaksi()
-            Spacer(modifier = Modifier.padding(16.dp))
-            CardDetail("120", "2.500", "Rp 2.000.000", "Selasa, 21 Juli 2023", "yyyy", GreenPrimary)
-        }
-    }
-}
+//@Preview(showBackground = true, backgroundColor = 0xFF09642F)
+//@Composable
+//fun DefaultPreview() {
+//    TemanSawitTheme {
+//        Column {
+//            CardNoTransaksi()
+//            Spacer(modifier = Modifier.padding(16.dp))
+//            CardDetail("120", "2.500", "Rp 2.000.000", "Selasa, 21 Juli 2023", "yyyy", GreenPrimary)
+//        }
+//    }
+//}
