@@ -1,8 +1,9 @@
 package com.example.temansawit.ui.screen.home
 
 import BottomSheet
+import BottomSheetType
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -34,7 +35,6 @@ import com.example.temansawit.ui.components.home.*
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
-import com.example.temansawit.ui.screen.profile.EditProfileActivity
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -45,10 +45,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomePage(
-
     navHostController: NavHostController = rememberNavController(),
     transactionViewModel: TransactionViewModel
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val modalSheetState = rememberModalBottomSheetState(
@@ -56,49 +56,72 @@ fun HomePage(
         confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
-    BottomSheet(modalSheetState = modalSheetState) {
-        ScaffoldApp(
-            bottomBar = {
-                if (currentRoute != Screen.DetailTransaction.route) {
-                    BottomBar(navHostController)
-                }
-            },
-            floatingActionButtonPosition = FabPosition.Center,
-            isFloatingActionButtonDocked = true,
-            floatingActionButton = {
-                if (currentRoute != Screen.DetailTransaction.route) {
-                    FloatingActionButton(
-                        shape = CircleShape,
-                        onClick = {
+    var selectedBottomSheet by remember { mutableStateOf(BottomSheetType.None) }
+    BottomSheet(
+        modalSheetState = modalSheetState,
+        selectedBottomSheet = selectedBottomSheet,
+        onBottomSheetSelected = { sheetType ->
+            selectedBottomSheet = sheetType
+            coroutineScope.launch {
+                modalSheetState.show()
+            }
+        }
+    ) {
+//        BottomSheet(modalSheetState = modalSheetState) {
+            ScaffoldApp(
+                bottomBar = {
+                    if (currentRoute != Screen.DetailTransaction.route) {
+                        BottomBar(navHostController)
+                    }
+                },
+                floatingActionButtonPosition = FabPosition.Center,
+                isFloatingActionButtonDocked = true,
+                floatingActionButton = {
+                    if (currentRoute != Screen.DetailTransaction.route) {
+                        FloatingActionButton(
+                            shape = CircleShape,
+                            onClick = {
+                                selectedBottomSheet = BottomSheetType.Camera
+                                coroutineScope.launch {
+                                    modalSheetState.show()
+                                }
+                            },
+                            backgroundColor = Green700,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.outline_camera_alt_24),
+                                contentDescription = "Deteksi Sawit"
+                            )
+                        }
+                    }
+                },
+
+                content = {
+                    HomeScreen(
+                        navigateToDetail = { transactionId ->
                             navHostController.navigate(
-                                Screen.CameraScreen.route
+                                Screen.DetailTransaction.createRoute(
+                                    transactionId
+                                )
                             )
                         },
-                        backgroundColor = Green700,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.outline_camera_alt_24),
-                            contentDescription = "Deteksi Sawit"
-                        )
-                    }
-                }
-            },
+                        viewModel = transactionViewModel,
+                        navHostController = navHostController,
+                        modalSheetState = modalSheetState,
+                        onClick = {
+                            selectedBottomSheet = BottomSheetType.CRUDTransaction
+                            coroutineScope.launch {
+                                if (modalSheetState.isVisible)
+                                    modalSheetState.hide()
+                                else
+                                    modalSheetState.show()
 
-            content = {
-                HomeScreen(
-                    navigateToDetail = { transactionId ->
-                        navHostController.navigate(
-                            Screen.DetailTransaction.createRoute(
-                                transactionId
-                            )
-                        )
-                    },
-                    viewModel = transactionViewModel,
-                    navHostController = navHostController,
-                    modalSheetState = modalSheetState
-                )
-            }
-        )
+                            }
+                        }
+                    )
+                }
+            )
+//        }
     }
 }
 
@@ -112,6 +135,7 @@ fun HomeScreen(
     navHostController: NavHostController,
     navigateToDetail: (Int) -> Unit,
     modalSheetState: ModalBottomSheetState,
+    onClick: () -> Unit
     ) {
         Column(
             modifier = Modifier
@@ -119,7 +143,7 @@ fun HomeScreen(
         ) {
             Component1(navHostController = navHostController)
             Spacer(modifier = Modifier.padding(top = 56.dp))
-            GrafikPendapatan(modalSheetState = modalSheetState)
+            GrafikPendapatan(modalSheetState = modalSheetState, onClick = onClick)
             Chart()
             SectionText(title = stringResource(R.string.riwayat_transaksi))
             Box(modifier = Modifier
@@ -253,9 +277,11 @@ fun Component1(
 @Composable
 fun GrafikPendapatan(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     modalSheetState: ModalBottomSheetState,
     ) {
     val coroutineScope = rememberCoroutineScope()
+    var selectedBottomSheet by remember { mutableStateOf(BottomSheetType.CRUDTransaction) }
 
     Row {
             Column(
@@ -274,15 +300,7 @@ fun GrafikPendapatan(
                     .padding(end = 16.dp)
                     .padding(top = 8.dp),
                 shape = RoundedCornerShape(50),
-                onClick = {
-                    coroutineScope.launch {
-                        if (modalSheetState.isVisible)
-                                modalSheetState.hide()
-                        else
-                                modalSheetState.show()
-
-                    }
-                },
+                onClick = { onClick() },
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "tambah transaksi")
                 Text(text = "CATATAN BARU")

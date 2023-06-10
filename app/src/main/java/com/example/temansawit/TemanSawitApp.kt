@@ -2,7 +2,6 @@ package com.example.temansawit
 
 import CameraScreen
 import android.content.Context
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -25,7 +24,6 @@ import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.auth.login.LoginScreen
 import com.example.temansawit.ui.screen.auth.register.RegisterScreen
-import com.example.temansawit.ui.screen.camera.BottomCamera
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
@@ -68,10 +66,10 @@ fun TemanSawitApp() {
 }
 
 // <<<<<<< apiRoy
-// fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewModel: TransactionViewModel) {
+ fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewModel: TransactionViewModel) {
 // =======
 @OptIn(ExperimentalMaterialApi::class)
-fun NavGraphBuilder.main(navHostController: NavHostController) {
+//fun NavGraphBuilder.main(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Home.route,
         route = "mainScreen"
@@ -92,9 +90,9 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
                 navHostController = navHostController
             )
         }
-        composable(Screen.CameraScreen.route) {
-            CameraScreen(navHostController = navHostController)
-        }
+//        composable(Screen.CameraScreen.route) {
+//            CameraScreen(modalSheetState = )
+//        }
         composable(Screen.Faq.route) {
             FaqScreen(navHostController)
         }
