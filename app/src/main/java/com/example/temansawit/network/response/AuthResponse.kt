@@ -7,6 +7,9 @@ data class AuthResponse(
 	@field:SerializedName("accessToken")
 	val accessToken: String,
 
+	@field:SerializedName("refreshToken")
+	val refreshToken: String,
+
 	@field:SerializedName("name")
 	val name: String,
 

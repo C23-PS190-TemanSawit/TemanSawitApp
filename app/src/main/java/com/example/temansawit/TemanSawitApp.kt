@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,14 +21,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
+import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.auth.login.LoginScreen
 import com.example.temansawit.ui.screen.auth.register.RegisterScreen
-import com.example.temansawit.ui.screen.camera.BottomCamera
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
 import com.example.temansawit.ui.screen.transaction.DetailTrxScreen
 import com.example.temansawit.ui.screen.transaction.TransactionScreen
+import com.example.temansawit.util.TransactionViewModel
 
 @Composable
 fun TemanSawitApp() {
@@ -38,6 +40,9 @@ fun TemanSawitApp() {
     val isLogeedIn = remember { mutableStateOf(Preferences.isLoggedIn(sharedPreferences)) }
     val pref = Preferences.initPref(context, "isLoggedIn")
     val token = pref.getString("context", null).toString()
+    val transactionViewModel: TransactionViewModel = viewModel(
+        factory = ViewModelFactory(context)
+    )
 
 
     NavHost(
@@ -56,17 +61,22 @@ fun TemanSawitApp() {
 //        splashScreen(navHostController)
         onboarding(navHostController = navHostController)
         auth(navHostController = navHostController)
-        main(navHostController = navHostController)
+        main(navHostController = navHostController, transactionViewModel)
     }
 }
 
+// <<<<<<< apiRoy
+ fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewModel: TransactionViewModel) {
+// =======
 @OptIn(ExperimentalMaterialApi::class)
-fun NavGraphBuilder.main(navHostController: NavHostController) {
+//fun NavGraphBuilder.main(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Home.route,
         route = "mainScreen"
     ) {
-        composable(Screen.Home.route) { HomePage(navHostController) }
+        composable(Screen.Home.route) {
+            HomePage(navHostController, transactionViewModel = transactionViewModel)
+        }
         composable(Screen.Transaction.route) {
             TransactionScreen(
                 navigateToDetail = { transactionId ->
@@ -76,12 +86,13 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
                         )
                     )
                 },
+                viewModel2 =  transactionViewModel,
                 navHostController = navHostController
             )
         }
-        composable(Screen.CameraScreen.route) {
-            CameraScreen(navHostController = navHostController)
-        }
+//        composable(Screen.CameraScreen.route) {
+//            CameraScreen(modalSheetState = )
+//        }
         composable(Screen.Faq.route) {
             FaqScreen(navHostController)
         }
@@ -94,7 +105,7 @@ fun NavGraphBuilder.main(navHostController: NavHostController) {
                 type = NavType.IntType
             }),
         ) {
-            val id = it.arguments?.getInt("transactionId") ?: -1L
+            val id = it.arguments?.getInt("transactionId")
             DetailTrxScreen(
                 trxId = id as Int,
                 navigateBack = { navHostController.navigateUp() },

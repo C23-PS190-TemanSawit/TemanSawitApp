@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.temansawit.data.Repository
 import com.example.temansawit.network.response.IncomeResponseItem
+import com.example.temansawit.network.response.UserResponse
 import com.example.temansawit.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,25 +15,24 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
-    private val _uiState: MutableStateFlow<UiState<List<IncomeResponseItem>>> = MutableStateFlow(UiState.Loading)
-    val uiState: StateFlow<UiState<List<IncomeResponseItem>>>
-        get() = _uiState
+    private val _income: MutableStateFlow<UiState<List<IncomeResponseItem>>> = MutableStateFlow(UiState.Loading)
+    val income: StateFlow<UiState<List<IncomeResponseItem>>>
+        get() = _income
+    private val _name: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
+    val name: StateFlow<UiState<UserResponse>>
+        get() = _name
 
-    private val _userIdState = MutableLiveData<Int>()
-    val userIdState: LiveData<Int> get() =  _userIdState
     private val _tanggalTrx = MutableLiveData("")
     val tanggalTrx: LiveData<String> get() =  _tanggalTrx
     private val _harga = MutableLiveData<Int>()
     val harga: LiveData<Int> get() =  _harga
     private val _berat = MutableLiveData<Int>()
     val berat: LiveData<Int> get() =  _berat
+    private val _totalOutcome = MutableLiveData<Int>()
+    val totalOutcome: LiveData<Int> get() =  _totalOutcome
     private val _deskripsi = MutableLiveData("")
     val deskripsi: LiveData<String> get() =  _deskripsi
 
-    fun onUserIdChange(userId: String) {
-        val intValue = userId.toIntOrNull() ?: 0
-        _userIdState.value = intValue
-    }
     fun onTanggalTrxChange(tanggalTrx: String) {
         _tanggalTrx.value = tanggalTrx
     }
@@ -44,30 +44,43 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
         val intValue = weight.toIntOrNull() ?: 0
         _berat.value = intValue
     }
+    fun onTotalOutcomeChange(totalOutcome: String) {
+        val intValue = totalOutcome.toIntOrNull() ?: 0
+        _totalOutcome.value = intValue
+    }
     fun onDescChange(desc: String) {
         _deskripsi.value = desc
     }
 
 
-    fun getUserProfile() = repository.getUserProfile()
-    fun getNewToken() = repository.getNewToken()
+    fun getUserProfile() {
+        viewModelScope.launch {
+            repository.getUserProfile()
+                .catch {
+                    _name.value = UiState.Error(it.message.toString())
+                }
+                .collect{ name ->
+                    _name.value = UiState.Success(name)
+                }
+        }
+    }
+    fun createIncome(trx_time: String, price: Int, total: Int, description: String? = null) =
+        repository.createIncome(trx_time, price, total, description)
 
-    fun createIncome(userId: Int, trx_time: String, price: Int, total: Int, description: String? = null) =
-        repository.createIncome(userId, trx_time, price, total, description)
-
-    val _income = MutableLiveData<List<IncomeResponseItem>>()
-    val income: LiveData<List<IncomeResponseItem>> get() = _income
     fun getIncome() {
         viewModelScope.launch {
             repository.getIncome()
                 .catch {
-                    _uiState.value = UiState.Error(it.message.toString())
+                    _income.value = UiState.Error(it.message.toString())
                 }
                 .collect { income ->
-                    _uiState.value = UiState.Success(income)
+                    _income.value = UiState.Success(income)
                 }
         }
     }
+
+    fun createOutcome(trx_time: String, totalOutcome: Int, description: String? = null) =
+        repository.createOutcome(trx_time, totalOutcome, description)
 
 //    fun getAllTrx() {
 //        viewModelScope.launch {

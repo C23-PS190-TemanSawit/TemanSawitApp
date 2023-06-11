@@ -1,22 +1,16 @@
-package com.example.temansawit.ui.screen.camera
+package com.example.temansawit.ui.screen.camera.views
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.temansawit.databinding.ActivityCameraXactivityBinding
-import java.io.File
-import java.nio.file.Files.createFile
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CameraXActivity  : AppCompatActivity() {
@@ -49,7 +43,7 @@ class CameraXActivity  : AppCompatActivity() {
 
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-        val photoFile = createFile(application)
+        val photoFile = com.example.temansawit.ui.screen.camera.createFile(application)
 //        showLoading(true)
         Toast.makeText(this,"AMBIL PHOTO", Toast.LENGTH_SHORT).show()
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()

@@ -35,74 +35,67 @@ fun DetailTrxScreen(
     navigateBack: () -> Unit,
     navHostController: NavHostController = rememberNavController()
     ) {
-    viewmodel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
-        when (uiState) {
-            is UiState.Loading -> {
-                viewmodel.getIncomeById(trxId)
-            }
-            is UiState.Success -> {
-                val data = uiState.data
-                val navController = rememberNavController()
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                            },
-                            navigationIcon = {
-                                IconButton(onClick =  navigateBack) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.baseline_navigate_before_24),
-                                        contentDescription = "Kembali",
-                                        Modifier.size(32.dp)
-                                    )
-                                }
-                            },
-                            backgroundColor = GreenPressed,
-                            contentColor = Color.White,
-                            elevation = 10.dp
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                },
+                navigationIcon = {
+                    IconButton(onClick =  navigateBack) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_navigate_before_24),
+                            contentDescription = "Kembali",
+                            Modifier.size(32.dp)
                         )
                     }
-                ) { it
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(it)
-                            .background(GreenPrimary.copy(alpha = 0.2F))
-                    ) {
-                        Column(
-                            modifier = Modifier
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(120.dp)
-                                    .background(
-                                        GreenPressed,
-                                        RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
-                                    )
-                            ) {
-                                CardNoTransaksi()
+                },
+                backgroundColor = GreenPressed,
+                contentColor = Color.White,
+                elevation = 10.dp
+            )
+        }
+    ) { it
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .background(GreenPrimary.copy(alpha = 0.2F))
+        ) {
+            Column(
+                modifier = Modifier
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .background(
+                            GreenPressed,
+                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                        )
+                ) {
+                    CardNoTransaksi()
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clip(shape = RoundedCornerShape(8.dp))
+                ) {
+                    viewmodel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                        when (uiState) {
+                            is UiState.Loading -> {
+                                viewmodel.getIncomeById(trxId)
                             }
-                            Box(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .clip(shape = RoundedCornerShape(8.dp))
-                            ) {
+                            is UiState.Success -> {
+                                val navController = rememberNavController()
                                 CardDetail(
-                                    berat = data.totalWeight.toString(),
-                                    hargaPerKg = data.price.toString(),
-                                    total = (data.totalWeight * data.price).toString(),
-                                    tanggal = data.updatedAt,
-                                    deskripsi = data.description ?: "-",
-                                    tint = Color.Green
+                                    detailTrx = uiState.data
                                 )
                             }
+                            is UiState.Error -> {}
                         }
                     }
                 }
-
             }
-            is UiState.Error -> {}
         }
     }
 }

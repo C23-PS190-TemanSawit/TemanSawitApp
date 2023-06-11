@@ -1,4 +1,4 @@
-package com.example.temansawit.ui.screen.camera
+package com.example.temansawit.ui.screen.camera.views
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +12,6 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.temansawit.databinding.ActivityCameraTactivityBinding
-import com.example.temansawit.databinding.ActivityCameraXactivityBinding
 
 class CameraTActivity  : AppCompatActivity() {
     private lateinit var binding: ActivityCameraTactivityBinding

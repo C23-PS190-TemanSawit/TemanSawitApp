@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -43,7 +45,7 @@ fun CRUDTransaction(
         }
         when (tabIndex) {
             0 -> Income(modalSheetState = modalSheetState)
-            1 -> Outcome()
+            1 -> Outcome(modalSheetState = modalSheetState)
 //            2 -> SettingsScreen()
         }
     }
@@ -61,12 +63,10 @@ fun Income(
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    val userIdInput = viewModel.userIdState.observeAsState(initial = 0)
     val trxTimeInput = viewModel.tanggalTrx.observeAsState()
     val priceInput = viewModel.harga.observeAsState(initial = 0)
     val beratInput = viewModel.berat.observeAsState(initial = 0)
     val deskripsiInput = viewModel.deskripsi.observeAsState()
-    val userId = userIdInput.value
     val trxTime = trxTimeInput.value.toString()
     val price = priceInput.value
     val berat = beratInput.value
@@ -79,16 +79,8 @@ fun Income(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            value = userId.toString(),
-            label = {   Text(text = "UserId") },
-            onValueChange = viewModel::onUserIdChange
-        )
-        OutlinedTextField(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
             value = trxTime,
-            label = { Text(text = "tanggal transaksi") },
+            label = { Text(text = "Tanggal Transaksi (bulan/tanggal/tahun)") },
             onValueChange = viewModel::onTanggalTrxChange
         )
 
@@ -98,6 +90,7 @@ fun Income(
                 .padding(vertical = 8.dp),
             value = price.toString(),
             label = { Text(text = "Harga /kg") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = viewModel::onPriceChange
         )
 
@@ -107,6 +100,7 @@ fun Income(
                 .padding(vertical = 8.dp),
             value = berat.toString(),
             label = { Text(text = "Berat Timbangan") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = viewModel::onWeightChange
         )
         OutlinedTextField(
@@ -114,6 +108,7 @@ fun Income(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = TextFieldValue(text = ((price) * (berat)).toString()),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             label = { Text(text = "Total Pemasukan") },
             onValueChange = { },
             enabled = false
@@ -123,7 +118,7 @@ fun Income(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = deskripsi,
-            label = { Text(text = "Total Pemasukan") },
+            label = { Text(text = "Deskripsi (opsional)") },
             onValueChange = viewModel::onDescChange
         )
 
@@ -133,15 +128,18 @@ fun Income(
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(100.dp)),
             onClick = {
-                viewModel.createIncome(userId, trxTime, price, berat, deskripsi).observe(lifecycleOwner, { saveTrx ->
-                    when(saveTrx){is Result.Loading -> {}
+                viewModel.createIncome(trxTime, price, berat, deskripsi).observe(lifecycleOwner, { saveTrx ->
+                    when (saveTrx) {
+                        is Result.Loading -> {}
                         is Result.Success -> {
                             coroutineScope.launch {
                                     modalSheetState.hide()
                             }
                             Toast.makeText(context, "Berhasil Menambahkan Catatan Transaksi", Toast.LENGTH_LONG).show()
                         }
-                        is Result.Error -> {}
+                        is Result.Error -> {
+                            Toast.makeText(context, "Gagal, silahkan masukkan data dengan benar!", Toast.LENGTH_LONG).show()
+                        }
                     }
                 })
             }
@@ -151,43 +149,70 @@ fun Income(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Outcome(modifier: Modifier = Modifier) {
-    var outcome by remember{ mutableStateOf(TextFieldValue(""))}
-    var outcome2 by remember{ mutableStateOf(TextFieldValue(""))}
+fun Outcome(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+    modalSheetState: ModalBottomSheetState,
+    ) {
+    val coroutineScope = rememberCoroutineScope()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    val trxTimeInput = viewModel.tanggalTrx.observeAsState(initial = "")
+    val totalOutcomeInput = viewModel.totalOutcome.observeAsState(initial = 0)
+    val deskripsiInput = viewModel.deskripsi.observeAsState(initial = "")
+    val trxTime = trxTimeInput.value
+    val totalOutcome = totalOutcomeInput.value
+    val deskripsi = deskripsiInput.value
 
     Column(modifier = modifier.padding(16.dp)) {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            value = outcome,
-            label = { Text(text = "Harga /kg") },
-            onValueChange = { outcome = it }
+            value = trxTime,
+            label = { Text(text = "Tanggal (bulan/tanggal/tahun)") },
+            onValueChange = viewModel::onTanggalTrxChange
         )
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            value = outcome2,
-            label = { Text(text = "Berat Timbangan") },
-            onValueChange = { outcome2 = it }
+            value = totalOutcome.toString(),
+            label = { Text(text = "Total Pengeluaran") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = viewModel::onTotalOutcomeChange
         )
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            value = TextFieldValue(text = ((outcome.text.toIntOrNull() ?: 0) * (outcome2.text.toIntOrNull() ?: 0)).toString()),
-            label = { Text(text = "Total Pemasukan") },
-            onValueChange = { },
-            enabled = false
+            value = deskripsi,
+            label = { Text(text = "Deskripsi") },
+            onValueChange = viewModel::onDescChange,
         )
         Spacer(modifier = modifier.padding(26.dp))
         Button(
             modifier = modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(100.dp)),
-            onClick = { /*TODO*/ }
+            onClick = {
+                viewModel.createOutcome(trxTime, totalOutcome, deskripsi).observe(lifecycleOwner, { outcome ->
+                    when (outcome) {
+                        is Result.Loading -> {}
+                        is Result.Success -> {
+                            coroutineScope.launch {
+                                modalSheetState.hide()
+                            }
+                            Toast.makeText(context, "Berhasil Menambahkan Catatan Pengeluaran", Toast.LENGTH_LONG).show()
+                        }
+                        is Result.Error -> { outcome.error }
+                    }
+                })
+            }
         ) {
             Text(text = "Simpan Transaksi")
         }
