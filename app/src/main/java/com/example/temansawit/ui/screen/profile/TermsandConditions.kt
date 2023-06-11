@@ -16,7 +16,7 @@ import com.example.temansawit.R
 import com.example.temansawit.ui.theme.GreenPressed
 
 @Composable
-fun TermsandConditions( modifier: Modifier = Modifier){
+fun TermsandConditions( modifier: Modifier = Modifier , navigateBack: () -> Unit){
     Scaffold(
 
         modifier = modifier,
@@ -27,7 +27,7 @@ fun TermsandConditions( modifier: Modifier = Modifier){
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick =  navigateBack) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_navigate_before_24),
                             contentDescription = "Back"

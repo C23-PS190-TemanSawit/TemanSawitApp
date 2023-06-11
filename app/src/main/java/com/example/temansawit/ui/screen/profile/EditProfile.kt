@@ -23,7 +23,7 @@ import com.example.temansawit.ui.theme.GreenPressed
 
 
 @Composable
-fun EditProfile(modifier: Modifier = Modifier) {
+fun EditProfile(modifier: Modifier = Modifier , navigateBack: () -> Unit) {
     val income1 = remember { mutableStateOf("") }
     val income2 = remember { mutableStateOf("") }
     val income3 = remember { mutableStateOf("") }
@@ -40,7 +40,7 @@ fun EditProfile(modifier: Modifier = Modifier) {
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle navigation back */ }) {
+                    IconButton(onClick =  navigateBack) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_navigate_before_24),
                             contentDescription = "Back"
