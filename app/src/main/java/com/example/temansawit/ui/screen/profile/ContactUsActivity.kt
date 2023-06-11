@@ -12,7 +12,7 @@ class ContactUsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-                ContactUs()
+                ContactUs(navigateBack = { onBackPressed() })
             }
         }
     }

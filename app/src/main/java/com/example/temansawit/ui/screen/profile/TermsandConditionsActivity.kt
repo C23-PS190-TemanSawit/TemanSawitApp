@@ -11,7 +11,7 @@ class TermsandConditionsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-                TermsandConditions()
+                TermsandConditions(navigateBack = { onBackPressed() })
             }
         }
     }

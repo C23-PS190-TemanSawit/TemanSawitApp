@@ -32,11 +32,12 @@ import java.io.File
 @Composable
 fun HasilScreen(
     file : File?,
+    ripe: Float,
+    underripe: Float,
     modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val selectedGender = remember { mutableStateOf("")
     }
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -104,48 +105,119 @@ fun HasilScreen(
 
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Deteksi Sukses")
+                Text(
+                    text = "Deteksi Sukses",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Hasil deteksi kematangan buah kelapa sawit Anda")
+                Text(
+                    text = "Hasil deteksi kematangan buah kelapa sawit Anda",
+                    fontSize = 14.sp,
+                )
                 Spacer(modifier = Modifier.height(30.dp))
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 20.dp),
-                    backgroundColor = Color.White,
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                if (ripe > underripe) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 20.dp),
+                        backgroundColor = Color.White,
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Text(
-                            text = "Matang",
-                            style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Matang",
+                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = "${(ripe * 100)} %",
+                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
 
-                        )
+                        }
 
                     }
-
-                }
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp),
-                    backgroundColor = Color.White,
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp),
+                        backgroundColor = Color.White,
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Text(
-                            text = "Belum matang",
-                            style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold)
-                        )
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "Belum matang",
+                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = "${(underripe * 100)} %",
+                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                        }
 
                     }
+                } else if (ripe < underripe) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp),
+                        backgroundColor = Color.White,
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "Belum matang",
+                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = "${(underripe * 100)} %",
+                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
 
+                        }
+
+                    }
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 20.dp),
+                        backgroundColor = Color.White,
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Matang",
+                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = "${(ripe * 100)} %",
+                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                        }
+
+                    }
                 }
                 Spacer(modifier = modifier.padding(8.dp))
                 Button(
