@@ -11,7 +11,7 @@ class PrivasiPolicyActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-                PrivacyPolicy()
+                PrivacyPolicy(navigateBack = { onBackPressed() })
             }
         }
     }
