@@ -9,7 +9,7 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
-class AuthInterceptor(private var token: String, private var context: Context): Interceptor {
+class AuthInterceptor(private var token: String): Interceptor {
     companion object {
         const val AUTHORIZATION = "Authorization"
     }
@@ -20,7 +20,6 @@ class AuthInterceptor(private var token: String, private var context: Context): 
             val token = "$token"
 
             request.newBuilder()
-                .removeHeader(AUTHORIZATION)
                 .addHeader(AUTHORIZATION, token)
                 .build()
         } else {

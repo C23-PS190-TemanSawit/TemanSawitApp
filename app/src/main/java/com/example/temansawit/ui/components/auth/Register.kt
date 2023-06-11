@@ -44,7 +44,7 @@ fun WelcomeRegister() {
                 painter = painterResource(id = R.drawable.pattern),
                 contentDescription = "pattern temansawit",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.height(200.dp)
+                modifier = Modifier.height(200.dp).fillMaxWidth()
             )
             LogoTemanSawit()
             AuthText(

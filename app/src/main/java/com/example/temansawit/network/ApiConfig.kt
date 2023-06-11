@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
     companion object {
-        private fun getInterceptor(token: String?, context: Context): OkHttpClient {
+        private fun getInterceptor(token: String?): OkHttpClient {
             val loggingInterceptor =
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             return if (token.isNullOrEmpty()) {
@@ -18,7 +18,7 @@ class ApiConfig {
                     .build()
             } else {
                 OkHttpClient.Builder()
-                    .addInterceptor(AuthInterceptor(token, context))
+                    .addInterceptor(AuthInterceptor(token))
                     .addInterceptor(loggingInterceptor)
                     .build()
             }
@@ -32,7 +32,7 @@ class ApiConfig {
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://temansawit-api-sqmlxtcfma-ts.a.run.app")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getInterceptor(token, context))
+                .client(getInterceptor(token))
                 .build()
             return retrofit.create(ApiService::class.java)
         }
