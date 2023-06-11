@@ -203,7 +203,7 @@ fun ProfileCard() {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_editing_profile),
+                    painter = painterResource(id = R.drawable.ic_person),
                     contentDescription = "Edit Profil",
                     modifier = Modifier
                         .size(24.dp)
@@ -227,7 +227,7 @@ fun ProfileCard() {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_change_password_profile),
+                    painter = painterResource(id = R.drawable.ic_lock_reset),
                     contentDescription = "Ganti Password",
                     modifier = Modifier
                         .size(24.dp)
@@ -250,7 +250,7 @@ fun ProfileCard() {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_privacy_policy),
+                    painter = painterResource(id = R.drawable.ic_policy),
                     contentDescription = "Kebijakan Privasi",
                     modifier = Modifier
                         .size(24.dp)
@@ -273,7 +273,7 @@ fun ProfileCard() {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_terms_conditions),
+                    painter = painterResource(id = R.drawable.ic_description),
                     contentDescription = "Syarat dan Ketentuan",
                     modifier = Modifier
                         .size(24.dp)
@@ -296,7 +296,7 @@ fun ProfileCard() {
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_contact),
+                    painter = painterResource(id = R.drawable.ic_headset),
                     contentDescription = "Hubungi Kami",
                     modifier = Modifier
                         .size(24.dp)
@@ -316,7 +316,7 @@ fun ProfileCard() {
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_about_us),
+                    painter = painterResource(id = R.drawable.ic_outline),
                     contentDescription = "Tentang Kami",
                     modifier = Modifier
                         .size(24.dp)
@@ -356,7 +356,7 @@ fun LogoutButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_log_out),
+                painter = painterResource(id = R.drawable.ic_logout_24),
                 contentDescription = "Icon",
                 modifier = Modifier.size(24.dp)
             )

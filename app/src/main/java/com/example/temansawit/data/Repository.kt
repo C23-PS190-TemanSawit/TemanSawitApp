@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.example.temansawit.database.TemansawitDatabase
 import com.example.temansawit.network.ApiService
 import com.example.temansawit.network.response.*
 import kotlinx.coroutines.flow.Flow
@@ -13,9 +12,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
-class Repository(private val temansawitDatabase: TemansawitDatabase, private val apiService: ApiService) {
-    private val income = mutableListOf<IncomeResponseItem>()
-    private val loginResult = mutableListOf<AuthResponse>()
+class Repository(private val apiService: ApiService) {
 
     fun loginUser(username: String, password: String): LiveData<Result<AuthResponse>> = liveData {
         val json = JSONObject()
@@ -111,6 +108,10 @@ class Repository(private val temansawitDatabase: TemansawitDatabase, private val
     }
     fun getIncomeById(incomeId: Int): Flow<IncomeResponseItem> = flow {
         val response = apiService.getIncomeById(incomeId).first()
+        emit(response)
+    }
+    fun getOutcomeById(outcomeId: Int): Flow<OutcomeResponseItem> = flow {
+        val response = apiService.getOutcomeById(outcomeId).first()
         emit(response)
     }
 

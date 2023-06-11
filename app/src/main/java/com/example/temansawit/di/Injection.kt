@@ -10,6 +10,6 @@ object Injection {
     fun provideRepository(context: Context): Repository {
         val database = TemansawitDatabase.getDatabase(context)
         val apiService = ApiConfig.getApiService(context)
-        return Repository(database, apiService)
+        return Repository(apiService)
     }
 }

@@ -36,6 +36,11 @@ interface ApiService {
         @Path("id") incomeId: Int
     ): List<IncomeResponseItem>
 
+    @GET("/api/outcome/{id}")
+    suspend fun getOutcomeById(
+        @Path("id") outcomeId: Int
+    ): List<OutcomeResponseItem>
+
     @POST("/api/outcome")
     suspend fun createOutcome(
         @Body outcomeInput: RequestBody

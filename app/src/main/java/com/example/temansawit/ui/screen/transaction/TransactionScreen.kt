@@ -29,7 +29,6 @@ import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.util.TransactionViewModel
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -43,7 +42,8 @@ fun TransactionScreen(
     viewModel2: TransactionViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
-    navigateToDetail: (Int) -> Unit
+    navigateIncomeDetail: (Int) -> Unit,
+    navigateOutcomeDetail: (Int) -> Unit
 ) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -109,7 +109,7 @@ fun TransactionScreen(
                                 IncomeData(
                                     listIncome = uiState.data,
                                     modifier = modifier.padding(),
-                                    navigateToDetail = navigateToDetail
+                                    navigateToDetail = navigateIncomeDetail
                                 )
                             }
                             is UiState.Error -> {}
@@ -123,7 +123,7 @@ fun TransactionScreen(
                             is UiState.Success -> {
                                 OutcomeData(
                                     lisOutcome = outcome.data,
-                                    navigateToDetail = navigateToDetail
+                                    navigateToDetail = navigateOutcomeDetail
                                 )
                             }
                             is UiState.Error -> {}
@@ -171,7 +171,8 @@ fun OutcomeData(
             OutcomeCard(
                 total_outcome = it.total_outcome,
                 tanggal = it.transactionTime,
-                description = it.description
+                description = it.description,
+                modifier = modifier.clickable{ navigateToDetail(it.outcomeId) }
             )
         }
     }

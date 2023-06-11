@@ -167,20 +167,3 @@ fun OutcomeCard(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    TemanSawitTheme {
-//        val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            LocalDateTime.now()
-//        } else {
-//            TODO("VERSION.SDK_INT < O")
-//        }
-//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-//        val formatted = current.format(formatter)
-//        CardTransaction(
-//            transaction = CardTransaction(1, "120\nKilogram", "Rp 2.000.000", formatted, GreenPrimary)
-//        )
-//    }
-//}

@@ -152,7 +152,9 @@ fun HomeScreen(
                         )
                         Spacer(modifier = Modifier.padding(top = 56.dp))
                         GrafikPendapatan(modalSheetState = modalSheetState, onClick = onClick)
-                        Chart()
+                        Chart(
+                            listIncome = uiState.data
+                        )
                         SectionText(title = stringResource(R.string.riwayat_transaksi))
                         Box(modifier = Modifier
                             .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
@@ -221,8 +223,6 @@ fun Component1(
     var imageUser by remember { mutableStateOf("https://www.citypng.com/public/uploads/preview/free-round-flat-male-portrait-avatar-user-icon-png-11639648873oplfof4loj.png") }
     val sumIncome = listIncome.sumBy { it.price * it.totalWeight }
     val totalIncomeWithFormat = String.format("%,d", sumIncome).replace(",", ".")
-
-    val incomeList= listIncome.map { it.price * it.totalWeight }
 
     Pendapatan(
         modifier = Modifier.fillMaxWidth()

@@ -27,6 +27,7 @@ import com.example.temansawit.ui.screen.auth.register.RegisterScreen
 import com.example.temansawit.ui.screen.faq.FaqScreen
 import com.example.temansawit.ui.screen.home.HomePage
 import com.example.temansawit.ui.screen.profile.ProfileScreen
+import com.example.temansawit.ui.screen.transaction.DetailOutcomeScreen
 import com.example.temansawit.ui.screen.transaction.DetailTrxScreen
 import com.example.temansawit.ui.screen.transaction.TransactionScreen
 import com.example.temansawit.util.TransactionViewModel
@@ -79,10 +80,17 @@ fun TemanSawitApp() {
         }
         composable(Screen.Transaction.route) {
             TransactionScreen(
-                navigateToDetail = { transactionId ->
+                navigateIncomeDetail = { transactionId ->
                     navHostController.navigate(
                         Screen.DetailTransaction.createRoute(
                             transactionId
+                        )
+                    )
+                },
+                navigateOutcomeDetail = { outcomeId ->
+                    navHostController.navigate(
+                        Screen.DetailOutcome.createRoute(
+                            outcomeId
                         )
                     )
                 },
@@ -90,9 +98,6 @@ fun TemanSawitApp() {
                 navHostController = navHostController
             )
         }
-//        composable(Screen.CameraScreen.route) {
-//            CameraScreen(modalSheetState = )
-//        }
         composable(Screen.Faq.route) {
             FaqScreen(navHostController)
         }
@@ -111,6 +116,19 @@ fun TemanSawitApp() {
                 navigateBack = { navHostController.navigateUp() },
             )
         }
+        composable(
+            route = Screen.DetailOutcome.route,
+            arguments = listOf(navArgument("outcomeId") {
+                type = NavType.IntType
+            }),
+        ) {
+            val id = it.arguments?.getInt("outcomeId")
+            DetailOutcomeScreen(
+                trxId = id as Int,
+                navigateBack = { navHostController.navigateUp() },
+            )
+        }
+
     }
 }
 
