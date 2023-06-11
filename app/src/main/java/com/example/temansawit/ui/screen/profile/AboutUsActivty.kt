@@ -12,7 +12,7 @@ class AboutUsActivty : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-                AboutUs()
+                AboutUs(navigateBack = { onBackPressed() })
             }
         }
     }

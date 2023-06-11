@@ -11,7 +11,7 @@ class EditProfileActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-                EditProfile()
+                EditProfile(navigateBack = { onBackPressed() })
             }
         }
     }

@@ -7,7 +7,9 @@ import com.example.temansawit.di.Injection
 import com.example.temansawit.ui.screen.auth.login.LoginViewModel
 import com.example.temansawit.ui.screen.auth.register.RegisterViewModel
 import com.example.temansawit.ui.screen.home.HomeViewModel
+import com.example.temansawit.ui.screen.profile.ProfileViewModel
 import com.example.temansawit.ui.screen.transaction.TransactiomViewModel
+import com.example.temansawit.util.TransactionViewModel
 
 class ViewModelFactory(private val context: Context) :
     ViewModelProvider.NewInstanceFactory() {
@@ -22,6 +24,10 @@ class ViewModelFactory(private val context: Context) :
             return HomeViewModel(Injection.provideRepository(context)) as T
         } else if (modelClass.isAssignableFrom(TransactiomViewModel::class.java)) {
             return TransactiomViewModel(Injection.provideRepository(context)) as T
+        } else if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
+            return TransactionViewModel(Injection.provideRepository(context)) as T
+        }else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(Injection.provideRepository(context)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

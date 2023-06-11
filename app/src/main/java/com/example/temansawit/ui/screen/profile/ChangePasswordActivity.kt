@@ -12,7 +12,7 @@ class ChangePasswordActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-              ChangePassword()
+              ChangePassword(navigateBack = { onBackPressed() })
             }
         }
     }

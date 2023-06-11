@@ -6,6 +6,7 @@ import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.composed.ComposedChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.composed.plus
+import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.util.RandomEntriesGenerator
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -23,6 +24,7 @@ internal class ChartViewModel : ViewModel() {
         xRange = IntProgression.fromClosedRange(rangeStart = 0, rangeEnd = GENERATOR_X_RANGE_TOP, step = 2),
         yRange = GENERATOR_Y_RANGE_BOTTOM..GENERATOR_Y_RANGE_TOP,
     )
+
 
     internal val chartEntryModelProducer: ChartEntryModelProducer = ChartEntryModelProducer()
 

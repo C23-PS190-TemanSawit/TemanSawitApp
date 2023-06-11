@@ -58,7 +58,8 @@ fun LoginScreen(
                             }
                             is Result.Success -> {
                                 val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-                                Preferences.saveToken(it.data.accessToken, sharedPreferences)
+                                Preferences.saveAccessToken(it.data.accessToken, sharedPreferences)
+                                Preferences.saveRefreshToken(it.data.refreshToken, sharedPreferences)
                                 Preferences.setLoggedIn(sharedPreferences, true)
                                 navHostController.popBackStack()
                                 navHostController.navigate("home")

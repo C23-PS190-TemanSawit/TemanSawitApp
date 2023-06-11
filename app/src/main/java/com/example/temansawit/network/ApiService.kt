@@ -16,8 +16,11 @@ interface ApiService {
         @Body registerInfo: RequestBody
     ): RegisterResponse
 
-    @GET("/api/token")
-    suspend fun getNewToken(): NewTokenResponse
+    @DELETE("/api/logout")
+    suspend fun logout(): RegisterResponse
+
+//    @GET("/api/token")
+//    suspend fun getNewToken(): NewTokenResponse
 
     @GET("/api/profile")
     suspend fun userProfile(): UserResponse
@@ -25,12 +28,19 @@ interface ApiService {
     @POST("/api/income")
     suspend fun createIncome(
         @Body incomeInput: RequestBody
-    ): IncomeResponse
+    ): TrxResponse
     @GET("/api/income")
     suspend fun getIncome(): List<IncomeResponseItem>
     @GET("/api/income/{id}")
     suspend fun getIncomeById(
-        @Path("incomeId") incomeId: Int
-    ): IncomeResponseItem
+        @Path("id") incomeId: Int
+    ): List<IncomeResponseItem>
 
+    @POST("/api/outcome")
+    suspend fun createOutcome(
+        @Body outcomeInput: RequestBody
+    ): TrxResponse
+
+    @GET("/api/outcome")
+    suspend fun getOutcome(): List<OutcomeResponseItem>
 }

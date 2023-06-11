@@ -21,18 +21,27 @@ import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import com.patrykandpatrick.vico.core.entry.entryModelOf
 
 @Composable
 private fun ComposeChart1(chartEntryModelProducer: ChartEntryModelProducer) {
     val marker = rememberMarker()
+    val chartEntryModel = entryModelOf(400000, 120000, 80000, 63234)
     ProvideChartStyle(rememberChartStyle(chartColors)) {
         Chart(
             chart = lineChart(persistentMarkers = remember(marker) { mapOf(PERSISTENT_MARKER_X to marker) }),
-            chartModelProducer = chartEntryModelProducer,
+            model = chartEntryModel,
             startAxis = startAxis(),
             bottomAxis = bottomAxis(guideline = null),
             marker = marker,
         )
+//        Chart(
+//            chart = lineChart(persistentMarkers = remember(marker) { mapOf(PERSISTENT_MARKER_X to marker) }),
+//            chartModelProducer = chartEntryModelProducer,
+//            startAxis = startAxis(),
+//            bottomAxis = bottomAxis(guideline = null),
+//            marker = marker,
+//        )
     }
 }
 
