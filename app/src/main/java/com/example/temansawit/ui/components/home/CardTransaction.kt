@@ -26,6 +26,7 @@ fun IncomeCard(
     tanggal: String,
     modifier: Modifier = Modifier
 ) {
+    val totalWithFormat = String.format("%,d", total).replace(",", ".")
     Card(
         modifier = modifier
             .shadow(2.dp, RoundedCornerShape(18.dp))
@@ -41,7 +42,7 @@ fun IncomeCard(
             Column {
                 Text(
                     modifier = modifier.width(57.dp),
-                    text = "Rp ${berat}",
+                    text = berat.toString(),
                     textAlign = TextAlign.Center,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -62,7 +63,7 @@ fun IncomeCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = total.toString(),
+                    text = "Rp ${totalWithFormat}",
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
@@ -103,6 +104,7 @@ fun OutcomeCard(
     description: String,
     modifier: Modifier = Modifier
 ) {
+    val totalWithFormat = String.format("%,d", total_outcome).replace(",", ".")
     Card(
         modifier = modifier
             .shadow(2.dp, RoundedCornerShape(18.dp))
@@ -133,7 +135,7 @@ fun OutcomeCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Rp ${total_outcome}",
+                    text = "Rp ${totalWithFormat}",
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,

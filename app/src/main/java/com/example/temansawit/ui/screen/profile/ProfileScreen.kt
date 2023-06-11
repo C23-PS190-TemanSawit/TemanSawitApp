@@ -1,6 +1,7 @@
 package com.example.temansawit.ui.screen.profile
 
 import BottomSheet
+import BottomSheetType
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -25,20 +26,35 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.data.Result
 import com.example.temansawit.di.Preferences
+import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.screen.home.Alert403
+import com.example.temansawit.ui.screen.home.HomeViewModel
 import com.example.temansawit.ui.theme.Green700
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProfileScreen( modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+) {
+    var name by remember { mutableStateOf("Temansawit Guest") }
+    var email by remember { mutableStateOf("user@temansawit.com") }
+    var imageUser by remember { mutableStateOf("https://www.citypng.com/public/uploads/preview/free-round-flat-male-portrait-avatar-user-icon-png-11639648873oplfof4loj.png") }
+
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val modalSheetState = rememberModalBottomSheetState(
@@ -99,35 +115,57 @@ fun ProfileScreen( modifier: Modifier = Modifier, navHostController: NavHostCont
                         backgroundColor = Color.White,
                         shape = RoundedCornerShape(16.dp)
                     ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                        viewModel.name.collectAsState(initial = UiState.Loading).value.let { user ->
+                            when (user) {
+                                is UiState.Loading -> {
+                                    viewModel.getUserProfile()
+                                }
+                                is UiState.Success -> {
+                                        name = user.data.username.toString()
+                                        email = user.data.email.toString()
+                                        if (user.data.image != null ) {
+                                            imageUser = user.data.image.toString()
+                                        }
+                                    Row(
+                                        modifier = Modifier.padding(16.dp),
+                                        verticalAlignment = Alignment.CenterVertically
 
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.putri),
-                                contentDescription = "Profile Image",
-                                modifier = Modifier.size(60.dp)
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "Hai",
-                                    color = Color.Gray,
-                                    fontSize = 15.sp
-                                )
-                                Text(
-                                    text = "John Doe",
-                                    color = Color.Gray,
-                                    fontSize = 17.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "john.doe@example.com",
-                                    color = Color.DarkGray,
-                                    fontSize = 13.sp,
-                                    modifier = Modifier.padding(top = 7.dp)
-                                )
+                                    ) {
+                                        Image(
+                                            painter = rememberImagePainter(
+                                                data = imageUser,
+                                                builder = {
+                                                    transformations(CircleCropTransformation())
+                                                }
+                                            ),
+                                            contentDescription = "Profile Image",
+                                            modifier = Modifier.size(60.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(16.dp))
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                text = "Hai",
+                                                color = Color.Gray,
+                                                fontSize = 15.sp
+                                            )
+                                            Text(
+                                                text = name,
+                                                color = Color.Gray,
+                                                fontSize = 17.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            Text(
+                                                text = email,
+                                                color = Color.DarkGray,
+                                                fontSize = 13.sp,
+                                                modifier = Modifier.padding(top = 7.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                                is UiState.Error -> {
+                                    Alert403(navHostController = navHostController)
+                                }
                             }
                         }
                     }
@@ -369,7 +407,7 @@ fun AlertLogout(
                                             "my_preferences",
                                             Context.MODE_PRIVATE
                                         )
-                                    Preferences.setLoggedIn(sharedPreferences, true)
+                                    Preferences.logoutUser(sharedPreferences)
                                     navHostController.popBackStack()
                                     navHostController.navigate("loginScreen")
                                 }

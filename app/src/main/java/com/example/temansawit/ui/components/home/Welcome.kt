@@ -11,16 +11,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.temansawit.R
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 
 @Composable
 fun Welcome(
-    name: String
+    name: String,
+    imageUser: String
 ) {
+    val imagePainter = rememberImagePainter(
+        data = imageUser,
+        builder = {
+            transformations(CircleCropTransformation())
+        }
+    )
     Row(
         modifier = Modifier
             .padding(top = 40.dp)
@@ -31,7 +38,7 @@ fun Welcome(
             modifier = Modifier
                 .width(70.dp)
                 .height(70.dp),
-            painter = painterResource(id = R.drawable.profiluser),
+            painter = imagePainter,
             contentDescription = null
         )
         Spacer(modifier = Modifier.padding(8.dp))
