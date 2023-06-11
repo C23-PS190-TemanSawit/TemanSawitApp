@@ -17,6 +17,11 @@ class TransactiomViewModel(private val repository: Repository) : ViewModel() {
         MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState<IncomeResponseItem>>
         get() = _uiState
+    private val _outcomeById: MutableStateFlow<UiState<OutcomeResponseItem>> =
+        MutableStateFlow(UiState.Loading)
+    val outcomeById: StateFlow<UiState<OutcomeResponseItem>>
+        get() = _outcomeById
+
 
     private val _income: MutableStateFlow<UiState<List<IncomeResponseItem>>> = MutableStateFlow(UiState.Loading)
     val income: StateFlow<UiState<List<IncomeResponseItem>>>
@@ -26,17 +31,6 @@ class TransactiomViewModel(private val repository: Repository) : ViewModel() {
     val outcome: StateFlow<UiState<List<OutcomeResponseItem>>>
         get() = _outcome
 
-    fun getIncome() {
-        viewModelScope.launch {
-            repository.getIncome()
-                .catch {
-                    _income.value = UiState.Error(it.message.toString())
-                }
-                .collect { income ->
-                    _income.value = UiState.Success(income)
-                }
-        }
-    }
     fun getOutcome() {
         viewModelScope.launch {
             repository.getOutcome()
@@ -58,6 +52,18 @@ class TransactiomViewModel(private val repository: Repository) : ViewModel() {
                 }
                 .collect { income ->
                     _uiState.value = UiState.Success(income)
+                }
+        }
+    }
+    fun getOutcomeById(outcomeId: Int) {
+        viewModelScope.launch {
+            repository.getOutcomeById(outcomeId)
+                .catch {
+                    Log.d("tes", it.message.toString())
+                    _outcomeById.value = UiState.Error(it.message.toString())
+                }
+                .collect { outcome ->
+                    _outcomeById.value = UiState.Success(outcome)
                 }
         }
     }

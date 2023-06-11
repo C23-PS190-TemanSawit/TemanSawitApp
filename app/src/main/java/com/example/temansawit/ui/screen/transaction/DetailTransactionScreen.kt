@@ -16,12 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.temansawit.R
 import com.example.temansawit.ui.common.UiState
-import com.example.temansawit.ui.components.transaction.CardDetail
+import com.example.temansawit.ui.components.transaction.CardIncomeDetail
 import com.example.temansawit.ui.components.transaction.CardNoTransaksi
+import com.example.temansawit.ui.components.transaction.CardOutcomeDetail
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenPrimary
@@ -33,7 +32,6 @@ fun DetailTrxScreen(
         factory = ViewModelFactory(LocalContext.current)
     ),
     navigateBack: () -> Unit,
-    navHostController: NavHostController = rememberNavController()
     ) {
     Scaffold(
         topBar = {
@@ -73,7 +71,11 @@ fun DetailTrxScreen(
                             RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
                         )
                 ) {
-                    CardNoTransaksi()
+                    CardNoTransaksi(
+                        painter = painterResource(id = R.drawable.baseline_arrow_circle_down_24),
+                        tint = GreenPrimary,
+                        jenis_transaksi = "Transaksi Masuk"
+                    )
                 }
                 Box(
                     modifier = Modifier
@@ -86,8 +88,7 @@ fun DetailTrxScreen(
                                 viewmodel.getIncomeById(trxId)
                             }
                             is UiState.Success -> {
-                                val navController = rememberNavController()
-                                CardDetail(
+                                CardIncomeDetail(
                                     detailTrx = uiState.data
                                 )
                             }
@@ -100,20 +101,78 @@ fun DetailTrxScreen(
     }
 }
 
-//class DetailTransactionActivity : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContent {
-//            TemanSawitTheme {
-//                // A surface container using the 'background' color from the theme
-//                DetailTransactionApp()
-//            }
-//        }
-//    }
-//}
-
-
-//@Composable
-//fun DetailTransactionApp() {
-
-//}
+@Composable
+fun DetailOutcomeScreen(
+    trxId: Int,
+    viewmodel: TransactiomViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+    navigateBack: () -> Unit,
+    ) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                },
+                navigationIcon = {
+                    IconButton(onClick =  navigateBack) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_navigate_before_24),
+                            contentDescription = "Kembali",
+                            Modifier.size(32.dp)
+                        )
+                    }
+                },
+                backgroundColor = GreenPressed,
+                contentColor = Color.White,
+                elevation = 10.dp
+            )
+        }
+    ) { it
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .background(GreenPrimary.copy(alpha = 0.2F))
+        ) {
+            Column(
+                modifier = Modifier
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .background(
+                            GreenPressed,
+                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                        )
+                ) {
+                    CardNoTransaksi(
+                        painter = painterResource(id = R.drawable.baseline_arrow_circle_up_24),
+                        tint = Color.Red,
+                        jenis_transaksi = "Transaksi Keluar"
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clip(shape = RoundedCornerShape(8.dp))
+                ) {
+                    viewmodel.outcomeById.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                        when (uiState) {
+                            is UiState.Loading -> {
+                                viewmodel.getOutcomeById(trxId)
+                            }
+                            is UiState.Success -> {
+                                CardOutcomeDetail(
+                                    detailTrx = uiState.data
+                                )
+                            }
+                            is UiState.Error -> {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

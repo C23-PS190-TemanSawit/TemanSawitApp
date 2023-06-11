@@ -44,10 +44,6 @@ fun ProfileAc(modifier: Modifier = Modifier){
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp
                 )
-                Text(
-                    text = "No Transaksi: 986531245794224",
-                    fontSize = 12.sp
-                )
             }
         }
     }
