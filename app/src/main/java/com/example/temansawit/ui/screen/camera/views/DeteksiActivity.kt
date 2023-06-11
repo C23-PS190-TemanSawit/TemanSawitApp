@@ -102,6 +102,8 @@ class DeteksiActivity : AppCompatActivity() {
                 rotateFile(file, isBackCamera)
                 binding.previewImageView.setImageBitmap(BitmapFactory.decodeFile(file.path))
             }
+
+
         }
     }
 
