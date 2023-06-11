@@ -105,9 +105,16 @@ fun HasilScreen(
 
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Deteksi Sukses")
+                Text(
+                    text = "Deteksi Sukses",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Hasil deteksi kematangan buah kelapa sawit Anda")
+                Text(
+                    text = "Hasil deteksi kematangan buah kelapa sawit Anda",
+                    fontSize = 14.sp,
+                )
                 Spacer(modifier = Modifier.height(30.dp))
                 if (ripe > underripe) {
                     Card(
