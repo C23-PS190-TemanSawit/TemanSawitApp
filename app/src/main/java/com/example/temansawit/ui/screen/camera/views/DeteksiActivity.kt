@@ -124,11 +124,12 @@ class DeteksiActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
-                        Log.e(ContentValues.TAG, responseBody?.top2.toString())
-                        val ripeList: Top2? = responseBody?.top2
+                        val ripeList = responseBody?.top2
                         ripeList?.let {
                             val intent = Intent(this@DeteksiActivity, HasilActivity::class.java)
                             intent.putExtra("picture", myFile)
+                            intent.putExtra("ripe", ripeList.ripe)
+                            intent.putExtra("underripe", ripeList.underripe)
                             startActivity(intent)
                         }
                     } else {

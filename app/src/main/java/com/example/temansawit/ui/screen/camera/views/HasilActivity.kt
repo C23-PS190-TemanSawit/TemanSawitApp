@@ -18,10 +18,13 @@ class HasilActivity : AppCompatActivity() {
             TemanSawitTheme {
                 HasilScreen( if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     intent.getSerializableExtra("picture", File::class.java)
+
                 } else {
                     @Suppress("DEPRECATION")
                     intent.getSerializableExtra("picture")
-                } as? File
+                } as? File,
+                    intent.getFloatExtra("ripe", 0F),
+                    intent.getFloatExtra("underripe", 0F)
                 )
             }
         }
