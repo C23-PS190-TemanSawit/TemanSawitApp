@@ -80,7 +80,7 @@ fun Income(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = trxTime,
-            label = { Text(text = "tanggal transaksi") },
+            label = { Text(text = "Tanggal Transaksi (bulan/tanggal/tahun)") },
             onValueChange = viewModel::onTanggalTrxChange
         )
 
@@ -137,7 +137,9 @@ fun Income(
                             }
                             Toast.makeText(context, "Berhasil Menambahkan Catatan Transaksi", Toast.LENGTH_LONG).show()
                         }
-                        is Result.Error -> {}
+                        is Result.Error -> {
+                            Toast.makeText(context, "Gagal, silahkan masukkan data dengan benar!", Toast.LENGTH_LONG).show()
+                        }
                     }
                 })
             }
@@ -172,7 +174,7 @@ fun Outcome(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = trxTime,
-            label = { Text(text = "Tanggal") },
+            label = { Text(text = "Tanggal (bulan/tanggal/tahun)") },
             onValueChange = viewModel::onTanggalTrxChange
         )
         OutlinedTextField(

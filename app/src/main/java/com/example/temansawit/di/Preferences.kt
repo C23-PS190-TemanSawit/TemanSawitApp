@@ -55,4 +55,12 @@ object Preferences {
         editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn)
         editor.apply()
     }
+
+    fun logoutUser(sharedPreferences: SharedPreferences) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(KEY_IS_LOGGED_IN, false)
+        editor.remove("access_token")
+        editor.remove("refresh_token")
+        editor.apply()
+    }
 }

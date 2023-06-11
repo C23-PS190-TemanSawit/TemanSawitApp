@@ -29,6 +29,8 @@ import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.util.TransactionViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -139,6 +141,7 @@ fun IncomeData(
     modifier: Modifier = Modifier,
     navigateToDetail: (Int) -> Unit,
 ) {
+
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -146,7 +149,7 @@ fun IncomeData(
             IncomeCard(
                 berat = it.totalWeight,
                 total = it.price * it.totalWeight,
-                tanggal = it.updatedAt,
+                tanggal = it.transactionTime,
                 modifier = modifier.clickable{ navigateToDetail(it.incomeId) }
             )
         }
