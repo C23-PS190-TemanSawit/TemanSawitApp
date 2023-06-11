@@ -1,5 +1,6 @@
 package com.example.temansawit.ui.screen.camera
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -15,12 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.temansawit.R
+import com.example.temansawit.ui.screen.camera.views.DeteksiActivity
+import com.example.temansawit.ui.screen.profile.AboutUsActivty
 import java.io.File
 
 
@@ -28,7 +33,7 @@ import java.io.File
 fun HasilScreen(
     file : File?,
     modifier: Modifier = Modifier) {
-
+    val context = LocalContext.current
     val selectedGender = remember { mutableStateOf("")
     }
 
@@ -107,7 +112,7 @@ fun HasilScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 20.dp),
-                    backgroundColor = Color.Green,
+                    backgroundColor = Color.White,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(
@@ -115,8 +120,11 @@ fun HasilScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Keluar",
+                            text = "Matang",
+                            style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
+
                         )
+
                     }
 
                 }
@@ -124,7 +132,7 @@ fun HasilScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp),
-                    backgroundColor = Color.Red,
+                    backgroundColor = Color.White,
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Row(
@@ -132,8 +140,10 @@ fun HasilScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Keluar",
+                            text = "Belum matang",
+                            style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold)
                         )
+
                     }
 
                 }
@@ -142,7 +152,8 @@ fun HasilScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(100.dp)),
-                    onClick = { /*TODO*/ }
+                    onClick = {  val intent = Intent(context, DeteksiActivity::class.java)
+                        context.startActivity(intent) }
                 ) {
                     Text(text = "LANJUTKAN DETEKSI")
                 }

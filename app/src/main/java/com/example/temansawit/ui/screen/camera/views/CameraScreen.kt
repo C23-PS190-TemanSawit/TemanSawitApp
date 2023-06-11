@@ -11,8 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.temansawit.ui.screen.camera.CameraTActivity
-import com.example.temansawit.ui.screen.camera.DeteksiActivity
+import com.example.temansawit.ui.screen.camera.views.CameraTActivity
+import com.example.temansawit.ui.screen.camera.views.DeteksiActivity
 
 @Composable
 fun CameraScreen() {

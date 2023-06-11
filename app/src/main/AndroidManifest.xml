@@ -18,19 +18,19 @@
         android:theme="@style/Theme.TemanSawit"
         tools:targetApi="31">
         <activity
-            android:name=".ui.screen.camera.HasilActivity"
+            android:name=".ui.screen.camera.views.HasilActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat"/>
         <activity
-            android:name=".ui.screen.camera.CameraTActivity"
+            android:name=".ui.screen.camera.views.CameraTActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".ui.screen.camera.DeteksiActivity"
+            android:name=".ui.screen.camera.views.DeteksiActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".ui.screen.camera.CameraXActivity"
+            android:name=".ui.screen.camera.views.CameraXActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat" />
         <activity
