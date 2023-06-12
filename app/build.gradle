@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'kotlin-android'
 }
 
 android {
@@ -38,6 +39,10 @@ android {
     buildFeatures {
         compose true
         viewBinding true
+    }
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.7'
@@ -121,10 +126,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     // Tensorflow Lite
-    implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
-    implementation 'com.google.android.gms:play-services-tflite-gpu:16.1.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'
-    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.4.0'
+
+    implementation 'org.tensorflow:tensorflow-lite:+'
+    implementation 'org.tensorflow:tensorflow-lite-task-vision:+'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:+'
 
     implementation 'io.coil-kt:coil-compose:2.4.0'
 

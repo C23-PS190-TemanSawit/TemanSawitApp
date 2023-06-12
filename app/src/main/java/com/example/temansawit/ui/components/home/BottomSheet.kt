@@ -50,7 +50,7 @@ fun BottomSheet(
                     }
                     BottomSheetType.Camera -> {
                         Text(
-                            text = "CAMERA BOTTOM SHEET",
+                            text = "SILAHKAN PILIH FITUR DETEKSI",
                             modifier.padding(top = 40.dp, bottom = 24.dp),
                             style = Typography.subtitle2,
                             textAlign = TextAlign.Center
