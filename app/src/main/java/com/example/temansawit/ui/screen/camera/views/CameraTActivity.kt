@@ -1,5 +1,6 @@
 package com.example.temansawit.ui.screen.camera.views
 
+import ObjectDetectionHelper
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -54,7 +55,7 @@ import kotlin.random.Random
 
     private var pauseAnalysis = false
     private var imageRotationDegrees: Int = 0
-    private val tfImageBuffer = TensorImage(DataType.FLOAT32)
+    private val tfImageBuffer = TensorImage(DataType.UINT8)
     private val camera_capture_button: ImageButton
     get() = findViewById(R.id.camera_capture_button)
     private val view_finder: PreviewView
@@ -74,7 +75,7 @@ import kotlin.random.Random
                 tfInputSize.height, tfInputSize.width, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
             .add(Rot90Op(imageRotationDegrees / 90))
             .add(NormalizeOp(0f, 1f))
-            .add(CastOp(DataType.FLOAT32))
+            .add(CastOp(DataType.UINT8))
             .build()
     }
 
@@ -85,7 +86,9 @@ import kotlin.random.Random
     }
 
     private val detector by lazy {
-        ObjectDetectionHelper(tflite, FileUtil.loadLabels(this, LABELS_PATH))
+        ObjectDetectionHelper(tflite
+//            , FileUtil.loadLabels(this, LABELS_PATH)
+        )
     }
 
     private val tfInputSize by lazy {
@@ -175,13 +178,13 @@ import kotlin.random.Random
                 image.use { converter.yuvToRgb(image.image!!, bitmapBuffer) }
 
                 // Process the image in Tensorflow
-                val tfImage =  tfImageProcessor.process(tfImageBuffer.apply { load(bitmapBuffer) })
+//                val tfImage =  tfImageProcessor.process(tfImageBuffer.apply { load(bitmapBuffer) })
 
                 // Perform the object detection for the current frame
-                val predictions = detector.predict(tfImage)
+//                val predictions = detector.predict(tfImage)
 
                 // Report only the top prediction
-                reportPrediction(predictions.maxBy { it.score })
+//                reportPrediction(predictions.maxBy { it.score })
 
                 // Compute the FPS of the entire pipeline
                 val frameCount = 10
@@ -209,33 +212,33 @@ import kotlin.random.Random
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun reportPrediction(
-        prediction: ObjectDetectionHelper.ObjectPrediction?
-    ) = view_finder.post {
-
-        // Early exit: if prediction is not good enough, don't report it
-        if (prediction == null || prediction.score < ACCURACY_THRESHOLD) {
-            box_prediction.visibility = View.GONE
-            text_prediction.visibility = View.GONE
-            return@post
-        }
-
-        // Location has to be mapped to our local coordinates
-        val location = mapOutputCoordinates(prediction.location)
-
-        // Update the text and UI
-        text_prediction.text = "${"%.2f".format(prediction.score)} ${prediction.label}"
-        (box_prediction.layoutParams as ViewGroup.MarginLayoutParams).apply {
-            topMargin = location.top.toInt()
-            leftMargin = location.left.toInt()
-            width = min(view_finder.width, location.right.toInt() - location.left.toInt())
-            height = min(view_finder.height, location.bottom.toInt() - location.top.toInt())
-        }
-
-        // Make sure all UI elements are visible
-        box_prediction.visibility = View.VISIBLE
-        text_prediction.visibility = View.VISIBLE
-    }
+//    private fun reportPrediction(
+//        prediction: ObjectDetectionHelper.ObjectPrediction?
+//    ) = view_finder.post {
+//
+//        // Early exit: if prediction is not good enough, don't report it
+//        if (prediction == null || prediction.score < ACCURACY_THRESHOLD) {
+//            box_prediction.visibility = View.GONE
+//            text_prediction.visibility = View.GONE
+//            return@post
+//        }
+//
+//        // Location has to be mapped to our local coordinates
+//        val location = mapOutputCoordinates(prediction.location)
+//
+//        // Update the text and UI
+//        text_prediction.text = "${"%.2f".format(prediction.score)} ${prediction.label}"
+//        (box_prediction.layoutParams as ViewGroup.MarginLayoutParams).apply {
+//            topMargin = location.top.toInt()
+//            leftMargin = location.left.toInt()
+//            width = min(view_finder.width, location.right.toInt() - location.left.toInt())
+//            height = min(view_finder.height, location.bottom.toInt() - location.top.toInt())
+//        }
+//
+//        // Make sure all UI elements are visible
+//        box_prediction.visibility = View.VISIBLE
+//        text_prediction.visibility = View.VISIBLE
+//    }
 
     /**
      * Helper function used to map the coordinates for objects coming out of
