@@ -1,7 +1,5 @@
 package com.example.temansawit.ui.components.auth
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,73 +11,81 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.*
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.temansawit.R
-import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
-fun WelcomeRegister(modifier: Modifier = Modifier) {
-    Box(
-        modifier
-            .background(GreenPrimary.copy(alpha = 0.2F))
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.pattern),
-            contentDescription = "pattern temansawit",
-            contentScale = ContentScale.Crop,
-            modifier = modifier.height(298.dp)
-        )
-        LogoTemanSawit()
-        AuthText(
-            modifier = modifier.padding(top = 100.dp),
-            loginText = "Selamat Datang ,",
-            loginBodyText = "Silakan lengkapi formulir pendaftaran untuk membuat akun."
-        )
+fun WelcomeRegister() {
+    Box {
+        Box(
+            Modifier
+                .background(GreenPrimary.copy(alpha = 0.2F))
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.pattern),
+                contentDescription = "pattern temansawit",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.height(200.dp).fillMaxWidth()
+            )
+            LogoTemanSawit()
+            AuthText(
+                modifier = Modifier.padding(top = 100.dp),
+                loginText = "Selamat Datang ,",
+                loginBodyText = "Silakan lengkapi formulir pendaftaran untuk membuat akun."
+            )
+        }
     }
 }
 
 @Composable
-fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun RegisterInput(
+    username: String,
+    email: String,
+    password: String,
+    konfirmasiPassword: String,
+    onUsernameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onKonfirmasiPasswordChange: (String) -> Unit,
+) {
     val focusManager = LocalFocusManager.current
     val showPassword = remember { mutableStateOf(false) }
     val showKonfirmasiPassword = remember { mutableStateOf(false) }
-    var username by remember{ mutableStateOf(TextFieldValue("")) }
-    var email by remember{ mutableStateOf(TextFieldValue("")) }
-    var password by remember{ mutableStateOf(TextFieldValue("")) }
-    var konfirmasiPassword by remember{ mutableStateOf(TextFieldValue("")) }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .offset(y = (-100).dp)
-            .background(Color.White)
             .clip(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)),
     ) {
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 50.dp)
+                .padding(bottom = 8.dp)
                 .padding(horizontal = 16.dp),
             value = username,
             label = { Text(text = "Username") },
             leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "username") },
-            onValueChange = { username = it },
+            onValueChange = onUsernameChange,
             keyboardOptions = KeyboardOptions.Default.copy(
                 autoCorrect = true,
                 keyboardType = KeyboardType.Text,
@@ -93,13 +99,13 @@ fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostContr
             singleLine = true,
         )
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             value = email,
             label = { Text(text = "Email") },
             leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "email") },
-            onValueChange = { email = it },
+            onValueChange = onEmailChange,
             keyboardOptions = KeyboardOptions.Default.copy(
                 autoCorrect = true,
                 keyboardType = KeyboardType.Text,
@@ -113,13 +119,13 @@ fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostContr
             singleLine = true,
         )
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             value = password,
             label = { Text(text = "Password") },
             leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_key_24), contentDescription = "y") },
-            onValueChange = { password = it },
+            onValueChange = onPasswordChange,
             keyboardOptions = KeyboardOptions.Default.copy(
                 autoCorrect = true,
                 keyboardType = KeyboardType.Text,
@@ -155,13 +161,13 @@ fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostContr
                 PasswordVisualTransformation()
         )
         OutlinedTextField(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp),
             value = konfirmasiPassword,
             label = { Text(text = "Konfirmasi Password") },
             leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_key_24), contentDescription = "y") },
-            onValueChange = { konfirmasiPassword = it },
+            onValueChange = onKonfirmasiPasswordChange,
             keyboardOptions = KeyboardOptions.Default.copy(
                 autoCorrect = true,
                 keyboardType = KeyboardType.Text,
@@ -196,40 +202,28 @@ fun RegisterInput(modifier: Modifier = Modifier, navHostController: NavHostContr
             else
                 PasswordVisualTransformation()
         )
-        ClickableText(
-            text = AnnotatedString("Lupa password"),
-            modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp, horizontal = 16.dp),
-            style = TextStyle(textAlign = TextAlign.End),
-            onClick = {
-                Log.d("ClickableText", "$it-th character is clicked.")
-            }
-        )
-        BtnRegister(navHostController = navHostController)
     }
 }
 
 @Composable
-fun BtnRegister(modifier: Modifier = Modifier, navHostController: NavHostController) {
-    val context = LocalContext.current
-
+fun BtnRegister(
+    navHostController: NavHostController,
+    onClick: () -> Unit
+) {
     Button(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
+            .padding(top = 24.dp, bottom = 16.dp)
             .height(40.dp),
         shape = RoundedCornerShape(50),
-        onClick = { val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-            Preferences.setOnboarded(sharedPreferences, true)
-            navHostController.popBackStack()
-            navHostController.navigate("home") }
+        onClick = onClick
     ) {
         Text(text = "Daftar")
     }
-    Text(text = "Atau", modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+    Text(text = "Atau", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
     Button(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .height(40.dp),
@@ -246,18 +240,18 @@ fun BtnRegister(modifier: Modifier = Modifier, navHostController: NavHostControl
                 tint = Color.Unspecified
 
             )
-            Spacer(modifier = modifier.padding(horizontal = 8.dp))
+            Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Text(text = "Daftar dengan akun Google")
         }
     }
     Row(
-        modifier.fillMaxWidth(),
+        Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         Text(text = "Sudah punya akun?")
         ClickableText(
             text = AnnotatedString(text = " Masuk disini"),
-            onClick = {}
+            onClick = {navHostController.navigate("login")}
         )
     }
 }

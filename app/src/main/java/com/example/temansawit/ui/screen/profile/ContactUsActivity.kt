@@ -3,6 +3,7 @@ package com.example.temansawit.ui.screen.profile
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.temansawit.ui.screen.camera.HasilScreen
 import com.example.temansawit.ui.theme.TemanSawitTheme
 
 class ContactUsActivity : ComponentActivity() {
@@ -11,7 +12,7 @@ class ContactUsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TemanSawitTheme {
-                ContactUs()
+                ContactUs(navigateBack = { onBackPressed() })
             }
         }
     }

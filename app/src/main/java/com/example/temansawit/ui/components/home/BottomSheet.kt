@@ -4,19 +4,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.example.temansawit.ui.components.transaction.CRUDTransaction
 import com.example.temansawit.ui.theme.Typography
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheet(
     modalSheetState: ModalBottomSheetState,
+    selectedBottomSheet: BottomSheetType,
+    onBottomSheetSelected: (BottomSheetType) -> Unit,
     content: @Composable () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -37,19 +36,36 @@ fun BottomSheet(
         sheetShape = RoundedCornerShape(topStart = 35.dp, topEnd = 35.dp),
         sheetContent = {
             Column(
-                modifier = modifier
-                    .padding( bottom = 24.dp),
+                modifier = modifier.padding(bottom = 24.dp)
             ) {
-                Text(
-                    text = "TAMBAH TRANSAKSI BARU",
-                    modifier.padding(top = 40.dp, bottom = 24.dp),
-                    style = Typography.subtitle2,
-                    textAlign = TextAlign.Center
-                )
-                CRUDTransaction()
+                when (selectedBottomSheet) {
+                    BottomSheetType.CRUDTransaction -> {
+                        Text(
+                            text = "TAMBAH TRANSAKSI BARU",
+                            modifier.padding(top = 40.dp, bottom = 24.dp),
+                            style = Typography.subtitle2,
+                            textAlign = TextAlign.Center
+                        )
+                        CRUDTransaction(modalSheetState)
+                    }
+                    BottomSheetType.Camera -> {
+                        Text(
+                            text = "CAMERA BOTTOM SHEET",
+                            modifier.padding(top = 40.dp, bottom = 24.dp),
+                            style = Typography.subtitle2,
+                            textAlign = TextAlign.Center
+                        )
+                        CameraScreen()
+                    }
+                    else -> Unit // No bottom sheet selected
+                }
             }
         }
     ) {
         content()
     }
+}
+
+enum class BottomSheetType {
+    None, CRUDTransaction, Camera
 }

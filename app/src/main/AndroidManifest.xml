@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -15,60 +17,57 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TemanSawit"
         tools:targetApi="31">
-
-<!--        <activity-->
-<!--            android:name=".DetailTransactionActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_detail_transaction"-->
-<!--            android:theme="@style/Theme.TemanSawit" />-->
-
+        <activity
+            android:name=".ui.screen.camera.views.HasilActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity
+            android:name=".ui.screen.camera.views.CameraTActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".ui.screen.camera.views.DeteksiActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".ui.screen.camera.views.CameraXActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".ui.screen.profile.AboutUsActivty"
             android:exported="false"
             android:label="AboutUsActivity"
-            android:theme="@style/Theme.TemanSawit"/>
+            android:theme="@style/Theme.TemanSawit" />
         <activity
             android:name=".ui.screen.profile.ChangePasswordActivity"
             android:exported="false"
             android:label="ChangePasswordActivity"
-            android:theme="@style/Theme.TemanSawit"/>
+            android:theme="@style/Theme.TemanSawit" />
         <activity
             android:name=".ui.screen.profile.ContactUsActivity"
             android:exported="false"
             android:label="ContactUsActivity"
-            android:theme="@style/Theme.TemanSawit"/>
+            android:theme="@style/Theme.TemanSawit" />
         <activity
             android:name=".ui.screen.profile.EditProfileActivity"
             android:exported="false"
             android:label="EditProfileActivity"
-            android:theme="@style/Theme.TemanSawit"/>
+            android:theme="@style/Theme.TemanSawit" />
         <activity
             android:name=".ui.screen.profile.PrivasiPolicyActivity"
             android:exported="false"
             android:label="PrivasiPolicyActivity"
-            android:theme="@style/Theme.TemanSawit"/>
+            android:theme="@style/Theme.TemanSawit" />
         <activity
             android:name=".ui.screen.profile.TermsandConditionsActivity"
             android:exported="false"
             android:label="TermsandConditionsActivity"
-            android:theme="@style/Theme.TemanSawit"/>
-
-
-<!--        <activity-->
-<!--            android:name=".DetailTransaction"-->
-<!--            android:exported="false" />-->
-<!--&lt;!&ndash;        <activity&ndash;&gt;-->
-<!--&lt;!&ndash;            android:name=".MainActivity"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:exported="true"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:label="@string/app_name"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:theme="@style/Theme.TemanSawit">&ndash;&gt;-->
-<!--&lt;!&ndash;        android:theme="@style/Theme.App.Starting"&ndash;&gt;-->
-<!--&lt;!&ndash;        tools:targetApi="31" >&ndash;&gt;-->
+            android:theme="@style/Theme.TemanSawit" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.App.Starting" >
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

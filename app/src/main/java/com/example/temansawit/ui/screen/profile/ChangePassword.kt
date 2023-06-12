@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.temansawit.R
 
 @Composable
-fun ChangePassword(modifier: Modifier = Modifier) {
+fun ChangePassword(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
     val currentPassword = remember { mutableStateOf("") }
     val newPassword = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
@@ -37,7 +37,7 @@ fun ChangePassword(modifier: Modifier = Modifier) {
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick =  navigateBack) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_navigate_before_24),
                             contentDescription = "Back"
