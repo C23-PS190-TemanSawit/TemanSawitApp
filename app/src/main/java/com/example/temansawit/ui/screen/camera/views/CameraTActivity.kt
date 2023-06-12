@@ -56,8 +56,6 @@ import kotlin.random.Random
     private var pauseAnalysis = false
     private var imageRotationDegrees: Int = 0
     private val tfImageBuffer = TensorImage(DataType.UINT8)
-    private val camera_capture_button: ImageButton
-    get() = findViewById(R.id.camera_capture_button)
     private val view_finder: PreviewView
     get() = findViewById<PreviewView>(R.id.view_finder)
     private val image_predicted: ImageView
@@ -100,36 +98,10 @@ import kotlin.random.Random
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_camera_tactivity)
         container = findViewById(R.id.camera_container)
 
-        // Listener for button used to capture photo
-        camera_capture_button.setOnClickListener {
-
-            // Disable all camera controls
-            it.isEnabled = false
-
-            if (pauseAnalysis) {
-                // If image analysis is in paused state, resume it
-                pauseAnalysis = false
-                image_predicted.visibility = View.GONE
-
-            } else {
-                // Otherwise, pause image analysis and freeze image
-                pauseAnalysis = true
-                val matrix = Matrix().apply {
-                    postRotate(imageRotationDegrees.toFloat())
-                    if (isFrontFacing) postScale(-1f, 1f)
-                }
-                val uprightImage = Bitmap.createBitmap(
-                    bitmapBuffer, 0, 0, bitmapBuffer.width, bitmapBuffer.height, matrix, true)
-                image_predicted.setImageBitmap(uprightImage)
-                image_predicted.visibility = View.VISIBLE
-            }
-
-            // Re-enable camera controls
-            it.isEnabled = true
-        }
     }
 
     /** Declare and bind preview and analysis use cases */
@@ -212,38 +184,37 @@ import kotlin.random.Random
         }, ContextCompat.getMainExecutor(this))
     }
 
-//    private fun reportPrediction(
-//        prediction: ObjectDetectionHelper.ObjectPrediction?
-//    ) = view_finder.post {
-//
-//        // Early exit: if prediction is not good enough, don't report it
-//        if (prediction == null || prediction.score < ACCURACY_THRESHOLD) {
-//            box_prediction.visibility = View.GONE
-//            text_prediction.visibility = View.GONE
-//            return@post
-//        }
-//
-//        // Location has to be mapped to our local coordinates
-//        val location = mapOutputCoordinates(prediction.location)
-//
-//        // Update the text and UI
-//        text_prediction.text = "${"%.2f".format(prediction.score)} ${prediction.label}"
-//        (box_prediction.layoutParams as ViewGroup.MarginLayoutParams).apply {
-//            topMargin = location.top.toInt()
-//            leftMargin = location.left.toInt()
-//            width = min(view_finder.width, location.right.toInt() - location.left.toInt())
-//            height = min(view_finder.height, location.bottom.toInt() - location.top.toInt())
-//        }
-//
-//        // Make sure all UI elements are visible
-//        box_prediction.visibility = View.VISIBLE
-//        text_prediction.visibility = View.VISIBLE
-//    }
+    private fun reportPrediction(
+        prediction: ObjectDetectionHelper.ObjectPrediction?
+    ) = view_finder.post {
 
-    /**
-     * Helper function used to map the coordinates for objects coming out of
-     * the model into the coordinates that the user sees on the screen.
-     */
+        // Early exit: if prediction is not good enough, don't report it
+        if (prediction == null) {
+            box_prediction.visibility = View.GONE
+            text_prediction.visibility = View.GONE
+            return@post
+        }
+
+        // Location has to be mapped to our local coordinates
+        val location = mapOutputCoordinates(prediction.location)
+
+        // Update the UI
+        (box_prediction.layoutParams as ViewGroup.MarginLayoutParams).apply {
+            topMargin = location.top.toInt()
+            leftMargin = location.left.toInt()
+            width = min(view_finder.width, location.right.toInt() - location.left.toInt())
+            height = min(view_finder.height, location.bottom.toInt() - location.top.toInt())
+        }
+
+        // Make sure the box prediction element is visible
+        box_prediction.visibility = View.VISIBLE
+        text_prediction.visibility = View.GONE
+    }
+
+
+
+
+
     private fun mapOutputCoordinates(location: RectF): RectF {
 
         // Step 1: map location to the preview coordinates
