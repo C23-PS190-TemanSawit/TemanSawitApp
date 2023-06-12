@@ -5,4 +5,7 @@
     <string name="faq_nav">FAQ</string>
     <string name="profile_nav">Profil</string>
     <string name="title_activity_detail_transaction">DetailTransactionActivity</string>
+    <string name="riwayat_transaksi">RIWAYAT PEMASUKAN</string>
+    <string name="grafik_pendapatan">Grafik pendapatan</string>
+    <string name="catatan">Catatan</string>
 </resources>

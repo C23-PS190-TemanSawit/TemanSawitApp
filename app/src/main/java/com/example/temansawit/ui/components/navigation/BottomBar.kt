@@ -8,12 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.temansawit.R
 import com.example.temansawit.ui.navigation.NavigationItem
 import com.example.temansawit.ui.navigation.Screen
+import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
 fun BottomBar(
@@ -25,7 +27,7 @@ fun BottomBar(
         backgroundColor = Color.White
     ) {
         val navBackStackEntry by navHostController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+        val currentRoute = navBackStackEntry?.destination
         val navigationItems = listOf(
             NavigationItem(
                 title = stringResource(id = R.string.home_nav),
@@ -33,8 +35,8 @@ fun BottomBar(
                 screen = Screen.Home
             ),
             NavigationItem(
-                title = stringResource(id = R.string.trx_nav),
-                icon = painterResource(id = R.drawable.baseline_quiz_24),
+                title = stringResource(id = R.string.catatan),
+                icon = painterResource(id = R.drawable.catatan),
                 screen = Screen.Transaction
             ),
             NavigationItem(
@@ -63,14 +65,17 @@ fun BottomBar(
                     )
                 }
                 BottomNavigationItem(
-                    selected = currentRoute == item.screen.route,
+//                    selected = currentRoute == item.screen.route,
+                    selected = currentRoute?.hierarchy?.any { it.route == item.screen.route } == true,
+                    selectedContentColor = GreenPrimary,
+                    unselectedContentColor = Color.Gray,
                     onClick = {
                         navHostController.navigate(item.screen.route) {
                             popUpTo(navHostController.graph.findStartDestination().id) {
                                 saveState = true
                             }
-                            restoreState = true
                             launchSingleTop = true
+                            restoreState = true
                         }
                     },
                     icon = {

@@ -7,10 +7,12 @@ val Green500 = Color(0xFF12C95F)
 val Green700 = Color(0xFF0b8a42)
 val Orange200 = Color(0xFFffd888)
 
+val Orange20 = Color(0xFFE3EAF5)
+
 val GreenPrimary = Color(0xFF12C95F)
 val GreenSurface = Color(0xFFDCF2E5)
 val GreenBorder = Color(0xFFC0DBCE)
 val GreenHover = Color(0xFF387B5A)
 val GreenPressed = Color(0xFF214A36)
-val OrangePrimary = Color(0xFFCD7B2E)
+val OrangePrimary = Color(0xFFFFA726)
 

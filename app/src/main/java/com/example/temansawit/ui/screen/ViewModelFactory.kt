@@ -1,20 +1,33 @@
 package com.example.temansawit.ui.screen
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.temansawit.data.Repository
+import com.example.temansawit.di.Injection
+import com.example.temansawit.ui.screen.auth.login.LoginViewModel
+import com.example.temansawit.ui.screen.auth.register.RegisterViewModel
 import com.example.temansawit.ui.screen.home.HomeViewModel
+import com.example.temansawit.ui.screen.profile.ProfileViewModel
 import com.example.temansawit.ui.screen.transaction.TransactiomViewModel
+import com.example.temansawit.util.TransactionViewModel
 
-class ViewModelFactory(private val repository: Repository) :
+class ViewModelFactory(private val context: Context) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return HomeViewModel(repository) as T
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            return LoginViewModel(Injection.provideRepository(context)) as T
+        } else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
+            return RegisterViewModel(Injection.provideRepository(context)) as T
+        } else if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            return HomeViewModel(Injection.provideRepository(context)) as T
         } else if (modelClass.isAssignableFrom(TransactiomViewModel::class.java)) {
-            return TransactiomViewModel(repository) as T
+            return TransactiomViewModel(Injection.provideRepository(context)) as T
+        } else if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
+            return TransactionViewModel(Injection.provideRepository(context)) as T
+        }else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            return ProfileViewModel(Injection.provideRepository(context)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

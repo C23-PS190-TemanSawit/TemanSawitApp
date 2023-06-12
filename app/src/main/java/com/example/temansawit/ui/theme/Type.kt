@@ -12,14 +12,41 @@ import com.example.temansawit.R
 val Roboto = FontFamily(
     Font(R.font.roboto_regular),
     Font(R.font.roboto_medium, FontWeight.Medium),
-    Font(R.font.roboto_bold, FontWeight.Bold)
+    Font(R.font.roboto_bold, FontWeight.Bold),
+    Font(R.font.opensans_regular),
+)
+
+val Raleway = FontFamily(
+//    Font(R.font.raleway),
+    Font(R.font.raleway_bold)
 )
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Roboto,
         fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    body2 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp
+    ),
+    subtitle1 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp
+    ),
+    h5 = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Medium,
+        fontSize = 24.sp
     )
+
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
