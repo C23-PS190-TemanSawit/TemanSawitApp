@@ -39,6 +39,10 @@ android {
         compose true
         viewBinding true
     }
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+    }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.7'
     }
@@ -125,6 +129,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-tflite-gpu:16.1.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.4.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.9.0'
 
     implementation 'io.coil-kt:coil-compose:2.4.0'
 

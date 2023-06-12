@@ -1,128 +1,72 @@
 package com.example.temansawit.ui.screen.camera.views
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowManager
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import com.example.temansawit.databinding.ActivityCameraTactivityBinding
+import androidx.core.os.BuildCompat
+import com.example.temansawit.R
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import kotlin.random.Random
 
-class CameraTActivity  : AppCompatActivity() {
-    private lateinit var binding: ActivityCameraTactivityBinding
-    private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    private var imageCapture: ImageCapture? = null
+class CameraTActivity : AppCompatActivity() {
+    private lateinit var container: ConstraintLayout
+    private lateinit var bitmapBuffer: Bitmap
+
+    private lateinit var executor: ExecutorService
+    private val permissions = listOf(android.Manifest.permission.CAMERA)
+    private val permissionsRequestCode = Random.nextInt(0, 10000)
+
+    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    private val isFrontFacing get() = lensFacing == CameraSelector.LENS_FACING_FRONT
+
+    private var pauseAnalysis = false
+    private var imageRotationDegrees: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCameraTactivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_camera_tactivity)
+        container = findViewById(R.id.camera_container)
+        executor = Executors.newSingleThreadExecutor()
 
-        setupAction()
+        // Initialize other components and setup camera here
     }
 
-    public override fun onResume() {
-        super.onResume()
-        hideSystemUI()
-        startCamera()
+    override fun onDestroy() {
+        super.onDestroy()
+        executor.shutdown()
     }
-
-    private fun setupAction(){
-//        binding.captureImage.setOnClickListener { takePhoto() }
-        binding.switchCamera.setOnClickListener {
-            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
-            else CameraSelector.DEFAULT_BACK_CAMERA
-            startCamera()
-        }
-    }
-
-////    private fun takePhoto() {
-//        val imageCapture = imageCapture ?: return
-////        val photoFile = createFile(application)
-////        showLoading(true)
-//        Toast.makeText(this,"AMBIL PHOTO", Toast.LENGTH_SHORT).show()
-////        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-//        imageCapture.takePicture(
-//            outputOptions,
-//            ContextCompat.getMainExecutor(this),
-//            object : ImageCapture.OnImageSavedCallback {
-//                override fun onError(exc: ImageCaptureException) {
-//                    showLoading(false)
-//                    Toast.makeText(
-//                        this@CameraActivity,
-//                        R.string.failed_taking_pic,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-//
-//                    Toast.makeText(
-//                        this@CameraXActivity,
-//                       "BERHASIL",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-////                    val intent = Intent()
-////                    intent.putExtra("picture", photoFile)
-////                    intent.putExtra("isBackCamera", cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
-////                    )
-////                    setResult(AddStoryActivity.CAMERA_X_RESULT, intent)
-//                    finish()
-//                }
-//            }
-//        )
-//    }
-
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
-        cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                }
-
-            imageCapture = ImageCapture.Builder().build()
-
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this,
-                    cameraSelector,
-                    preview,
-                    imageCapture
-                )
-
-            } catch (exc: Exception) {
-                Toast.makeText(
-                    this@CameraTActivity,
-                    "GAGAL MEMBUKA KAMERA",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }, ContextCompat.getMainExecutor(this))
-    }
-
-    private fun hideSystemUI() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == permissionsRequestCode && hasPermissions(this)) {
+//            bindCameraUseCases()
         } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+            finish() // If we don't have the required permissions, we can't run
         }
-        supportActionBar?.hide()
     }
-//    private fun showLoading(isLoading: Boolean) {
-//        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-//    }
+    // Add other methods and functions here
+    private fun hasPermissions(context: Context) = permissions.all {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+
+    companion object {
+        private val TAG = CameraTActivity::class.java.simpleName
+
+        private const val ACCURACY_THRESHOLD = 0.5f
+        private const val MODEL_PATH = "coco_ssd_mobilenet_v1_1.0_quant.tflite"
+        private const val LABELS_PATH = "coco_ssd_mobilenet_v1_1.0_labels.txt"
+    }
 }
