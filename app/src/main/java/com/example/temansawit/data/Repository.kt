@@ -6,6 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.temansawit.network.ApiService
 import com.example.temansawit.network.response.*
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -97,6 +100,19 @@ class Repository(private val apiService: ApiService) {
             emit(Result.Error(e.message.toString()))
         }
     }
+//
+//    fun combineResponses(): Observable<CombinedResponse> {
+//        val incomeObservable: Observable<List<IncomeResponseItem>> = apiService.getIncome()
+//        val outcomeObservable: Observable<List<OutcomeResponseItem>> = apiService.getOutcome()
+//
+//        return Observable.zip(
+//            incomeObservable,
+//            outcomeObservable,
+//            { incomeList, outcomeList ->
+//                CombinedResponse(incomeList, outcomeList)
+//            }
+//        )
+//    }
 
     fun getIncome(): Flow<List<IncomeResponseItem>> = flow {
         val response = apiService.getIncome()

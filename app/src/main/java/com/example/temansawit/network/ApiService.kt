@@ -1,6 +1,8 @@
 package com.example.temansawit.network
 
 import com.example.temansawit.network.response.*
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -48,4 +50,9 @@ interface ApiService {
 
     @GET("/api/outcome")
     suspend fun getOutcome(): List<OutcomeResponseItem>
+
+    @GET("/api/income")
+    fun getIncome2(): Observable<IncomeResponseItem>
+    @GET("/api/outcome")
+    fun getOutcome2(): Observable<OutcomeResponseItem>
 }
