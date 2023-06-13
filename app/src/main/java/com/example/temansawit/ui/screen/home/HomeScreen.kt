@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,12 +27,15 @@ import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.di.Preferences
 import com.example.temansawit.network.response.IncomeResponseItem
+import com.example.temansawit.network.response.OutcomeResponseItem
 import com.example.temansawit.ui.common.UiState
 import com.example.temansawit.ui.components.SectionText
 import com.example.temansawit.ui.components.home.*
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.screen.transaction.IncomeData
+import com.example.temansawit.ui.screen.transaction.OutcomeData
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -140,30 +142,37 @@ fun HomeScreen(
             modifier = Modifier
                         .verticalScroll(rememberScrollState())
         ) {
-            viewModel.income.collectAsState(initial = UiState.Loading).value.let { uiState ->
+            viewModel.combinedResponse.collectAsState(initial = UiState.Loading).value.let { uiState ->
                 when (uiState) {
                     is UiState.Loading -> {
-                        viewModel.getIncome()
+                        viewModel.fetchCombinedResponse()
                     }
                     is UiState.Success -> {
                         Component1(
                             navHostController = navHostController,
-                            listIncome = uiState.data
+                            listIncome = uiState.data.incomeItems,
+                            listOutcome = uiState.data.outcomeItems
                         )
                         Spacer(modifier = Modifier.padding(top = 56.dp))
-                        GrafikPendapatan(modalSheetState = modalSheetState, onClick = onClick)
+                        GrafikPendapatan(onClick = onClick)
                         Chart(
-                            listIncome = uiState.data
+                            listIncome = uiState.data.incomeItems
                         )
                         SectionText(title = stringResource(R.string.riwayat_transaksi))
                         Box(modifier = Modifier
                             .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
                         ) {
-                            Transaction(
-                                listIncome = uiState.data,
+                            IncomeData(
+                                listIncome = uiState.data.incomeItems,
                                 modifier = modifier.padding(),
                                 navigateToDetail = navigateToDetail
                             )
+                            OutcomeData(
+                                lisOutcome = uiState.data.outcomeItems,
+                                modifier = modifier.padding(),
+                                navigateToDetail = navigateToDetail
+                            )
+
                         }
                     }
                     is UiState.Error -> {
@@ -214,15 +223,15 @@ fun Component1(
         factory = ViewModelFactory(LocalContext.current)
     ),
     listIncome: List<IncomeResponseItem>,
+    listOutcome: List<OutcomeResponseItem>,
     navHostController: NavHostController
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
-
     var name by remember { mutableStateOf("Temansawit Guest") }
     var imageUser by remember { mutableStateOf("https://www.citypng.com/public/uploads/preview/free-round-flat-male-portrait-avatar-user-icon-png-11639648873oplfof4loj.png") }
-    val sumIncome = listIncome.sumBy { it.price * it.totalWeight }
-    val totalIncomeWithFormat = String.format("%,d", sumIncome).replace(",", ".")
+    val sumIncome = listIncome.sumOf { it.price * it.totalWeight }
+    val sumOutcome = listOutcome.sumOf { it.total_outcome }
+    val total = (sumIncome - sumOutcome)
+    val totalIncomeWithFormat = String.format("%,d", total).replace(",", ".")
 
     Pendapatan(
         modifier = Modifier.fillMaxWidth()
@@ -289,10 +298,7 @@ fun Component1(
 fun GrafikPendapatan(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    modalSheetState: ModalBottomSheetState,
     ) {
-    val coroutineScope = rememberCoroutineScope()
-    var selectedBottomSheet by remember { mutableStateOf(BottomSheetType.CRUDTransaction) }
 
     Row {
             Column(
@@ -317,24 +323,4 @@ fun GrafikPendapatan(
                 Text(text = "CATATAN BARU")
             }
         }
-}
-
-@Composable
-fun Transaction(
-    listIncome: List<IncomeResponseItem>,
-    modifier: Modifier = Modifier,
-    navigateToDetail: (Int) -> Unit,
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        listIncome.forEach {
-            IncomeCard(
-                berat = it.totalWeight,
-                total = it.price * it.totalWeight,
-                tanggal = it.transactionTime,
-                modifier = modifier.clickable{ navigateToDetail(it.incomeId) }
-            )
-        }
-    }
 }

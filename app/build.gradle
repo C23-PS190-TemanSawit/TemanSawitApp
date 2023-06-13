@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'kotlin-android'
 }
 
 android {
@@ -38,6 +39,10 @@ android {
     buildFeatures {
         compose true
         viewBinding true
+    }
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.7'
@@ -121,10 +126,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     // Tensorflow Lite
-    implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
-    implementation 'com.google.android.gms:play-services-tflite-gpu:16.1.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'
-    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.4.0'
+
+    implementation 'org.tensorflow:tensorflow-lite:+'
+    implementation 'org.tensorflow:tensorflow-lite-task-vision:+'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:+'
 
     implementation 'io.coil-kt:coil-compose:2.4.0'
 
@@ -132,6 +137,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
+    //rxjava
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.2'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
 
     testImplementation 'junit:junit:4.13.2'

@@ -36,10 +36,7 @@ import java.util.*
 fun TransactionScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: TransactiomViewModel = viewModel(
-        factory = ViewModelFactory(LocalContext.current)
-    ),
-    viewModel2: TransactionViewModel = viewModel(
+    viewModel: TransactionViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
     navigateIncomeDetail: (Int) -> Unit,
@@ -100,35 +97,42 @@ fun TransactionScreen(
                         .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    viewModel2.income.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                    viewModel.combinedResponse.collectAsState(initial = UiState.Loading).value.let { uiState ->
                         when (uiState) {
                             is UiState.Loading -> {
-                                viewModel2.getIncome()
+                                viewModel.fetchCombinedResponse()
                             }
                             is UiState.Success -> {
+                                val sortedIncome = uiState.data.incomeItems.sortedBy { it.transactionTime }
+                                val sortedOutcome = uiState.data.outcomeItems.sortedBy { it.transactionTime }
+
                                 IncomeData(
-                                    listIncome = uiState.data,
+                                    listIncome = sortedIncome,
                                     modifier = modifier.padding(),
                                     navigateToDetail = navigateIncomeDetail
                                 )
-                            }
-                            is UiState.Error -> {}
-                        }
-                    }
-                    viewModel.outcome.collectAsState(initial = UiState.Loading).value.let { outcome ->
-                        when (outcome) {
-                            is UiState.Loading -> {
-                                viewModel.getOutcome()
-                            }
-                            is UiState.Success -> {
                                 OutcomeData(
-                                    lisOutcome = outcome.data,
+                                    lisOutcome = sortedOutcome,
                                     navigateToDetail = navigateOutcomeDetail
                                 )
                             }
                             is UiState.Error -> {}
                         }
                     }
+//                    viewModel.outcome.collectAsState(initial = UiState.Loading).value.let { outcome ->
+//                        when (outcome) {
+//                            is UiState.Loading -> {
+//                                viewModel.getOutcome()
+//                            }
+//                            is UiState.Success -> {
+//                                OutcomeData(
+//                                    lisOutcome = outcome.data,
+//                                    navigateToDetail = navigateOutcomeDetail
+//                                )
+//                            }
+//                            is UiState.Error -> {}
+//                        }
+//                    }
                 }
             }
         )

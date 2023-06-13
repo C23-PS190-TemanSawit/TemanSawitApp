@@ -1,10 +1,8 @@
 package com.example.temansawit
 
-import CameraScreen
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -66,11 +64,7 @@ fun TemanSawitApp() {
     }
 }
 
-// <<<<<<< apiRoy
  fun NavGraphBuilder.main(navHostController: NavHostController, transactionViewModel: TransactionViewModel) {
-// =======
-@OptIn(ExperimentalMaterialApi::class)
-//fun NavGraphBuilder.main(navHostController: NavHostController) {
     navigation(
         startDestination = Screen.Home.route,
         route = "mainScreen"
@@ -94,7 +88,7 @@ fun TemanSawitApp() {
                         )
                     )
                 },
-                viewModel2 =  transactionViewModel,
+                viewModel =  transactionViewModel,
                 navHostController = navHostController
             )
         }

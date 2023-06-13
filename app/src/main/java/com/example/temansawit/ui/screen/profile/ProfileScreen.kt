@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.rememberImagePainter
@@ -409,7 +410,9 @@ fun AlertLogout(
                                         )
                                     Preferences.logoutUser(sharedPreferences)
                                     navHostController.popBackStack()
-                                    navHostController.navigate("loginScreen")
+                                    navHostController.navigate("loginScreen") {
+                                        popUpTo(navHostController.graph.findStartDestination().id)
+                                    }
                                 }
                                 is Result.Error -> {
                                     // Handle error state if needed
