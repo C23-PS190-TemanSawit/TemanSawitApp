@@ -73,6 +73,7 @@ class Repository(private val apiService: ApiService) {
             emit(Result.Success(respone))
         } catch (e: Exception) {
             Log.e(TAG, "changePassword: ${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
         }
     }
     fun updateProfile(

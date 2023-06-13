@@ -1,9 +1,9 @@
 package com.example.temansawit.ui.screen.camera
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -21,11 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.temansawit.R
 import com.example.temansawit.ui.screen.camera.views.DeteksiActivity
-import com.example.temansawit.ui.screen.profile.AboutUsActivty
+import com.example.temansawit.ui.theme.GreenPrimary
 import java.io.File
 
 
@@ -34,10 +33,14 @@ fun HasilScreen(
     file : File?,
     ripe: Float,
     underripe: Float,
+    unripe: Float,
+    overripe: Float,
+    rotten: Float,
+    empty_bunch: Float,
     modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val selectedGender = remember { mutableStateOf("")
-    }
+    val selectedGender = remember { mutableStateOf("") }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -116,107 +119,36 @@ fun HasilScreen(
                     fontSize = 14.sp,
                 )
                 Spacer(modifier = Modifier.height(30.dp))
-                if (ripe > underripe) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 20.dp),
-                        backgroundColor = Color.White,
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Matang",
-                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "${(ripe * 100)} %",
-                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-
+                LazyColumn {
+                    if (ripe != 0f) {
+                        item {
+                            Result(tipe = "ripe", result = ripe, color = GreenPrimary)
                         }
-
                     }
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp),
-                        backgroundColor = Color.White,
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                text = "Belum matang",
-                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "${(underripe * 100)} %",
-                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-
+                    if (underripe != 0f) {
+                        item {
+                            Result(tipe = "underripe", result = underripe, color = Color.Yellow)
                         }
-
                     }
-                } else if (ripe < underripe) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp),
-                        backgroundColor = Color.White,
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                text = "Belum matang",
-                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "${(underripe * 100)} %",
-                                style = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-
+                    if (unripe != 0f) {
+                        item {
+                            Result(tipe = "unripe", result = unripe, color = Color.Red)
                         }
-
                     }
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 20.dp),
-                        backgroundColor = Color.White,
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Matang",
-                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = "${(ripe * 100)} %",
-                                style = TextStyle(color = Color.Green, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.weight(1f)
-                            )
-
+                    if (overripe != 0f) {
+                        item {
+                            Result(tipe = "overripe", result = overripe, color = Color.Yellow)
                         }
-
+                    }
+                    if (rotten != 0f) {
+                        item {
+                            Result(tipe = "rotten", result = rotten, color = Color.Red)
+                        }
+                    }
+                    if (empty_bunch != 0f) {
+                        item {
+                            Result(tipe = "empty_bunch", result = empty_bunch, color = Color.Black)
+                        }
                     }
                 }
                 Spacer(modifier = modifier.padding(8.dp))
@@ -232,4 +164,37 @@ fun HasilScreen(
             }
         }
     )
+}
+
+@Composable
+fun Result(
+    tipe: String,
+    color: Color,
+    result: Float
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 20.dp),
+        backgroundColor = Color.White,
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = tipe,
+                style = TextStyle(color = color, fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "${(result * 100)} %",
+                style = TextStyle(color = color, fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(1f)
+            )
+
+        }
+
+    }
 }

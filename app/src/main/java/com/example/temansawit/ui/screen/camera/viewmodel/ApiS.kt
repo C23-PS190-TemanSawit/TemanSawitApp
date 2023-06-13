@@ -27,7 +27,16 @@ data class Top2(
     @field:SerializedName("ripe")
     val ripe: Float,
     @field:SerializedName("underripe")
-    val underripe: Float
+    val underripe: Float,
+    @field:SerializedName("unripe")
+    val unripe: Float,
+    @field:SerializedName("overripe")
+    val overripe: Float,
+    @field:SerializedName("rotten")
+    val rotten: Float,
+    @field:SerializedName("empty_bunch")
+    val empty_bunch: Float,
+
 )
 
 

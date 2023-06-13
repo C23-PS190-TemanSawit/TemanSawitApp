@@ -24,7 +24,11 @@ class HasilActivity : AppCompatActivity() {
                     intent.getSerializableExtra("picture")
                 } as? File,
                     intent.getFloatExtra("ripe", 0F),
-                    intent.getFloatExtra("underripe", 0F)
+                    intent.getFloatExtra("underripe", 0F),
+                    intent.getFloatExtra("unripe", 0F),
+                    intent.getFloatExtra("overripe", 0F),
+                    intent.getFloatExtra("rotten", 0F),
+                    intent.getFloatExtra("empty_bunch", 0F),
                 )
             }
         }

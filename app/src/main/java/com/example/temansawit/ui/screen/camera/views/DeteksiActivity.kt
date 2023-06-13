@@ -128,6 +128,10 @@ class DeteksiActivity : AppCompatActivity() {
                             intent.putExtra("picture", myFile)
                             intent.putExtra("ripe", ripeList.ripe)
                             intent.putExtra("underripe", ripeList.underripe)
+                            intent.putExtra("unripe", ripeList.unripe)
+                            intent.putExtra("overripe", ripeList.overripe)
+                            intent.putExtra("rotten", ripeList.rotten)
+                            intent.putExtra("empty_bunch", ripeList.empty_bunch)
                             startActivity(intent)
                         }
                     } else {
