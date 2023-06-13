@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -106,15 +108,27 @@ fun TransactionScreen(
                                 val sortedIncome = uiState.data.incomeItems.sortedBy { it.transactionTime }
                                 val sortedOutcome = uiState.data.outcomeItems.sortedBy { it.transactionTime }
 
-                                IncomeData(
-                                    listIncome = sortedIncome,
-                                    modifier = modifier.padding(),
-                                    navigateToDetail = navigateIncomeDetail
-                                )
-                                OutcomeData(
-                                    lisOutcome = sortedOutcome,
-                                    navigateToDetail = navigateOutcomeDetail
-                                )
+                                if (uiState.data.incomeItems.isNotEmpty() && uiState.data.outcomeItems.isNotEmpty()) {
+                                    IncomeData(
+                                        listIncome = sortedIncome,
+                                        modifier = modifier.padding(),
+                                        navigateToDetail = navigateIncomeDetail
+                                    )
+                                    OutcomeData(
+                                        lisOutcome = sortedOutcome,
+                                        navigateToDetail = navigateOutcomeDetail
+                                    )
+                                } else {
+                                    Column(
+                                        modifier = Modifier.fillMaxSize(),
+                                        horizontalAlignment = CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+                                    ) {
+                                        Text(
+                                            text = "Tidak ada data",
+                                        )
+                                    }
+                                }
                             }
                             is UiState.Error -> {}
                         }

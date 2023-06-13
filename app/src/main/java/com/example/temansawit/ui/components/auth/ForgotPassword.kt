@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.components.auth
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,7 +13,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,20 +22,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.temansawit.R
 import com.example.temansawit.ui.theme.GreenPrimary
 
 @Composable
-fun WelcomeLogin(modifier: Modifier = Modifier) {
+fun WelcomeForgot(modifier: Modifier = Modifier) {
     Box(
         modifier
             .background(GreenPrimary.copy(alpha = 0.2F))
@@ -51,24 +47,26 @@ fun WelcomeLogin(modifier: Modifier = Modifier) {
         LogoTemanSawit()
         AuthText(
             modifier = modifier.padding(top = 100.dp),
-            loginText = "Selamat Datang Kembali,",
-            loginBodyText = "Silahkan login dengan akun anda untuk melanjutkan."
+            loginText = "Lupa Password,",
+            loginBodyText = "Silahkan masukkan data untuk reset password."
         )
     }
 }
 
 @Composable
-fun LoginInput(
+fun ForgotPasswordInput(
     modifier: Modifier = Modifier,
     username: String,
-    password: String,
+    newPassword: String,
+    confPassword: String,
     onUsernameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    navHostController: NavHostController
+    onConfPasswordChange: (String) -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
     val showPassword = remember { mutableStateOf(false) }
+    val showKonfirmasiPassword = remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -102,8 +100,8 @@ fun LoginInput(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp),
-            value = password,
-            label = { Text(text = "Password") },
+            value = newPassword,
+            label = { Text(text = "Password Baru") },
             leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_key_24), contentDescription = "y") },
             onValueChange = onPasswordChange,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -140,21 +138,53 @@ fun LoginInput(
             else
                 PasswordVisualTransformation()
         )
-        ClickableText(
-            text = AnnotatedString("Lupa password"),
-            modifier
+        OutlinedTextField(
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            style = TextStyle(textAlign = TextAlign.End),
-            onClick = {
-                navHostController.navigate("forgotPassword")
-            }
+                .padding(vertical = 8.dp, horizontal = 16.dp),
+            value = confPassword,
+            label = { Text(text = "Konfirmasi Password Baru") },
+            leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_key_24), contentDescription = "y") },
+            onValueChange = onConfPasswordChange,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                autoCorrect = true,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
+            ),
+            singleLine = true,
+            trailingIcon = {
+                val (icon, iconColor) = if (showKonfirmasiPassword.value) {
+                    Pair(
+                        painterResource(id = R.drawable.baseline_visibility_24),
+                        colorResource(id = R.color.black)
+                    )
+                } else {
+                    Pair(painterResource(id = R.drawable.baseline_visibility_off_24), colorResource(id = R.color.black))
+                }
+
+                IconButton(onClick = { showKonfirmasiPassword.value = !showKonfirmasiPassword.value }) {
+                    Icon(
+                        icon,
+                        contentDescription = "Visibility",
+                        tint = iconColor
+                    )
+                }
+            },
+            visualTransformation = if (showPassword.value)
+                VisualTransformation.None
+            else
+                PasswordVisualTransformation()
         )
     }
 }
 
 @Composable
-fun BtnLogin(
+fun BtnForgotPassword(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     onClick: () -> Unit
@@ -168,39 +198,15 @@ fun BtnLogin(
         shape = RoundedCornerShape(50),
         onClick = onClick
     ) {
-        Text(text = "Login")
-    }
-    Text(text = "Atau", modifier.fillMaxWidth(), textAlign = TextAlign.Center)
-    Button(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .height(40.dp),
-        shape = RoundedCornerShape(50),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-        onClick = { /*TODO*/ }
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier.size(32.dp),
-                painter = painterResource(id = R.drawable.google_icon),
-                contentDescription = "login dengan google",
-                tint = Color.Unspecified
-            )
-            Spacer(modifier = modifier.padding(horizontal = 8.dp))
-            Text(text = "Lanjutkan dengan akun Google")
-        }
+        Text(text = "Ganti Password")
     }
     Row(
         modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(text = "Belum punya akun?")
         ClickableText(
-            text = AnnotatedString(text = " Daftar disini", spanStyle = SpanStyle(fontWeight = FontWeight.Bold)),
-            onClick = { navHostController.navigate("register") }
+            text = AnnotatedString(text = "Kembali ke halaman Login", spanStyle = SpanStyle(fontWeight = FontWeight.Bold)),
+            onClick = { navHostController.navigate("login") }
         )
     }
 }

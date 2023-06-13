@@ -20,5 +20,6 @@ class LoginViewModel(private val repository: Repository): ViewModel() {
     }
 
     fun loginUser(username: String, password: String) = repository.loginUser(username, password)
+    fun forgotPassword(username: String, password: String, confPassword: String) = repository.forgotPassword(username, password, confPassword)
 
 }

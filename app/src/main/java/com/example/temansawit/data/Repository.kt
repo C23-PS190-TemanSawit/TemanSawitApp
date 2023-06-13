@@ -76,6 +76,24 @@ class Repository(private val apiService: ApiService) {
             emit(Result.Error(e.message.toString()))
         }
     }
+    fun forgotPassword(
+        username: String, newPassword: String, confPassword: String): LiveData<Result<RegisterResponse>> = liveData {
+        val json = JSONObject()
+        json.put("username", username)
+        json.put("newPassword", newPassword)
+        json.put("confPassword", confPassword)
+        val requestBody = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+        emit(Result.Loading)
+        try {
+            val respone = apiService.forgotPassword(requestBody)
+            Log.d(TAG, respone.toString())
+            emit(Result.Success(respone))
+        } catch (e: Exception) {
+            Log.e(TAG, "forgotPassword: ${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     fun updateProfile(
         fullname: String, phoneNumber: String, birthDate: String, gender: String): LiveData<Result<RegisterResponse>> = liveData {
         val json = JSONObject()

@@ -25,6 +25,12 @@ interface ApiService {
     suspend fun changePassword(
         @Body changePassword: RequestBody
     ): RegisterResponse
+
+    @PUT("/api/forgotPassword")
+    suspend fun forgotPassword(
+        @Body forgotPassword: RequestBody
+    ): RegisterResponse
+
     @POST("/api/upload")
     fun changePhoto(
         @Part file: MultipartBody.Part,

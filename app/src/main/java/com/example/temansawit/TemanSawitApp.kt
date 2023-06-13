@@ -20,6 +20,7 @@ import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.components.onboarding.OnboardingUI
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.screen.auth.login.ForgotPasswordScreen
 import com.example.temansawit.ui.screen.auth.login.LoginScreen
 import com.example.temansawit.ui.screen.auth.register.RegisterScreen
 import com.example.temansawit.ui.screen.faq.FaqScreen
@@ -152,6 +153,10 @@ fun NavGraphBuilder.auth(navHostController: NavHostController) {
         composable(Screen.Register.route) {
             RegisterScreen(navHostController = navHostController)
         }
+        composable(Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(navHostController = navHostController)
+        }
+
     }
 }
 
