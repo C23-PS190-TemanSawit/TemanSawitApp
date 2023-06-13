@@ -35,7 +35,6 @@ import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.transaction.IncomeData
-import com.example.temansawit.ui.screen.transaction.OutcomeData
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -103,7 +102,7 @@ fun HomePage(
                             navHostController.navigate(
                                 Screen.DetailTransaction.createRoute(
                                     transactionId
-                                )
+                                ),
                             )
                         },
                         viewModel = transactionViewModel,
@@ -163,15 +162,15 @@ fun HomeScreen(
                             .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
                         ) {
                             IncomeData(
-                                listIncome = uiState.data.incomeItems,
+                                listIncome = uiState.data.incomeItems.takeLast(2),
                                 modifier = modifier.padding(),
                                 navigateToDetail = navigateToDetail
                             )
-                            OutcomeData(
-                                lisOutcome = uiState.data.outcomeItems,
-                                modifier = modifier.padding(),
-                                navigateToDetail = navigateToDetail
-                            )
+//                            OutcomeData(
+//                                lisOutcome = uiState.data.outcomeItems,
+//                                modifier = modifier.padding(),
+//                                navigateToDetail = navigateToDetail
+//                            )
 
                         }
                     }
@@ -278,7 +277,7 @@ fun Component1(
                 modifier = Modifier.padding(start = 16.dp, top = 16.dp)
             ) {
                 Text(
-                    text = "Pemasukan Anda",
+                    text = "Pendapatan Anda",
                     color = Color.Black,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium

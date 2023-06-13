@@ -67,6 +67,7 @@ fun LoginScreen(
                             is Result.Error -> {
                                 Toast.makeText(context, "Masukkan Username dan Password yang benar", Toast.LENGTH_LONG).show()
                             }
+                            else -> {}
                         }
                     })
                 }

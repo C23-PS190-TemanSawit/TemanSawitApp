@@ -8,6 +8,11 @@ object Preferences {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
 
+    private fun editorPreference(context: Context, name: String): SharedPreferences.Editor {
+        val sharedPref = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return sharedPref.edit()
+    }
+
     private const val KEY_IS_ONBOARDED = "is_onboarded"
     private const val KEY_IS_LOGGED_IN = "is_logged_in"
 
@@ -27,23 +32,10 @@ object Preferences {
         editor.putString("access_token", accessToken)
         editor.apply()
     }
+
     fun saveRefreshToken(refreshToken: String, sharedPreferences: SharedPreferences) {
         val editor = sharedPreferences.edit()
         editor.putString("refresh_token", refreshToken)
-        editor.apply()
-    }
-
-
-    fun getRefreshToken(sharedPreferences: SharedPreferences): String {
-        return sharedPreferences.getString("refresh_token", null).toString()
-    }
-    fun getAccessToken(sharedPreferences: SharedPreferences): String {
-        return sharedPreferences.getString("access_token", null).toString()
-    }
-
-    fun newAccessToken(accessToken: String, sharedPreferences: SharedPreferences) {
-        val editor = sharedPreferences.edit()
-        editor.putString("access_token", accessToken)
         editor.apply()
     }
 

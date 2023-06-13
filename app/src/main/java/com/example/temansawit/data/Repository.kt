@@ -6,9 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.temansawit.network.ApiService
 import com.example.temansawit.network.response.*
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -41,15 +38,17 @@ class Repository(private val apiService: ApiService) {
         json.put("password", password)
         json.put("confPassword", confirmPassword)
         val requestBody = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
         emit(Result.Loading)
         try {
             val response = apiService.register(requestBody)
             emit(Result.Success(response))
         } catch (e: Exception) {
-            Log.e(TAG, "registerUser: ${e.message.toString()}")
             emit(Result.Error(e.message.toString()))
         }
+
     }
+
 
     fun logoutUser(): LiveData<Result<RegisterResponse>> = liveData {
         try {
@@ -60,16 +59,39 @@ class Repository(private val apiService: ApiService) {
             Log.e(TAG, "logoutRepository: ${e.message.toString()}")
         }
     }
-
-    //masih error
-//    fun getNewToken(): LiveData<Result<NewTokenResponse>> = liveData {
-//        try {
-//            val response = apiService.getNewToken()
-//            emit(Result.Success(response))
-//        } catch (e: Exception) {
-//            Log.e(TAG, "getNewToken: ${e.message.toString()}")
-//        }
-//    }
+    fun changePassword(
+        password: String, newPassword: String, confPassword: String): LiveData<Result<RegisterResponse>> = liveData {
+        val json = JSONObject()
+        json.put("password", password)
+        json.put("newPassword", newPassword)
+        json.put("confPassword", confPassword)
+        val requestBody = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+        emit(Result.Loading)
+        try {
+            val respone = apiService.changePassword(requestBody)
+            Log.d(TAG, respone.toString())
+            emit(Result.Success(respone))
+        } catch (e: Exception) {
+            Log.e(TAG, "changePassword: ${e.message.toString()}")
+        }
+    }
+    fun updateProfile(
+        fullname: String, phoneNumber: String, birthDate: String, gender: String): LiveData<Result<RegisterResponse>> = liveData {
+        val json = JSONObject()
+        json.put("fullname", fullname)
+        json.put("phoneNumber", phoneNumber)
+        json.put("birthDate", birthDate)
+        json.put("gender", gender)
+        val requestBody = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+        emit(Result.Loading)
+        try {
+            val respone = apiService.updateProfile(requestBody)
+            Log.d(TAG, respone.toString())
+            emit(Result.Success(respone))
+        } catch (e: Exception) {
+            Log.e(TAG, "updateProfile: ${e.message.toString()}")
+        }
+    }
 
     fun getUserProfile(): Flow<UserResponse> = flow {
         try {
@@ -91,12 +113,11 @@ class Repository(private val apiService: ApiService) {
         json.put("total_weight", total)
         json.put("description", description)
         val requestBody = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
-        emit(Result.Loading)
+        Result.Loading
         try {
             val response = apiService.createIncome(requestBody)
             emit(Result.Success(response))
         } catch (e: Exception) {
-            Log.e(TAG, "createIncome: ${e.message.toString()}")
             emit(Result.Error(e.message.toString()))
         }
     }
@@ -118,14 +139,17 @@ class Repository(private val apiService: ApiService) {
         val response = apiService.getIncome()
         emit(response)
     }
+
     fun getOutcome(): Flow<List<OutcomeResponseItem>> = flow {
         val response = apiService.getOutcome()
         emit(response)
     }
+
     fun getIncomeById(incomeId: Int): Flow<IncomeResponseItem> = flow {
         val response = apiService.getIncomeById(incomeId).first()
         emit(response)
     }
+
     fun getOutcomeById(outcomeId: Int): Flow<OutcomeResponseItem> = flow {
         val response = apiService.getOutcomeById(outcomeId).first()
         emit(response)
@@ -150,20 +174,7 @@ class Repository(private val apiService: ApiService) {
     }
 
 
-//    fun getAllTrx() : Flow<MutableList<IncomeResponseItem>> = flowOf(transaction)
-
     companion object {
         private const val TAG = "Repository"
     }
-//    companion object {
-//        @Volatile
-//        private var instance: Repository? = null
-//
-//        fun getInstance(): Repository =
-//            instance ?: synchronized(this) {
-//                Repository().apply {
-//                    instance = this
-//                }
-//            }
-//    }
 }

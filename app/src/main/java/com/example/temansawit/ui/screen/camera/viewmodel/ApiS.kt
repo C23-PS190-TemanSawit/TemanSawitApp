@@ -40,7 +40,7 @@ interface ApiService {
 }
 
 class ApiS{
-    fun getApiService(): ApiService{
+    fun getApiService2(): ApiService{
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()

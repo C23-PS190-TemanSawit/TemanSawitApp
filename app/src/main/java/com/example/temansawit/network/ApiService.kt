@@ -1,9 +1,9 @@
 package com.example.temansawit.network
 
 import com.example.temansawit.network.response.*
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.http.*
 
 
@@ -21,8 +21,19 @@ interface ApiService {
     @DELETE("/api/logout")
     suspend fun logout(): RegisterResponse
 
-//    @GET("/api/token")
-//    suspend fun getNewToken(): NewTokenResponse
+    @PUT("/api/update")
+    suspend fun changePassword(
+        @Body changePassword: RequestBody
+    ): RegisterResponse
+    @POST("/api/upload")
+    fun changePhoto(
+        @Part file: MultipartBody.Part,
+    ): Call<RegisterResponse>
+
+    @PUT("/api/profile")
+    suspend fun updateProfile(
+        @Body updateProfile: RequestBody
+    ): RegisterResponse
 
     @GET("/api/profile")
     suspend fun userProfile(): UserResponse
@@ -50,9 +61,4 @@ interface ApiService {
 
     @GET("/api/outcome")
     suspend fun getOutcome(): List<OutcomeResponseItem>
-
-    @GET("/api/income")
-    fun getIncome2(): Observable<IncomeResponseItem>
-    @GET("/api/outcome")
-    fun getOutcome2(): Observable<OutcomeResponseItem>
 }

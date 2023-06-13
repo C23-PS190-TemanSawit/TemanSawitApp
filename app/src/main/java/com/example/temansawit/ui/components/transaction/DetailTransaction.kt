@@ -18,14 +18,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.temansawit.R
 import com.example.temansawit.network.response.IncomeResponseItem
 import com.example.temansawit.network.response.OutcomeResponseItem
 import com.example.temansawit.ui.theme.GreenPrimary
-import com.example.temansawit.ui.theme.TemanSawitTheme
 
 @Composable
 fun CardNoTransaksi(
@@ -70,6 +68,15 @@ fun CardIncomeDetail(
     detailTrx: IncomeResponseItem,
     modifier: Modifier = Modifier
 ) {
+    val price = detailTrx.price
+    val priceWithFormat = String.format("%,d", price).replace(",", ".")
+    val weight = detailTrx.totalWeight
+    val weightWithFormat = String.format("%,d", weight).replace(",", ".")
+    val total = (detailTrx.totalWeight * detailTrx.price)
+    val totalWithFormat = String.format("%,d", total).replace(",", ".")
+
+
+
     Card(
         modifier
             .fillMaxWidth(),
@@ -115,7 +122,7 @@ fun CardIncomeDetail(
                         color = Color(0xFF727970),
                         )
                     Text(
-                        text = detailTrx.price.toString(),
+                        text = "Rp $priceWithFormat",
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -132,7 +139,7 @@ fun CardIncomeDetail(
 
                         )
                     Text(
-                        text = "${detailTrx.totalWeight} Kilogram",
+                        text = "$weightWithFormat Kilogram",
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -148,7 +155,7 @@ fun CardIncomeDetail(
                         fontSize = 20.sp,
                         )
                     Text(
-                        text = (detailTrx.price * detailTrx.totalWeight).toString(),
+                        text = "Rp $totalWithFormat",
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )
@@ -186,6 +193,9 @@ fun CardOutcomeDetail(
     detailTrx: OutcomeResponseItem,
     modifier: Modifier = Modifier
 ) {
+    val total = detailTrx.total_outcome
+    val totalWithFormat = String.format("%,d", total).replace(",", ".")
+
     Card(
         modifier
             .fillMaxWidth(),
@@ -231,7 +241,7 @@ fun CardOutcomeDetail(
                         color = Color(0xFF727970),
                         )
                     Text(
-                        text = detailTrx.total_outcome.toString(),
+                        text = "Rp $totalWithFormat",
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.Medium
                     )

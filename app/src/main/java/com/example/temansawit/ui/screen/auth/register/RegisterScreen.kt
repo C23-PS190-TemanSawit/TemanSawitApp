@@ -68,7 +68,7 @@ fun RegisterScreen(
                                 navHostController.navigate("login")
                             }
                             is Result.Error -> {
-                                Toast.makeText(context, "Masukkan data anda dengan benar", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, "Gagal, silahkan masukkan data dengan benar", Toast.LENGTH_LONG).show()
                             }
                         }
                     })

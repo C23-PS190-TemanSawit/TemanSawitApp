@@ -1,5 +1,7 @@
 package com.example.temansawit.ui.screen.profile
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,17 +14,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.temansawit.R
+import com.example.temansawit.data.Result
+import com.example.temansawit.di.Preferences
+import com.example.temansawit.ui.screen.ViewModelFactory
+import com.example.temansawit.ui.screen.home.HomeViewModel
 
 @Composable
-fun ChangePassword(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
+fun ChangePassword(
+    modifier: Modifier = Modifier,
+    navigateBack: () -> Unit,
+    viewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
     val currentPassword = remember { mutableStateOf("") }
     val newPassword = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
+    val currentPasswordInput = currentPassword.value
+    val newPasswordInput = newPassword.value
+    val confirmPasswordInput = confirmPassword.value
+
     val currentPasswordVisibility = remember { mutableStateOf(false) }
     val newPasswordVisibility = remember { mutableStateOf(false) }
     val confirmPasswordVisibility = remember { mutableStateOf(false) }
@@ -59,7 +81,7 @@ fun ChangePassword(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    value = currentPassword.value,
+                    value = currentPasswordInput,
                     label = { Text(text = "Password Saat ini") },
                     onValueChange = { currentPassword.value = it },
                     trailingIcon = {
@@ -87,7 +109,7 @@ fun ChangePassword(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    value = newPassword.value,
+                    value = newPasswordInput,
                     label = { Text(text = "Password Baru") },
                     onValueChange = { newPassword.value = it },
                     trailingIcon = {
@@ -114,7 +136,7 @@ fun ChangePassword(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    value = confirmPassword.value,
+                    value = confirmPasswordInput,
                     label = { Text(text = "Konfirmasi Password Baru") },
                     onValueChange = { confirmPassword.value = it },
                     trailingIcon = {
@@ -142,7 +164,21 @@ fun ChangePassword(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
                     modifier = modifier
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(100.dp)),
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        viewModel.changePassword(currentPasswordInput, newPasswordInput, confirmPasswordInput).observe(lifecycleOwner, {
+                            when (it) {
+                                is Result.Loading -> {
+                                    // Handle loading state if needed
+                                }
+                                is Result.Success -> {
+                                    Toast.makeText(context, it.data.message, Toast.LENGTH_LONG).show()
+                                }
+                                is Result.Error -> {
+                                    Toast.makeText(context, "Password tidak cocok, silahkan masukkan kembali password anda", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        })
+                    }
                 ) {
                     Text(text = "KONFIRMASI")
                 }

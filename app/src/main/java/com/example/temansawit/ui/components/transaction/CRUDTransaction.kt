@@ -20,9 +20,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.temansawit.data.Result
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.home.HomeViewModel
-import com.example.temansawit.data.Result
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -80,7 +80,7 @@ fun Income(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = trxTime,
-            label = { Text(text = "Tanggal Transaksi (bulan/tanggal/tahun)") },
+            label = { Text(text = "Tanggal Transaksi (YYYY-MM-DD)") },
             onValueChange = viewModel::onTanggalTrxChange
         )
 
@@ -99,7 +99,7 @@ fun Income(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = berat.toString(),
-            label = { Text(text = "Berat Timbangan") },
+            label = { Text(text = "Berat Timbangan (Kilogram)") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = viewModel::onWeightChange
         )
@@ -135,11 +135,12 @@ fun Income(
                             coroutineScope.launch {
                                     modalSheetState.hide()
                             }
-                            Toast.makeText(context, "Berhasil Menambahkan Catatan Transaksi", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, saveTrx.data.message, Toast.LENGTH_LONG).show()
                         }
                         is Result.Error -> {
-                            Toast.makeText(context, "Gagal, silahkan masukkan data dengan benar!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "Gagal, masukkan data dengan benar", Toast.LENGTH_LONG).show()
                         }
+                        else-> {}
                     }
                 })
             }
@@ -174,7 +175,7 @@ fun Outcome(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             value = trxTime,
-            label = { Text(text = "Tanggal (bulan/tanggal/tahun)") },
+            label = { Text(text = "Tanggal (YYYY-MM-DD)") },
             onValueChange = viewModel::onTanggalTrxChange
         )
         OutlinedTextField(
@@ -207,9 +208,12 @@ fun Outcome(
                             coroutineScope.launch {
                                 modalSheetState.hide()
                             }
-                            Toast.makeText(context, "Berhasil Menambahkan Catatan Pengeluaran", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, outcome.data.message, Toast.LENGTH_LONG).show()
                         }
-                        is Result.Error -> { outcome.error }
+                        is Result.Error -> {
+                            Toast.makeText(context, "Gagal, masukkan data dengan benar", Toast.LENGTH_LONG).show()
+                        }
+                        else -> {}
                     }
                 })
             }

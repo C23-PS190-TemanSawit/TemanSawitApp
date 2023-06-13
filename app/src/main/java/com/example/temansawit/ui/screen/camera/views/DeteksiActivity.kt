@@ -1,14 +1,11 @@
 package com.example.temansawit.ui.screen.camera.views
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +16,6 @@ import com.example.temansawit.ui.screen.camera.reduceFileImage
 import com.example.temansawit.ui.screen.camera.rotateFile
 import com.example.temansawit.ui.screen.camera.viewmodel.ApiS
 import com.example.temansawit.ui.screen.camera.viewmodel.ModelResponse
-import com.example.temansawit.ui.screen.camera.viewmodel.Top2
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -118,7 +114,7 @@ class DeteksiActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            val service = ApiS().getApiService().uploadImage(imageMultiPart)
+            val service = ApiS().getApiService2().uploadImage(imageMultiPart)
             service.enqueue(object : Callback<ModelResponse> {
                 override fun onResponse(
                     call: Call<ModelResponse>,

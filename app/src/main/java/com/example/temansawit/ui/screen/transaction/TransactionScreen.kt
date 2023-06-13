@@ -158,8 +158,8 @@ fun IncomeData(
             )
         }
     }
-
-}@Composable
+}
+@Composable
 fun OutcomeData(
     lisOutcome: List<OutcomeResponseItem>,
     modifier: Modifier = Modifier,

@@ -14,4 +14,11 @@ class ProfileViewModel(private val repository: Repository) : ViewModel() {
         get() = _logout
 
     fun logoutUser() = repository.logoutUser()
+    fun changePassword(
+        password: String, newPassword: String, confPassword: String
+    ) = repository.changePassword(password, newPassword, confPassword)
+
+    fun updateProfile(
+        fullname: String, phoneNumber: String, birthDate: String, gender: String
+    ) = repository.updateProfile(fullname, phoneNumber, birthDate, gender)
 }
