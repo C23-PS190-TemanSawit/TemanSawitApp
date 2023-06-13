@@ -108,7 +108,7 @@ fun TransactionScreen(
                                 val sortedIncome = uiState.data.incomeItems.sortedBy { it.transactionTime }
                                 val sortedOutcome = uiState.data.outcomeItems.sortedBy { it.transactionTime }
 
-                                if (uiState.data.incomeItems.isNotEmpty() && uiState.data.outcomeItems.isNotEmpty()) {
+                                if (uiState.data.incomeItems.isNotEmpty() || uiState.data.outcomeItems.isNotEmpty()) {
                                     IncomeData(
                                         listIncome = sortedIncome,
                                         modifier = modifier.padding(),
