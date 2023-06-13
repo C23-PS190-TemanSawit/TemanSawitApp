@@ -300,16 +300,11 @@ fun GrafikPendapatan(
     ) {
 
     Row {
-            Column(
-                modifier = modifier
-            ) {
-                SectionText(title = stringResource(R.string.grafik_pendapatan))
-                Text(
-                    text = "Juli 2023",
-                    style = Typography.body1,
-                    modifier = modifier.padding(horizontal = 16.dp)
-                )
-            }
+            SectionText(
+                title = stringResource(R.string.grafik_pendapatan),
+
+                modifier = Modifier.padding(top = 10.dp)
+            )
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
