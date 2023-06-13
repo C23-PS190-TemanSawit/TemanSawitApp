@@ -19,6 +19,8 @@ class ProfileViewModel(private val repository: Repository) : ViewModel() {
     ) = repository.changePassword(password, newPassword, confPassword)
 
     fun updateProfile(
-        fullname: String, phoneNumber: String, birthDate: String, gender: String
-    ) = repository.updateProfile(fullname, phoneNumber, birthDate, gender)
+        fullName: String, phoneNumber: String, birthDate: String, gender: String
+    ) = repository.updateProfile(fullName, phoneNumber, birthDate, gender)
+
+
 }

@@ -8,6 +8,7 @@ import com.example.temansawit.network.ApiService
 import com.example.temansawit.network.response.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -97,11 +98,11 @@ class Repository(private val apiService: ApiService) {
     fun updateProfile(
         fullname: String, phoneNumber: String, birthDate: String, gender: String): LiveData<Result<RegisterResponse>> = liveData {
         val json = JSONObject()
-        json.put("fullname", fullname)
+        json.put("fullName", fullname)
         json.put("phoneNumber", phoneNumber)
         json.put("birthDate", birthDate)
         json.put("gender", gender)
-        val requestBody = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+        val requestBody = json.toString().toRequestBody("application/json".toMediaType())
         emit(Result.Loading)
         try {
             val respone = apiService.updateProfile(requestBody)

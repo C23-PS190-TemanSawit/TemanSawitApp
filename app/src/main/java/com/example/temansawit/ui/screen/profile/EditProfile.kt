@@ -203,19 +203,18 @@ fun EditProfile(
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(100.dp)),
                     onClick = {
-                        viewModel.updateProfile(income2Input, income3Input, income4Input, income1Input).observe(lifecycleOwner, {
+                        viewModel.updateProfile(income1Input, income2Input, income4Input, selectedGenderInput).observe(lifecycleOwner, {
                             when (it) {
                                 is Result.Loading -> {
                                     // Handle loading state if needed
                                 }
                                 is Result.Success -> {
-                                    changePhoto(context)
+//                                    changePhoto(context)
                                     Toast.makeText(context, it.data.message, Toast.LENGTH_LONG).show()
                                 }
                                 is Result.Error -> {
                                     Toast.makeText(context, "Terjadi kesalahan saat update profile", Toast.LENGTH_LONG).show()
                                 }
-                                else -> {}
                             }
                         })
 
