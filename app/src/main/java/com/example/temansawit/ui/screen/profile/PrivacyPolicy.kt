@@ -56,9 +56,9 @@ fun PrivacyPolicy( modifier: Modifier = Modifier , navigateBack: () -> Unit){
                         fontSize = 12.sp
                         )
                     )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Aplikasi ini memilki hak cipta yang mana Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+                    text = "Kami menjaga privasi pengguna dengan serius. Kami hanya mengumpulkan informasi yang diperlukan untuk memberikan layanan kami. Informasi pribadi seperti nama, alamat email, dan nomor telepon hanya digunakan untuk tujuan aplikasi dan tidak akan dibagikan tanpa izin tertulis. Kami melindungi informasi pribadi dari akses tidak sah dan mengikuti tindakan keamanan yang sesuai. Pengguna dapat mengakses, memperbarui, atau menghapus informasi pribadi mereka. Dengan menggunakan aplikasi kami, pengguna menyetujui kebijakan privasi ini. Perubahan pada kebijakan privasi akan diinformasikan melalui pembaruan aplikasi atau kontak yang terdaftar.",
                     textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )

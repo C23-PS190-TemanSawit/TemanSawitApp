@@ -41,14 +41,16 @@ fun AboutUs(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
             )
         },
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(Color(0xFFC0DBCE))
                 .verticalScroll(rememberScrollState())
         ) {
-            Component4()
+            Column(Modifier.padding(bottom = 16.dp)) {
+                Component4()
+            }
         }
     }
 }
@@ -117,10 +119,10 @@ fun AboutR() {
         Image(
             painter = painterResource(R.drawable.brand),
             contentDescription = "Your Image",
-            modifier = Modifier.fillMaxWidth().height(200.dp)
+            modifier = Modifier.fillMaxWidth().height(150.dp)
         )
 
-        Text(text = "TemanSawit merupakan aplikasi blablabbla. Aplikasi ini dikembangkan oleh tim capstone Bangkit Academy 2023, dengan anggota tim:",
+        Text(text = "TemanSawit merupakan aplikasi yang dibuat untuk para petani sawit untuk memudahkan dalam mendeteksi bibit, mendeteksi tingkat kematangan buah, dan mencatat setiap transaksi yabg dilakukan oleh para petani sawit. Aplikasi ini dikembangkan oleh tim capstone Bangkit Academy 2023, dengan anggota tim:",
             textAlign = TextAlign.Justify,  modifier = Modifier.padding(vertical = 8.dp))
     }
 }

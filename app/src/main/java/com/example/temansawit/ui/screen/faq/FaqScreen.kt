@@ -130,7 +130,7 @@ fun FaqScreen(
                                     )
                                 ) {
                                     Box(modifier = Modifier.weight(1f)) {
-                                        Text(item.answer)
+                                        Text(item.answer,  modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Justify)
                                     }
                                 }
                             }
