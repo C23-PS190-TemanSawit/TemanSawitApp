@@ -1,22 +1,21 @@
 package com.example.temansawit.ui.screen.camera.views
 
-import ObjectDetectionHelper
+//import android.widget.ImageButton
+
+import ModelPredictor
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.graphics.RectF
-import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.View
 import android.view.ViewGroup
-//import android.widget.ImageButton
 import android.widget.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -37,10 +36,9 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp
 import org.tensorflow.lite.support.image.ops.Rot90Op
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.math.min
 import kotlin.random.Random
+
 
 @ExperimentalGetImage class CameraTActivity : AppCompatActivity() {
     private lateinit var container: ConstraintLayout
@@ -57,13 +55,13 @@ import kotlin.random.Random
     private var imageRotationDegrees: Int = 0
     private val tfImageBuffer = TensorImage(DataType.UINT8)
     private val view_finder: PreviewView
-    get() = findViewById<PreviewView>(R.id.view_finder)
+        get() = findViewById<PreviewView>(R.id.view_finder)
     private val image_predicted: ImageView
-    get() = findViewById<ImageView>(R.id.image_predicted)
+        get() = findViewById<ImageView>(R.id.image_predicted)
     private val box_prediction: View
-    get() = findViewById<View>(R.id.box_prediction)
-    private val text_prediction: TextView
-    get() = findViewById<TextView>(R.id.text_prediction)
+        get() = findViewById<View>(R.id.box_prediction)
+//    private val text_prediction: TextView
+//    get() = findViewById<TextView>(R.id.text_prediction)
 
     private val tfImageProcessor by lazy {
         val cropSize = minOf(bitmapBuffer.width, bitmapBuffer.height)
@@ -84,9 +82,7 @@ import kotlin.random.Random
     }
 
     private val detector by lazy {
-        ObjectDetectionHelper(tflite
-//            , FileUtil.loadLabels(this, LABELS_PATH)
-        )
+        ModelPredictor(tflite)
     }
 
     private val tfInputSize by lazy {
@@ -149,14 +145,12 @@ import kotlin.random.Random
                 // Convert the image to RGB and place it in our shared buffer
                 image.use { converter.yuvToRgb(image.image!!, bitmapBuffer) }
 
-                // Process the image in Tensorflow
-//                val tfImage =  tfImageProcessor.process(tfImageBuffer.apply { load(bitmapBuffer) })
-
                 // Perform the object detection for the current frame
-//                val predictions = detector.predict(tfImage)
+                Log.d(TAG, "New predict")
+                val predictions = detector.predict(bitmapBuffer)
 
                 // Report only the top prediction
-//                reportPrediction(predictions.maxBy { it.score })
+                updateBox(predictions)
 
                 // Compute the FPS of the entire pipeline
                 val frameCount = 10
@@ -184,84 +178,39 @@ import kotlin.random.Random
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun reportPrediction(
-        prediction: ObjectDetectionHelper.ObjectPrediction?
+    private fun updateBox(
+        predictions: FloatArray
     ) = view_finder.post {
 
         // Early exit: if prediction is not good enough, don't report it
-        if (prediction == null) {
+        if (predictions == null) {
             box_prediction.visibility = View.GONE
-            text_prediction.visibility = View.GONE
+//            text_prediction.visibility = View.GONE
             return@post
         }
 
-        // Location has to be mapped to our local coordinates
-        val location = mapOutputCoordinates(prediction.location)
+        // Perform screen normalization from model output -k
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+        val width = displayMetrics.widthPixels
+        predictions[0] = predictions[0] * height // Top
+        predictions[1] = predictions[1] * width // Left
+        predictions[2] = predictions[2] * height // Bottom
+        predictions[3] = predictions[3] * width // Right
 
-        // Update the UI
-        (box_prediction.layoutParams as ViewGroup.MarginLayoutParams).apply {
-            topMargin = location.top.toInt()
-            leftMargin = location.left.toInt()
-            width = min(view_finder.width, location.right.toInt() - location.left.toInt())
-            height = min(view_finder.height, location.bottom.toInt() - location.top.toInt())
-        }
+        // Update layout -k
+        box_prediction.y = predictions[0]
+        box_prediction.x = predictions[1]
+        val params: ViewGroup.LayoutParams = box_prediction.layoutParams
+        params.width = predictions[3].toInt() - predictions[1].toInt()
+        params.height = predictions[2].toInt() - predictions[0].toInt()
+        box_prediction.layoutParams = params
 
         // Make sure the box prediction element is visible
         box_prediction.visibility = View.VISIBLE
-        text_prediction.visibility = View.GONE
     }
 
-
-
-
-
-    private fun mapOutputCoordinates(location: RectF): RectF {
-
-        // Step 1: map location to the preview coordinates
-        val previewLocation = RectF(
-            location.left * view_finder.width,
-            location.top * view_finder.height,
-            location.right * view_finder.width,
-            location.bottom * view_finder.height
-        )
-
-        // Step 2: compensate for camera sensor orientation and mirroring
-        val isFrontFacing = lensFacing == CameraSelector.LENS_FACING_FRONT
-        val isFlippedOrientation = imageRotationDegrees == 90 || imageRotationDegrees == 270
-        val rotatedLocation = if (
-            (!isFrontFacing && isFlippedOrientation) ||
-            (isFrontFacing && !isFlippedOrientation)) {
-            RectF(
-                view_finder.width - previewLocation.right,
-                view_finder.height - previewLocation.bottom,
-                view_finder.width - previewLocation.left,
-                view_finder.height - previewLocation.top
-            )
-        } else {
-            previewLocation
-        }
-
-        // Step 3: compensate for 1:1 to 4:3 aspect ratio conversion + small margin
-        val margin = 0.1f
-        val requestedRatio = 4f / 3f
-        val midX = (rotatedLocation.left + rotatedLocation.right) / 2f
-        val midY = (rotatedLocation.top + rotatedLocation.bottom) / 2f
-        return if (view_finder.width < view_finder.height) {
-            RectF(
-                midX - (1f + margin) * requestedRatio * rotatedLocation.width() / 2f,
-                midY - (1f - margin) * rotatedLocation.height() / 2f,
-                midX + (1f + margin) * requestedRatio * rotatedLocation.width() / 2f,
-                midY + (1f - margin) * rotatedLocation.height() / 2f
-            )
-        } else {
-            RectF(
-                midX - (1f - margin) * rotatedLocation.width() / 2f,
-                midY - (1f + margin) * requestedRatio * rotatedLocation.height() / 2f,
-                midX + (1f - margin) * rotatedLocation.width() / 2f,
-                midY + (1f + margin) * requestedRatio * rotatedLocation.height() / 2f
-            )
-        }
-    }
 
     override fun onResume() {
         super.onResume()
