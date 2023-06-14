@@ -55,9 +55,18 @@ fun TermsandConditions( modifier: Modifier = Modifier , navigateBack: () -> Unit
                         fontSize = 12.sp
                     )
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Aplikasi ini memilki hak cipta yang mana Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+                    text=" Dengan menggunakan aplikasi kami, Anda setuju untuk:\n" +
+                            "\n" +
+                            "1. Menggunakan aplikasi ini hanya untuk tujuan yang sah dan tidak melanggar hukum.\n" +
+                            "2. Tidak menggandakan, mendistribusikan, atau menggunakan konten aplikasi tanpa izin tertulis.\n" +
+                            "3. Memahami bahwa ketersediaan aplikasi tidak dijamin dan kami tidak bertanggung jawab atas kerusakan yang timbul dari penggunaannya.\n" +
+                            "4. Mengetahui bahwa tautan eksternal dalam aplikasi bukan tanggung jawab kami dan penggunaannya menjadi tanggung jawab Anda.\n" +
+                            "5. Kami akan melindungi privasi Anda sesuai dengan kebijakan privasi yang berlaku.\n" +
+                            "6. Memahami bahwa syarat dan ketentuan ini dapat berubah, dan perubahan akan diinformasikan kepada Anda.\n" +
+                            "\n" +
+                            "Dengan menggunakan aplikasi kami, Anda menyetujui syarat dan ketentuan ini. Jika Anda tidak setuju, harap hentikan penggunaan aplikasi kami.",
                     textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
