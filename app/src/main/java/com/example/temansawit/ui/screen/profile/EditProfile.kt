@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.screen.profile
 
-import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,17 +27,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.example.temansawit.R
 import com.example.temansawit.data.Result
-import com.example.temansawit.network.ApiConfig
-import com.example.temansawit.network.response.RegisterResponse
 import com.example.temansawit.ui.screen.ViewModelFactory
-import com.example.temansawit.ui.screen.camera.reduceFileImage
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.File
 
 
 @Composable
@@ -68,8 +57,22 @@ fun EditProfile(
     val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
 
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (activity != null && uri != null) {
+        if (uri != null) {
             selectedImageUri.value = uri
+        }
+    }
+
+    viewModel.photo.collectAsState().value.let {
+        when (it) {
+            is Result.Loading -> {
+                // Handle loading state if needed
+            }
+            is Result.Success -> {
+                Toast.makeText(context, it.data.message, Toast.LENGTH_LONG).show()
+            }
+            is Result.Error -> {
+                Toast.makeText(context, "Terjadi kesalahan saat update profile", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -217,7 +220,10 @@ fun EditProfile(
                                 }
                             }
                         })
-
+                        selectedImageUri.value?.let {uri -> context.contentResolver.openInputStream(uri)?.let { inputStream ->
+                            viewModel.changePhoto(inputStream)
+                        }
+                        }
                     }
                 ) {
                     Text(text = "SIMPAN PERUBAHAN")
@@ -227,30 +233,3 @@ fun EditProfile(
     )
 }
 
-private fun changePhoto(context: Context) {
-    val myFile: File? = null
-    val file = reduceFileImage(myFile as File)
-    val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
-    val imageMultiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
-        "file",
-        file.name,
-        requestImageFile
-    )
-
-    val response = ApiConfig.getApiService(context).changePhoto(imageMultiPart)
-    response.enqueue(object : Callback<RegisterResponse> {
-        override fun onResponse(
-            call: Call<RegisterResponse>,
-            response: Response<RegisterResponse>
-        ) {
-            if (response.isSuccessful){
-                val responseBody = response.body()?.message
-                Result.Success(responseBody)
-            }
-        }
-
-        override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-            Result.Error<RegisterResponse>(t.message.toString())
-        }
-    })
-}

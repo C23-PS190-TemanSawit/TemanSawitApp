@@ -31,10 +31,11 @@ interface ApiService {
         @Body forgotPassword: RequestBody
     ): RegisterResponse
 
+    @Multipart
     @POST("/api/upload")
-    fun changePhoto(
+    suspend fun changePhoto(
         @Part file: MultipartBody.Part,
-    ): Call<RegisterResponse>
+    ): RegisterResponse
 
     @PUT("/api/profile")
     suspend fun updateProfile(

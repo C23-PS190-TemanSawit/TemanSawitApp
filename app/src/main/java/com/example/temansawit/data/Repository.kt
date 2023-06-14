@@ -6,12 +6,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.temansawit.network.ApiService
 import com.example.temansawit.network.response.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.io.InputStream
 
 class Repository(private val apiService: ApiService) {
 
@@ -60,8 +65,10 @@ class Repository(private val apiService: ApiService) {
             Log.e(TAG, "logoutRepository: ${e.message.toString()}")
         }
     }
+
     fun changePassword(
-        password: String, newPassword: String, confPassword: String): LiveData<Result<RegisterResponse>> = liveData {
+        password: String, newPassword: String, confPassword: String
+    ): LiveData<Result<RegisterResponse>> = liveData {
         val json = JSONObject()
         json.put("password", password)
         json.put("newPassword", newPassword)
@@ -77,8 +84,10 @@ class Repository(private val apiService: ApiService) {
             emit(Result.Error(e.message.toString()))
         }
     }
+
     fun forgotPassword(
-        username: String, newPassword: String, confPassword: String): LiveData<Result<RegisterResponse>> = liveData {
+        username: String, newPassword: String, confPassword: String
+    ): LiveData<Result<RegisterResponse>> = liveData {
         val json = JSONObject()
         json.put("username", username)
         json.put("newPassword", newPassword)
@@ -96,7 +105,8 @@ class Repository(private val apiService: ApiService) {
     }
 
     fun updateProfile(
-        fullname: String, phoneNumber: String, birthDate: String, gender: String): LiveData<Result<RegisterResponse>> = liveData {
+        fullname: String, phoneNumber: String, birthDate: String, gender: String
+    ): LiveData<Result<RegisterResponse>> = liveData {
         val json = JSONObject()
         json.put("fullName", fullname)
         json.put("phoneNumber", phoneNumber)
@@ -112,6 +122,31 @@ class Repository(private val apiService: ApiService) {
             Log.e(TAG, "updateProfile: ${e.message.toString()}")
         }
     }
+
+    suspend fun changePhoto(uri: InputStream): Result<RegisterResponse> =
+        try {
+//            val myFile: File = File(uri.path)
+//    val file = reduceFileImage(myFile)
+//    val requestImageFile = myFile.asRequestBody("image/jpg".toMediaTypeOrNull())
+            val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), uri.readBytes())
+//            val requestFile = uri.readBytes().asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imageMultiPart =
+                MultipartBody.Part.createFormData("file", "ahayyyy", requestFile)
+//    val imageMultiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
+//        "file",
+//        myFile.name,
+//        requestImageFile
+//    )
+            val response = apiService.changePhoto(imageMultiPart)
+            Result.Success(response)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            Result.Error(e.message.toString())
+        } finally {
+            withContext(Dispatchers.IO) {
+                uri.close()
+            }
+        }
 
     fun getUserProfile(): Flow<UserResponse> = flow {
         try {
