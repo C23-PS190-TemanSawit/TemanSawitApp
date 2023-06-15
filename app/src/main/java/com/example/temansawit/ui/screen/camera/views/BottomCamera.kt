@@ -64,7 +64,6 @@ fun BottomCamera(
                     )
                 }
                 BottomNavigationItem(
-//                    selected = currentRoute == item.screen.route,
                     selected = currentRoute?.hierarchy?.any { it.route == item.screen.route } == true,
                     selectedContentColor = GreenPrimary,
                     unselectedContentColor = Color.Gray,

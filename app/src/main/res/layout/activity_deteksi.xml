@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.screen.camera.views.DeteksiActivity">
 
-
-
     <ImageView
         android:id="@+id/previewImageView"
         android:layout_width="0dp"

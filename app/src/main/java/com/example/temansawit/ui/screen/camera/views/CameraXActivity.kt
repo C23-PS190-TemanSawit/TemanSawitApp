@@ -44,7 +44,6 @@ class CameraXActivity  : AppCompatActivity() {
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
         val photoFile = com.example.temansawit.ui.screen.camera.createFile(application)
-//        showLoading(true)
         Toast.makeText(this,"AMBIL PHOTO", Toast.LENGTH_SHORT).show()
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
         imageCapture.takePicture(
@@ -52,7 +51,6 @@ class CameraXActivity  : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-//                    showLoading(false)
                     Toast.makeText(
                         this@CameraXActivity,
                       "gagal mengambil photo",
@@ -122,7 +120,4 @@ class CameraXActivity  : AppCompatActivity() {
         }
         supportActionBar?.hide()
     }
-//    private fun showLoading(isLoading: Boolean) {
-//        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-//    }
 }

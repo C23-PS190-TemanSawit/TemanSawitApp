@@ -11,14 +11,7 @@ import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicYuvToRGB
 import java.nio.ByteBuffer
 
-/**
- * Helper class used to efficiently convert a [Media.Image] object from
- * YUV_420_888 format to an RGB [Bitmap] object.
- *
- * The [yuvToRgb] method is able to achieve the same FPS as the CameraX image
- * analysis use case at the default analyzer resolution, which is 30 FPS with
- * 640x480 on a Pixel 3 XL device.
- */
+
 class YuvToRgbConverter(context: Context) {
     private val rs = RenderScript.create(context)
     private val scriptYuvToRgb = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs))
@@ -31,17 +24,16 @@ class YuvToRgbConverter(context: Context) {
     @Synchronized
     fun yuvToRgb(image: Image, output: Bitmap) {
 
-        // Ensure that the intermediate output byte buffer is allocated
         if (!::yuvBuffer.isInitialized) {
             pixelCount = image.cropRect.width() * image.cropRect.height()
             yuvBuffer = ByteBuffer.allocateDirect(
                 pixelCount * ImageFormat.getBitsPerPixel(ImageFormat.YUV_420_888) / 8)
         }
 
-        // Get the YUV data in byte array form
+
         imageToByteBuffer(image, yuvBuffer)
 
-        // Ensure that the RenderScript inputs and outputs are allocated
+
         if (!::inputAllocation.isInitialized) {
             inputAllocation = Allocation.createSized(rs, Element.U8(rs), yuvBuffer.array().size)
         }
@@ -49,7 +41,7 @@ class YuvToRgbConverter(context: Context) {
             outputAllocation = Allocation.createFromBitmap(rs, output)
         }
 
-        // Convert YUV to RGB
+
         inputAllocation.copyFrom(yuvBuffer.array())
         scriptYuvToRgb.setInput(inputAllocation)
         scriptYuvToRgb.forEach(outputAllocation)
@@ -65,32 +57,9 @@ class YuvToRgbConverter(context: Context) {
 
         imagePlanes.forEachIndexed { planeIndex, plane ->
 
-            // How many values are read in input for each output value written
-            // Only the Y plane has a value for every pixel, U and V have half the resolution i.e.
-            //
-            // Y Plane            U Plane    V Plane
-            // ===============    =======    =======
-            // Y Y Y Y Y Y Y Y    U U U U    V V V V
-            // Y Y Y Y Y Y Y Y    U U U U    V V V V
-            // Y Y Y Y Y Y Y Y    U U U U    V V V V
-            // Y Y Y Y Y Y Y Y    U U U U    V V V V
-            // Y Y Y Y Y Y Y Y
-            // Y Y Y Y Y Y Y Y
-            // Y Y Y Y Y Y Y Y
+
             val outputStride: Int
 
-            // The index in the output buffer the next value will be written at
-            // For Y it's zero, for U and V we start at the end of Y and interleave them i.e.
-            //
-            // First chunk        Second chunk
-            // ===============    ===============
-            // Y Y Y Y Y Y Y Y    U V U V U V U V
-            // Y Y Y Y Y Y Y Y    U V U V U V U V
-            // Y Y Y Y Y Y Y Y    U V U V U V U V
-            // Y Y Y Y Y Y Y Y    U V U V U V U V
-            // Y Y Y Y Y Y Y Y
-            // Y Y Y Y Y Y Y Y
-            // Y Y Y Y Y Y Y Y
             var outputOffset: Int
 
             when (planeIndex) {
@@ -107,7 +76,7 @@ class YuvToRgbConverter(context: Context) {
                     outputOffset = pixelCount
                 }
                 else -> {
-                    // Image contains more than 3 planes, something strange is going on
+
                     return@forEachIndexed
                 }
             }
@@ -116,7 +85,6 @@ class YuvToRgbConverter(context: Context) {
             val rowStride = plane.rowStride
             val pixelStride = plane.pixelStride
 
-            // We have to divide the width and height by two if it's not the Y plane
             val planeCrop = if (planeIndex == 0) {
                 imageCrop
             } else {
@@ -135,13 +103,12 @@ class YuvToRgbConverter(context: Context) {
             for (row in 0 until planeHeight) {
                 val length: Int
                 if (pixelStride == 1 && outputStride == 1) {
-                    // When there is a single stride value for pixel and output, we can just copy
-                    // the entire row in a single step
+
                     length = planeWidth
                     buffer.get(outputBuffer.array(), outputOffset, length)
                     outputOffset += length
                 } else {
-                    // When either pixel or output have a stride > 1 we must copy pixel by pixel
+
                     length = (planeWidth - 1) * pixelStride + 1
                     buffer.get(rowData, 0, length)
                     for (col in 0 until planeWidth) {

@@ -58,8 +58,7 @@ import kotlin.random.Random
         get() = findViewById<ImageView>(R.id.image_predicted)
     private val box_prediction: View
         get() = findViewById<View>(R.id.box_prediction)
-//    private val text_prediction: TextView
-//    get() = findViewById<TextView>(R.id.text_prediction)
+
 
     private val tfImageProcessor by lazy {
         val cropSize = minOf(bitmapBuffer.width, bitmapBuffer.height)
@@ -87,7 +86,7 @@ import kotlin.random.Random
         val inputIndex = 0
         val inputShape = tflite.getInputTensor(inputIndex).shape()
         println("inputShape: ${inputShape.contentToString()}")
-        Size(inputShape[2], inputShape[1]) // Order of axis is: {1, height, width, 3}
+        Size(inputShape[2], inputShape[1])
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,23 +97,22 @@ import kotlin.random.Random
 
     }
 
-    /** Declare and bind preview and analysis use cases */
+
     @SuppressLint("UnsafeExperimentalUsageError")
     private fun bindCameraUseCases() = view_finder.post {
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener(Runnable {
 
-            // Camera provider is now guaranteed to be available
             val cameraProvider = cameraProviderFuture.get()
 
-            // Set up the view finder use case to display camera preview
+
             val preview = Preview.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .setTargetRotation(view_finder.display.rotation)
                 .build()
 
-            // Set up the image analysis use case which will process frames in real time
+
             val imageAnalysis = ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                 .setTargetRotation(view_finder.display.rotation)
@@ -127,30 +125,28 @@ import kotlin.random.Random
 
             imageAnalysis.setAnalyzer(executor, ImageAnalysis.Analyzer { image ->
                 if (!::bitmapBuffer.isInitialized) {
-                    // The image rotation and RGB image buffer are initialized only once
-                    // the analyzer has started running
+
                     imageRotationDegrees = image.imageInfo.rotationDegrees
                     bitmapBuffer = Bitmap.createBitmap(
                         image.width, image.height, Bitmap.Config.ARGB_8888)
                 }
 
-                // Early exit: image analysis is in paused state
+
                 if (pauseAnalysis) {
                     image.close()
                     return@Analyzer
                 }
 
-                // Convert the image to RGB and place it in our shared buffer
+
                 image.use { converter.yuvToRgb(image.image!!, bitmapBuffer) }
 
-                // Perform the object detection for the current frame
+
                 Log.d(TAG, "New predict")
                 val predictions = detector.predict(bitmapBuffer)
 
-                // Report only the top prediction
                 updateBox(predictions)
 
-                // Compute the FPS of the entire pipeline
+
                 val frameCount = 10
                 if (++frameCounter % frameCount == 0) {
                     frameCounter = 0
@@ -162,15 +158,15 @@ import kotlin.random.Random
                 }
             })
 
-            // Create a new camera selector each time, enforcing lens facing
+
             val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
-            // Apply declared configs to CameraX using the same lifecycle owner
+
             cameraProvider.unbindAll()
             val camera = cameraProvider.bindToLifecycle(
                 this as LifecycleOwner, cameraSelector, preview, imageAnalysis)
 
-            // Use the camera object to link our preview use case with the view
+
             preview.setSurfaceProvider(view_finder.getSurfaceProvider())
 
         }, ContextCompat.getMainExecutor(this))
@@ -180,14 +176,14 @@ import kotlin.random.Random
         predictions: FloatArray
     ) = view_finder.post {
 
-        // Early exit: if prediction is not good enough, don't report it
+
         if (predictions == null) {
             box_prediction.visibility = View.GONE
-//            text_prediction.visibility = View.GONE
+
             return@post
         }
 
-        // Perform screen normalization from model output -k
+
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val height = displayMetrics.heightPixels
@@ -197,7 +193,7 @@ import kotlin.random.Random
         predictions[2] = predictions[2] * height // Bottom
         predictions[3] = predictions[3] * width // Right
 
-        // Update layout -k
+
         box_prediction.y = predictions[0]
         box_prediction.x = predictions[1]
         val params: ViewGroup.LayoutParams = box_prediction.layoutParams
@@ -205,7 +201,7 @@ import kotlin.random.Random
         params.height = predictions[2].toInt() - predictions[0].toInt()
         box_prediction.layoutParams = params
 
-        // Make sure the box prediction element is visible
+
         box_prediction.visibility = View.VISIBLE
     }
 
@@ -213,7 +209,6 @@ import kotlin.random.Random
     override fun onResume() {
         super.onResume()
 
-        // Request permissions each time the app resumes, since they can be revoked at any time
         if (!hasPermissions(this)) {
             ActivityCompat.requestPermissions(
                 this, permissions.toTypedArray(), permissionsRequestCode)
@@ -231,11 +226,11 @@ import kotlin.random.Random
         if (requestCode == permissionsRequestCode && hasPermissions(this)) {
             bindCameraUseCases()
         } else {
-            finish() // If we don't have the required permissions, we can't run
+            finish()
         }
     }
 
-    /** Convenience method used to check if all permissions required by this app are granted */
+
     private fun hasPermissions(context: Context) = permissions.all {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }

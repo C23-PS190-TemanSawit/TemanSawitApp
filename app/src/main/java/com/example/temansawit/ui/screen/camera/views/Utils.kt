@@ -41,11 +41,10 @@ fun rotateFile(file: File, isBackCamera: Boolean = false) {
     val matrix = Matrix()
     val bitmap = BitmapFactory.decodeFile(file.path)
 
-    // Menentukan rotasi berdasarkan orientasi kamera
     val rotation = if (isBackCamera) 0f else 90f
     matrix.postRotate(rotation)
 
-    // Memastikan orientasi gambar menjadi potret
+
     if (bitmap.width > bitmap.height) {
         matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
     }

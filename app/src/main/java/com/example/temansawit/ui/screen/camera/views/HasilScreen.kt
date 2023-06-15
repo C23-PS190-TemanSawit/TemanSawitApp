@@ -76,7 +76,6 @@ fun HasilScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(4.dp),
-//                        painter = BitmapFactory.decodeFile(file),
                         painter = rememberAsyncImagePainter(
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(file)

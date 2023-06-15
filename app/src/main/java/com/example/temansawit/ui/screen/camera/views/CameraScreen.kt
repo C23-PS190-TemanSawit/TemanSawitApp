@@ -58,7 +58,6 @@ fun CameraScreen() {
         contentColor = Color.White
     )
 
-    // Track the visibility of the dialog
     val showDialog = remember { mutableStateOf(false) }
 
     Column(
@@ -95,7 +94,6 @@ fun CameraScreen() {
         }
     }
 
-    // Show the dialog based on the visibility state
     ConfirmationDialog(
         showDialog.value,
         onConfirm = {
