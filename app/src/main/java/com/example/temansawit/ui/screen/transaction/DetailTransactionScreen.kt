@@ -52,7 +52,7 @@ fun DetailTrxScreen(
                 elevation = 10.dp
             )
         }
-    ) { it
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -128,7 +128,7 @@ fun DetailOutcomeScreen(
                 elevation = 10.dp
             )
         }
-    ) { it
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()

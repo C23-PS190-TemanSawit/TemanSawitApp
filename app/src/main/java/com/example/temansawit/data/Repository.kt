@@ -125,18 +125,10 @@ class Repository(private val apiService: ApiService) {
 
     suspend fun changePhoto(uri: InputStream): Result<RegisterResponse> =
         try {
-//            val myFile: File = File(uri.path)
-//    val file = reduceFileImage(myFile)
-//    val requestImageFile = myFile.asRequestBody("image/jpg".toMediaTypeOrNull())
             val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), uri.readBytes())
-//            val requestFile = uri.readBytes().asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val imageMultiPart =
                 MultipartBody.Part.createFormData("file", "ahayyyy", requestFile)
-//    val imageMultiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
-//        "file",
-//        myFile.name,
-//        requestImageFile
-//    )
+
             val response = apiService.changePhoto(imageMultiPart)
             Result.Success(response)
         } catch (e: Throwable) {
@@ -176,19 +168,6 @@ class Repository(private val apiService: ApiService) {
             emit(Result.Error(e.message.toString()))
         }
     }
-//
-//    fun combineResponses(): Observable<CombinedResponse> {
-//        val incomeObservable: Observable<List<IncomeResponseItem>> = apiService.getIncome()
-//        val outcomeObservable: Observable<List<OutcomeResponseItem>> = apiService.getOutcome()
-//
-//        return Observable.zip(
-//            incomeObservable,
-//            outcomeObservable,
-//            { incomeList, outcomeList ->
-//                CombinedResponse(incomeList, outcomeList)
-//            }
-//        )
-//    }
 
     fun getIncome(): Flow<List<IncomeResponseItem>> = flow {
         val response = apiService.getIncome()

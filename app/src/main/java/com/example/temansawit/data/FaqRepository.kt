@@ -6,18 +6,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class FaqRepository {
-    private val FaqList = mutableListOf<FaqModel>()
+    private val faqList = mutableListOf<FaqModel>()
 
     init {
-        if (FaqList.isEmpty()) {
+        if (faqList.isEmpty()) {
             Faqs.FAQS.forEach {
-                FaqList.add(FaqModel(it, 0))
+                faqList.add(FaqModel(it, 0))
             }
         }
     }
 
     fun getAllFaqs() : Flow<List<FaqModel>> {
-        return flowOf(FaqList)
+        return flowOf(faqList)
     }
 
     companion object{

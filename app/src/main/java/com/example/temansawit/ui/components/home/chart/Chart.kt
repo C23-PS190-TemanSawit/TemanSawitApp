@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.components.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -34,13 +33,6 @@ private fun ComposeChart1(listIncome: List<IncomeResponseItem>) {
             bottomAxis = bottomAxis(guideline = null),
             marker = marker,
         )
-//        Chart(
-//            chart = lineChart(persistentMarkers = remember(marker) { mapOf(PERSISTENT_MARKER_X to marker) }),
-//            chartModelProducer = chartEntryModelProducer,
-//            startAxis = startAxis(),
-//            bottomAxis = bottomAxis(guideline = null),
-//            marker = marker,
-//        )
     }
 }
 

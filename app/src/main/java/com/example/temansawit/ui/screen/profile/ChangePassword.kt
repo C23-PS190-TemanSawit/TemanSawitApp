@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.screen.profile
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,12 +20,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.temansawit.R
 import com.example.temansawit.data.Result
-import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.screen.ViewModelFactory
-import com.example.temansawit.ui.screen.home.HomeViewModel
 
 @Composable
 fun ChangePassword(

@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.screen.camera.views
 
-//import android.widget.ImageButton
 
 import ModelPredictor
 import android.Manifest
@@ -8,7 +7,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.RectF
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log

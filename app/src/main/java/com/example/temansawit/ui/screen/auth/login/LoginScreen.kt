@@ -36,10 +36,10 @@ fun LoginScreen(
     val username = usernameInput.value
     val password = passwordInput.value
 
-    Scaffold {
+    Scaffold {paddingValues ->
         Column(
             modifier
-                .padding(it)
+                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())) {
             WelcomeLogin()
             LoginInput(

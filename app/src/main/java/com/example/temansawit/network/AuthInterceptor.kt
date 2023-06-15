@@ -1,10 +1,6 @@
 package com.example.temansawit.network
 
 import android.content.Context
-import android.util.Log
-import com.example.temansawit.di.Preferences
-import com.example.temansawit.network.response.NewTokenResponse
-import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -29,7 +25,6 @@ class AuthInterceptor(private var token: String, private var context: Context): 
         }
         val response = chain.proceed(request)
             if (response.code == 403) {
-                // TODO : save new access token to shared preference
                 val sharedPreferences =
                     context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
                 val token = sharedPreferences.getString("access_token", null).toString()

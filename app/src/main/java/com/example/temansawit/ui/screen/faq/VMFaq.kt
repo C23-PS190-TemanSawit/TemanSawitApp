@@ -3,9 +3,6 @@ package com.example.temansawit.ui.screen.faq
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.temansawit.data.FaqRepository
-import com.example.temansawit.data.Repository
-import com.example.temansawit.ui.screen.home.HomeViewModel
-import com.example.temansawit.ui.screen.transaction.TransactiomViewModel
 
 class VMFaq (private val repository: FaqRepository) :
     ViewModelProvider.NewInstanceFactory() {

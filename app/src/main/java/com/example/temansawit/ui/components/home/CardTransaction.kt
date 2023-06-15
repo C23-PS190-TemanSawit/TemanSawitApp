@@ -63,7 +63,7 @@ fun IncomeCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Rp ${totalWithFormat}",
+                    text = "Rp $totalWithFormat",
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
@@ -135,7 +135,7 @@ fun OutcomeCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Rp ${totalWithFormat}",
+                    text = "Rp $totalWithFormat",
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,

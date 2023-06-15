@@ -112,8 +112,7 @@ fun CardIncomeDetail(
                     }
                 }
                 Spacer(modifier = Modifier.padding(12.dp))
-                Row(
-                ) {
+                Row {
                     Text(
                         text = "Harga per Kg",
                         modifier.weight(2f),
@@ -128,8 +127,7 @@ fun CardIncomeDetail(
                     )
                 }
                 Spacer(modifier = Modifier.padding(8.dp))
-                Row(
-                ) {
+                Row {
                     Text(
                         text = "Total Berat",
                         modifier.weight(2f),
@@ -231,8 +229,7 @@ fun CardOutcomeDetail(
                     }
                 }
                 Spacer(modifier = Modifier.padding(12.dp))
-                Row(
-                ) {
+                Row {
                     Text(
                         text = "Total Pengeluaran",
                         modifier.weight(2f),

@@ -20,14 +20,6 @@ data class AuthResponse(
 	val email: String,
 )
 
-data class NewTokenResponse(
-	@field:SerializedName("status")
-	val status: String,
-
-	@field:SerializedName("accessToken")
-	val accessToken: String
-)
-
 data class RegisterResponse(
 	@field:SerializedName("status")
 	val status: String,

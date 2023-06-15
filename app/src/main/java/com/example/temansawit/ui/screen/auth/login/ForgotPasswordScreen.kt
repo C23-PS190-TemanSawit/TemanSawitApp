@@ -35,10 +35,10 @@ fun ForgotPasswordScreen(
     val password = passwordInput.value
     val confPassword = confPasswordInput.value
 
-    Scaffold {
+    Scaffold { input ->
         Column(
             modifier
-                .padding(it)
+                .padding(input)
                 .verticalScroll(rememberScrollState())) {
             WelcomeForgot()
             ForgotPasswordInput(

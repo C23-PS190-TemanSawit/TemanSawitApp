@@ -1,20 +1,13 @@
 package com.example.temansawit.ui.screen.camera
 
-import android.content.Intent
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -23,16 +16,10 @@ import com.example.temansawit.R
 import com.example.temansawit.ui.navigation.NavigationItem
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.theme.GreenPrimary
-import com.example.temansawit.ui.theme.Typography
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomCamera(
     modifier: Modifier = Modifier, navHostController: NavHostController,
-//    modalSheetState: ModalBottomSheetState,
-//    content: @Composable () -> Unit
-
 ) {
     BottomNavigation(
         modifier = modifier,

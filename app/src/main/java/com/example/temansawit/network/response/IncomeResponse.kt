@@ -1,7 +1,5 @@
 package com.example.temansawit.network.response
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class TrxResponse(
@@ -18,9 +16,7 @@ data class TrxResponse(
 	val outcomeResponse: List<OutcomeResponseItem>
 )
 
-@Entity(tableName = "income")
 data class IncomeResponseItem(
-	@PrimaryKey
 	@field:SerializedName("incomeId")
 	val incomeId: Int,
 
@@ -46,9 +42,7 @@ data class IncomeResponseItem(
 	val userId: Int,
 )
 
-@Entity(tableName = "Outcome")
 data class OutcomeResponseItem(
-	@PrimaryKey
 	@field:SerializedName("outcomeId")
 	val outcomeId: Int,
 
@@ -74,38 +68,4 @@ data class OutcomeResponseItem(
 data class CombinedResponse(
 	val incomeItems: List<IncomeResponseItem>,
 	val outcomeItems: List<OutcomeResponseItem>
-)
-
-data class CombinedResponse2(
-	@PrimaryKey
-	@field:SerializedName("incomeId")
-	val incomeId: Int,
-
-	@field:SerializedName("outcomeId")
-	val outcomeId: Int,
-
-
-	@field:SerializedName("total_outcome")
-	val total_outcome: Int,
-
-	@field:SerializedName("transaction_time")
-	val transactionTime: String,
-
-	@field:SerializedName("price")
-	val price: Int,
-
-	@field:SerializedName("total_weight")
-	val totalWeight: Int,
-
-	@field:SerializedName("description")
-	val description: String,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String,
-
-	@field:SerializedName("updatedAt")
-	val updatedAt: String,
-
-	@field:SerializedName("userId")
-	val userId: Int,
 )

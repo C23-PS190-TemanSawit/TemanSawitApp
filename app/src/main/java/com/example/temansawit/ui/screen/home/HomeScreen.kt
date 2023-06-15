@@ -38,7 +38,6 @@ import com.example.temansawit.ui.screen.transaction.IncomeData
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
-import com.example.temansawit.ui.theme.Typography
 import com.example.temansawit.util.TransactionViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -295,7 +294,6 @@ fun Component1(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GrafikPendapatan(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     ) {
 

@@ -1,9 +1,7 @@
 package com.example.temansawit.network
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import com.example.temansawit.di.Preferences
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -30,7 +28,6 @@ class ApiConfig {
         fun getApiService(context: Context): ApiService {
             val sharedPreferences =
                 context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-//            val preferences = Preferences.initPref(context, "onLogin")
             val token = sharedPreferences.getString("access_token", null).toString()
             Log.d("ApiConfig", token)
 

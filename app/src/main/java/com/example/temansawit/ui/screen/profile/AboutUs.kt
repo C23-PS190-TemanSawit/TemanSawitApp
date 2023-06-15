@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.temansawit.R
-import com.example.temansawit.ui.theme.GreenPressed
 
 @Composable
 fun AboutUs(modifier: Modifier = Modifier, navigateBack: () -> Unit) {
