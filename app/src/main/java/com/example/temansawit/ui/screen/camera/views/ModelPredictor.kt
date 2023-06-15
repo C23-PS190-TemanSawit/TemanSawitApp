@@ -62,11 +62,22 @@ class ModelPredictor(private val interpreter: Interpreter) {
         val boxScore  = outputBufferCall1.floatArray
 
         // Highest score index
-        val maxIdx = boxScore.indices.maxOrNull() ?: -1
+//        val maxIdx = boxScore.indices.maxOrNull() ?: -1
 
         // Get coordinate for every detected box
-        val boxCoordinate = outputBufferCall3.floatArray
 
+        var maxScore = Float.MIN_VALUE
+        var maxIdx = -1
+
+        for (i in boxScore.indices) {
+            if (boxScore[i] > maxScore) {
+                maxScore = boxScore[i]
+                maxIdx = i
+            }
+        }
+
+        if (maxIdx != -1) {
+            val boxCoordinate = outputBufferCall3.floatArray
         // Get final coordinate
         val top     = boxCoordinate[maxIdx * 4]         // Let's say box idx 0 => 0 | box idx 9 => 36
         val left    = boxCoordinate[maxIdx * 4 + 1]     //                        1 | box idx 9 => 37
@@ -80,7 +91,10 @@ class ModelPredictor(private val interpreter: Interpreter) {
 
         // RAW Output from model
         return finalCoordinate
-
+        } else {
+            // Handle error when maxIdx is not found
+            return FloatArray(0)
+        }
         // Normalized with input image output
 //        return normalizePrediction(finalCoordinate, image.width, image.height)
     }
