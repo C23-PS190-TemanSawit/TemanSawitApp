@@ -29,7 +29,10 @@ class HasilActivity : AppCompatActivity() {
                     intent.getFloatExtra("overripe", 0F),
                     intent.getFloatExtra("rotten", 0F),
                     intent.getFloatExtra("empty_bunch", 0F),
-                )
+                ){
+                    finish()
+                }
+
             }
         }
     }

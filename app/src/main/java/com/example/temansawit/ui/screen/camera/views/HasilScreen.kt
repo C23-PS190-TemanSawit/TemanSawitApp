@@ -37,7 +37,8 @@ fun HasilScreen(
     overripe: Float,
     rotten: Float,
     empty_bunch: Float,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    navigateBack: () -> Unit) {
     val context = LocalContext.current
     val selectedGender = remember { mutableStateOf("") }
 
@@ -50,7 +51,7 @@ fun HasilScreen(
                 contentColor = Color.White,
                 elevation = 10.dp,
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle navigation back */ }) {
+                    IconButton(onClick =  navigateBack) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_navigate_before_24),
                             contentDescription = "Back"
