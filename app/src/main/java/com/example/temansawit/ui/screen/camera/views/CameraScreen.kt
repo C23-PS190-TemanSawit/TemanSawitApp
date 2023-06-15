@@ -32,7 +32,7 @@ fun ConfirmationDialog(
         AlertDialog(
             onDismissRequest = { onDismiss() },
             title = { Text(text = "Catatan", fontWeight = FontWeight.Bold) },
-            text = { Text(text = "Arahkan kamera handphone ke bibit sawit (disarankan dari arah atas), di layer handphone akan memperlihatkan letak posisi sulur. \n") },
+            text = { Text(text = "Arahkan kamera handphone ke bibit sawit (disarankan dari arah atas), di layar handphone akan memperlihatkan letak posisi sulur. \n") },
             confirmButton = {
                 Button(
                     onClick = {
