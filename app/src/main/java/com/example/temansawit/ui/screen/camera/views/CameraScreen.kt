@@ -89,7 +89,7 @@ fun CameraScreen() {
                 context.startActivity(intent)
             }
         ) {
-            Text(text = "DATEKSI KEMATANGAN BUAH")
+            Text(text = "DETEKSI KEMATANGAN BUAH")
         }
     }
 
