@@ -2,7 +2,7 @@
 
 # Mobile Development Path
 
-mobile development, we implement a mobile application called TemanSawit, which allows users to track their income and outcome. The application offers features such as a home page displaying total income, transaction charts, and transaction history. Users can add new transactions and view detailed information for each transaction. Special features from this application are object detection of fruit ripeness and real time detection of gender palm fruit using TensorFlow Lite. The project's execution involved designing the user interface, implementing the application logic, and integrating it with backend services.
+TemanSawit is an app designed to assist middle to lower-scale oil palm farmers in making informed decisions and improving their productivity. The app addresses the challenges faced by farmers in selecting quality oil palm seedlings and determining fruit maturity levels. By providing features such as palm seedling abnormality detection, fruit maturity level detection, and digital harvest recording, TemanSawit aims to minimize the risk of seedling selection errors, optimize oil palm production, and enhance the management and transparency of oil palm sales data.
 
 The MD division consists of:
 
@@ -28,7 +28,9 @@ Repository Pattern
 ## Build
 <!-- Test -->
 1. Clone the project
-[git clone https://github.com/Terrafarms/bangkit-mobile-development.git]https://github.com/TemanSawit/TemanSawitApp.git)
+```bash
+git clone https://github.com/Terrafarms/bangkit-mobile-development.git
+```
 2. Open the project using Android Studio
 3. Run the app
 
