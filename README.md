@@ -47,12 +47,12 @@ This feature serves to assist farmers in recording every income and outcome so t
 <!-- Test -->
 1. Clone the project
 ```bash
-git clone https://github.com/Terrafarms/bangkit-mobile-development.git
+https://github.com/C23-PS190-TemanSawit/TemanSawitApp.git
 ```
 2. Open the project using Android Studio
 3. Run the app
 
-## Build
+## Contact
 <!-- Test -->
 For any inquiries or feedback, please contact the project team at temansawit@gmail.com
 
