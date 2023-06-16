@@ -1,4 +1,4 @@
-<img src="https://github.com/TemanSawit/TemanSawitApp/assets/92320588/8f1164de-88f0-4eca-9270-bf40219bb6fd"  width="1000" height="600">
+<img src="https://github.com/TemanSawit/TemanSawitApp/assets/92320588/8f1164de-88f0-4eca-9270-bf40219bb6fd"  width="700" height="400">
 
 # Mobile Development Path
 
