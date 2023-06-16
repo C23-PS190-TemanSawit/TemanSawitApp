@@ -23,9 +23,9 @@ Repository Pattern
 -  [Room](https://developer.android.com/training/data-storage/room) : Store data in the local database using Room
 -  [CameraX](https://developer.android.com/training/camerax?hl=id) : CameraX is a Jetpack library, built to ease the development of camera apps.
 -  [Material Design](https://m3.material.io/) : Material Design is to provide consistent and intuitive design guidelines for application development.
--  [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) : MPAndroidChart is a library developed by Philipp Jahoda, which is used to create interactive charts in Android apps.
 -  [Coroutines](https://developer.android.com/kotlin/coroutines?hl=id) : Coroutine is a concurrent design pattern that you can use in Android to simplify asynchronously executed code.
--  [Datastore](https://developer.android.com/training/data-storage/shared-preferences) : DataStore is a modern data storage solution that you should use instead of SharedPreferences
+-  [Shared preferences](https://developer.android.com/training/data-storage/shared-preferences) : Shared Preferences are used in Android app development to store data persistently on the device.
+-  [Vico](https://patrykandpatrick.com/vico/wiki/) : Vico is a light and extensible chart library for Android. It’s compatible with both Jetpack Compose and the view system, but its two main modules—compose and views—are independent.
 
 ## 💡 Design with Figma
 <!-- Test -->
