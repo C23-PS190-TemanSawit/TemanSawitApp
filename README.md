@@ -1,4 +1,4 @@
-![Splash Screen](https://github.com/TemanSawit/TemanSawitApp/assets/92320588/79dbc335-6521-4344-a3b0-d6fc6c28190a)</br>
+<img src="https://github.com/TemanSawit/TemanSawitApp/assets/92320588/79dbc335-6521-4344-a3b0-d6fc6c28190a"  width="400" height="700"><br />
 
 # Mobile Development Path
 
