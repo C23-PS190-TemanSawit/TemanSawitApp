@@ -16,14 +16,27 @@ The MD division consists of:
 - Architecture
 MVVM Architecture (View - ViewModel - Model)
 Repository Pattern
-- Retrofit2 & OkHttp3: Construct the REST APIs and paging network data.
-- Glide: Loading images from network.
-- TensorFlow Lite: TensorFlow Lite is an open source deep learning framework for on-device inference.
+- [Retrofit2 & OkHttp3](https://github.com/square/retrofit): Construct the REST APIs and paging network data.
+- [Glide](https://github.com/bumptech/glide): Loading images from network.
+- [TensorFlow Lite](https://www.tensorflow.org/lite/android?hl=id): TensorFlow Lite is an open source deep learning framework for on-device inference.
 - [Jetpact Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAjwkLCkBhA9EiwAka9QRoDjsHwvjkPI1IqNOZk6H4kdF3VYhhhCG0pKZXUIxHW3jD3W2eDuHBoClgIQAvD_BwE&gclsrc=aw.ds)
--  Room
--  CameraX
--  Material Design
--  MPAndroidChart
+-  [Room](https://developer.android.com/training/data-storage/room)
+-  [CameraX](https://developer.android.com/training/camerax?hl=id)
+-  [Material Design](https://m3.material.io/)
+-  [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+-  [Coroutines](https://developer.android.com/kotlin?gclid=CjwKCAjwkLCkBhA9EiwAka9QRk1yaOV6XNnik0xdLDkVGwZUSt8HPtbhtPHzDtAtldD2f6YpDNxDMBoCVeMQAvD_BwE&gclsrc=aw.ds)
+-  [Datastore](https://developer.android.com/training/data-storage/shared-preferences)
+
+## 💡 Features
+<!-- Test -->
+TemanSawit has three main features:
+- Detection of palm fruit maturity in real time
+This feature serves to help farmers detect the level of maturity of palm fruit and is expected to increase the effectiveness of fruit maturity which affects the quality of palm oil produced.
+- Gender detection of oil palm seedlings
+This feature helps farmers distinguish between male and female seedlings by identifying the location of tendrils on the leaves of oil palms that indicate the gender of oil palm seedlings.
+- Income and outcome recording system
+This feature serves to assist farmers in recording every income and outcome so that farmers are easier to organize their income.
+
 
 ## Build
 <!-- Test -->
