@@ -20,3 +20,20 @@ The MD division consists of:
 - Noor Saputri (A057DSY1102)
 - Muhammad Sohiburroihan Akbar (A057DSX1726)
 
+
+## 🛠️ Tech stack & Open-source libraries
+<!-- Test -->
+- Minimum SDK level 21
+- Architecture
+MVVM Architecture (View - ViewModel - Model)
+Repository Pattern
+- Retrofit2 & OkHttp3: Construct the REST APIs and paging network data.
+- Glide: Loading images from network.
+- TensorFlow Lite: TensorFlow Lite is an open source deep learning framework for on-device inference.
+- [Jetpact Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAjwkLCkBhA9EiwAka9QRoDjsHwvjkPI1IqNOZk6H4kdF3VYhhhCG0pKZXUIxHW3jD3W2eDuHBoClgIQAvD_BwE&gclsrc=aw.ds)
+-  Room
+-  CameraX
+-  Material Design
+-  MPAndroidChart
+
+
