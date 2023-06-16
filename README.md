@@ -1,8 +1,5 @@
 <img src="https://github.com/TemanSawit/TemanSawitApp/assets/92320588/8f1164de-88f0-4eca-9270-bf40219bb6fd"  width="1000" height="700">
 
-
-
-
 # Mobile Development Path
 
 mobile development, we implement a mobile application called TemanSawit, which allows users to track their income and outcome. The application offers features such as a home page displaying total income, transaction charts, and transaction history. Users can add new transactions and view detailed information for each transaction. Special features from this application are object detection of fruit ripeness and real time detection of gender palm fruit using TensorFlow Lite. The project's execution involved designing the user interface, implementing the application logic, and integrating it with backend services.
@@ -30,6 +27,10 @@ Repository Pattern
 
 ## Build
 <!-- Test -->
+1. Clone the project
+[git clone https://github.com/Terrafarms/bangkit-mobile-development.git]https://github.com/TemanSawit/TemanSawitApp.git)
+2. Open the project using Android Studio
+3. Run the app
 
 
 
