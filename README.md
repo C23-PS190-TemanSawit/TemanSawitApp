@@ -20,7 +20,6 @@ Repository Pattern
 - [Glide](https://github.com/bumptech/glide): Loading images from network.
 - [TensorFlow Lite](https://www.tensorflow.org/lite/android?hl=id): TensorFlow Lite is an open source deep learning framework for on-device inference.
 - [Jetpact Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAjwkLCkBhA9EiwAka9QRoDjsHwvjkPI1IqNOZk6H4kdF3VYhhhCG0pKZXUIxHW3jD3W2eDuHBoClgIQAvD_BwE&gclsrc=aw.ds) : Jetpack Compose is a modern UI toolkit developed by Google for building user interfaces (UI) in Android applications.
--  [Room](https://developer.android.com/training/data-storage/room) : Store data in the local database using Room
 -  [CameraX](https://developer.android.com/training/camerax?hl=id) : CameraX is a Jetpack library, built to ease the development of camera apps.
 -  [Material Design](https://m3.material.io/) : Material Design is to provide consistent and intuitive design guidelines for application development.
 -  [Coroutines](https://developer.android.com/kotlin/coroutines?hl=id) : Coroutine is a concurrent design pattern that you can use in Android to simplify asynchronously executed code.
