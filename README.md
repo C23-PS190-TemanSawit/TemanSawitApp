@@ -1,5 +1,1 @@
-# TemanSawitApp
-> pengen turu anjay  
-[Bismillah dapet kerjaan](https://www.linkedin.com/in/sohiburroihan/)
-> pengen turu anjay  
-[Bismillah dapet kerjaan](https://www.linkedin.com/in/sohiburroihan/)
+<h6>Mobile Development Path</h6>
