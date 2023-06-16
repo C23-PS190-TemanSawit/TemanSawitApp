@@ -34,5 +34,9 @@ git clone https://github.com/Terrafarms/bangkit-mobile-development.git
 2. Open the project using Android Studio
 3. Run the app
 
+## Build
+<!-- Test -->
+For any inquiries or feedback, please contact the project team at temansawit@gmail.com
+
 
 
