@@ -20,12 +20,17 @@ Repository Pattern
 - [Glide](https://github.com/bumptech/glide): Loading images from network.
 - [TensorFlow Lite](https://www.tensorflow.org/lite/android?hl=id): TensorFlow Lite is an open source deep learning framework for on-device inference.
 - [Jetpact Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAjwkLCkBhA9EiwAka9QRoDjsHwvjkPI1IqNOZk6H4kdF3VYhhhCG0pKZXUIxHW3jD3W2eDuHBoClgIQAvD_BwE&gclsrc=aw.ds)
--  [Room](https://developer.android.com/training/data-storage/room)
--  [CameraX](https://developer.android.com/training/camerax?hl=id)
--  [Material Design](https://m3.material.io/)
--  [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
--  [Coroutines](https://developer.android.com/kotlin?gclid=CjwKCAjwkLCkBhA9EiwAka9QRk1yaOV6XNnik0xdLDkVGwZUSt8HPtbhtPHzDtAtldD2f6YpDNxDMBoCVeMQAvD_BwE&gclsrc=aw.ds)
--  [Datastore](https://developer.android.com/training/data-storage/shared-preferences)
+-  [Room](https://developer.android.com/training/data-storage/room) : Store data in the local database using Room
+-  [CameraX](https://developer.android.com/training/camerax?hl=id) : CameraX is a Jetpack library, built to ease the development of camera apps.
+-  [Material Design](https://m3.material.io/) : Material Design is to provide consistent and intuitive design guidelines for application development.
+-  [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) : MPAndroidChart is a library developed by Philipp Jahoda, which is used to create interactive charts in Android apps.
+-  [Coroutines](https://developer.android.com/kotlin/coroutines?hl=id) : Coroutine is a concurrent design pattern that you can use in Android to simplify asynchronously executed code.
+-  [Datastore](https://developer.android.com/training/data-storage/shared-preferences) : DataStore is a modern data storage solution that you should use instead of SharedPreferences
+
+## 💡 Design with Figma
+<!-- Test -->
+- [Design System](https://www.figma.com/file/5gnRl5pdbAD3HzFzi132ps/TemanSawit-%7C-Bangkit-Capstone?type=design&node-id=0%3A1&t=WKjh8UlYX8DIFvlz-1)
+- [Mobile Design](https://www.figma.com/file/5gnRl5pdbAD3HzFzi132ps/TemanSawit-%7C-Bangkit-Capstone?type=design&node-id=2%3A430&t=WKjh8UlYX8DIFvlz-1)
 
 ## 💡 Features
 <!-- Test -->
