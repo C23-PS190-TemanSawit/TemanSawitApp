@@ -2,7 +2,7 @@
 
 # Mobile Development Path
 
-TemanSawit is an app designed to assist middle to lower-scale oil palm farmers in making informed decisions and improving their productivity. The app addresses the challenges faced by farmers in selecting quality oil palm seedlings and determining fruit maturity levels. By providing features such as palm seedling abnormality detection, fruit maturity level detection, and digital harvest recording, TemanSawit aims to minimize the risk of seedling selection errors, optimize oil palm production, and enhance the management and transparency of oil palm sales data.
+We will develop modern and visually appealing apps using Kotlin programming and integrating the Jetpack Compose, Room, Retrofit2, CameraX, Material Design, and MPAndroidChart libraries. We implement a clean code architecture, connect applications to the API, and apply third-party services. Our application design follows the features designed based on existing problems and user needs using Figma.
 
 The MD division consists of:
 
