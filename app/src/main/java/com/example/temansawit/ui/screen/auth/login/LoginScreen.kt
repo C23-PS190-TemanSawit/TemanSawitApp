@@ -29,8 +29,9 @@ fun LoginScreen(
         factory = ViewModelFactory(LocalContext.current)
     ),
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
+
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val usernameInput = viewModel.usernameState.observeAsState(initial = "")
     val passwordInput = viewModel.passwordState.observeAsState(initial = "")
     val username = usernameInput.value

@@ -64,7 +64,7 @@ fun TransactionScreen(
         }
     ) {
         ScaffoldApp(
-            modifier = modifier.padding(vertical = 36.dp),
+            modifier = modifier.padding(top = 26.dp),
             bottomBar = {
                 if (currentRoute != Screen.DetailTransaction.route) {
                     BottomBar(navHostController)
@@ -104,30 +104,63 @@ fun TransactionScreen(
                                 viewModel.fetchCombinedResponse()
                             }
                             is UiState.Success -> {
-                                val sortedIncome = uiState.data.incomeItems.sortedBy { it.transactionTime }
-                                val sortedOutcome = uiState.data.outcomeItems.sortedBy { it.transactionTime }
+                                val mergedList = (uiState.data.incomeItems + uiState.data.outcomeItems)
+                                    .sortedBy { it.transactionTime }
+                                    .reversed()
 
-                                if (uiState.data.incomeItems.isNotEmpty() || uiState.data.outcomeItems.isNotEmpty()) {
-                                    IncomeData(
-                                        listIncome = sortedIncome,
-                                        modifier = modifier.padding(),
-                                        navigateToDetail = navigateIncomeDetail
-                                    )
-                                    OutcomeData(
-                                        lisOutcome = sortedOutcome,
-                                        navigateToDetail = navigateOutcomeDetail
-                                    )
+                                if (mergedList.isNotEmpty()) {
+                                    Column {
+                                        mergedList.forEach { item ->
+                                            when (item) {
+                                                is IncomeResponseItem -> {
+                                                    // Display IncomeData UI for income item
+                                                    IncomeData(
+                                                        listIncome = listOf(item),
+                                                        modifier = modifier.padding(),
+                                                        navigateToDetail = navigateIncomeDetail
+                                                    )
+                                                }
+                                                is OutcomeResponseItem -> {
+                                                    // Display OutcomeData UI for outcome item
+                                                    OutcomeData(
+                                                        lisOutcome = listOf(item),
+                                                        navigateToDetail = navigateOutcomeDetail
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
                                 } else {
                                     Column(
                                         modifier = Modifier.fillMaxSize(),
                                         horizontalAlignment = CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center,
+                                        verticalArrangement = Arrangement.Center
                                     ) {
-                                        Text(
-                                            text = "Tidak ada data",
-                                        )
+                                        Text(text = "Tidak ada data")
                                     }
                                 }
+
+//                                if (uiState.data.incomeItems.isNotEmpty() || uiState.data.outcomeItems.isNotEmpty()) {
+//                                    IncomeData(
+//                                        listIncome = sortedIncome,
+//                                        modifier = modifier.padding(),
+//                                        navigateToDetail = navigateIncomeDetail
+//                                    )
+//                                    OutcomeData(
+//                                        lisOutcome = sortedOutcome,
+//                                        navigateToDetail = navigateOutcomeDetail
+//                                    )
+//                                } else {
+//                                    Column(
+//                                        modifier = Modifier.fillMaxSize(),
+//                                        horizontalAlignment = CenterHorizontally,
+//                                        verticalArrangement = Arrangement.Center,
+//                                    ) {
+//                                        Text(
+//                                            text = "Tidak ada data",
+//                                        )
+//                                    }
+//                                }
                             }
                             is UiState.Error -> {}
                         }

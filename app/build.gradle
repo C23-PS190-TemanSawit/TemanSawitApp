@@ -122,8 +122,6 @@ dependencies {
     // ViewModel n Lifecycle
     implementation 'androidx.fragment:fragment-ktx:1.5.6'
     implementation "androidx.activity:activity-ktx:1.7.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     // Tensorflow Lite
@@ -133,11 +131,6 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-gpu:+'
 
     implementation 'io.coil-kt:coil-compose:2.4.0'
-
-    //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
     //rxjava
     implementation 'io.reactivex.rxjava3:rxjava:3.1.2'

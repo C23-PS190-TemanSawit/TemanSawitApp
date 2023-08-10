@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +36,7 @@ import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.transaction.IncomeData
+import com.example.temansawit.ui.screen.transaction.OutcomeData
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
 import com.example.temansawit.ui.theme.GreenSurface
@@ -97,11 +99,18 @@ fun HomePage(
 
                 content = {
                     HomeScreen(
-                        navigateToDetail = { transactionId ->
+                        navigateIncomeDetail = { transactionId ->
                             navHostController.navigate(
                                 Screen.DetailTransaction.createRoute(
                                     transactionId
                                 ),
+                            )
+                        },
+                        navigateOutcomeDetail = { outcomeId ->
+                            navHostController.navigate(
+                                Screen.DetailOutcome.createRoute(
+                                    outcomeId
+                                )
                             )
                         },
                         viewModel = transactionViewModel,
@@ -120,7 +129,6 @@ fun HomePage(
                     )
                 }
             )
-//        }
     }
 }
 
@@ -132,7 +140,8 @@ fun HomeScreen(
         factory = ViewModelFactory(LocalContext.current)
     ),
     navHostController: NavHostController,
-    navigateToDetail: (Int) -> Unit,
+    navigateIncomeDetail: (Int) -> Unit,
+    navigateOutcomeDetail: (Int) -> Unit,
     modalSheetState: ModalBottomSheetState,
     onClick: () -> Unit
     ) {
@@ -146,6 +155,11 @@ fun HomeScreen(
                         viewModel.fetchCombinedResponse()
                     }
                     is UiState.Success -> {
+                        val mergedList = (uiState.data.incomeItems + uiState.data.outcomeItems)
+                            .sortedBy { it.transactionTime }
+                            .reversed()
+                            .take(3)
+
                         Component1(
                             navHostController = navHostController,
                             listIncome = uiState.data.incomeItems,
@@ -160,11 +174,37 @@ fun HomeScreen(
                         Box(modifier = Modifier
                             .padding(bottom = 36.dp, start = 16.dp, end = 16.dp)
                         ) {
-                            IncomeData(
-                                listIncome = uiState.data.incomeItems.takeLast(2),
-                                modifier = modifier.padding(),
-                                navigateToDetail = navigateToDetail
-                            )
+                            if (mergedList.isNotEmpty()) {
+                                Column {
+                                    mergedList.forEach { item ->
+                                        when (item) {
+                                            is IncomeResponseItem -> {
+                                                // Display IncomeData UI for income item
+                                                IncomeData(
+                                                    listIncome = listOf(item),
+                                                    modifier = modifier.padding(),
+                                                    navigateToDetail = navigateIncomeDetail
+                                                )
+                                            }
+                                            is OutcomeResponseItem -> {
+                                                // Display OutcomeData UI for outcome item
+                                                OutcomeData(
+                                                    lisOutcome = listOf(item),
+                                                    navigateToDetail = navigateOutcomeDetail
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(text = "Tidak ada data")
+                                }
+                            }
 //                            OutcomeData(
 //                                lisOutcome = uiState.data.outcomeItems,
 //                                modifier = modifier.padding(),
@@ -183,7 +223,7 @@ fun HomeScreen(
 
 @Composable
 fun Alert403(navHostController: NavHostController) {
-    Column() {
+    Column {
         val openDialog = remember { mutableStateOf(true)  }
         val context = LocalContext.current
         AlertDialog(
@@ -282,7 +322,7 @@ fun Component1(
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "Rp ${totalIncomeWithFormat}",
+                    text = "Rp $totalIncomeWithFormat",
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp)
@@ -291,7 +331,6 @@ fun Component1(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GrafikPendapatan(
     onClick: () -> Unit,

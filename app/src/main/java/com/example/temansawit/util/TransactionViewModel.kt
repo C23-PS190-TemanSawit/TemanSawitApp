@@ -1,5 +1,6 @@
 package com.example.temansawit.util
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.temansawit.data.Repository
@@ -24,6 +25,7 @@ class TransactionViewModel(private val repository: Repository) : ViewModel() {
                     CombinedResponse(response1, response2)
                 }.collect { combinedResponse ->
                     _combinedResponse.value = UiState.Success(combinedResponse)
+                    Log.d("ahayy", combinedResponse.toString())
                 }
             } catch (e: Exception) {
                 _combinedResponse.value = UiState.Error(e.message.toString())

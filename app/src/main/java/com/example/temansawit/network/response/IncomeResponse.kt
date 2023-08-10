@@ -16,12 +16,14 @@ data class TrxResponse(
 	val outcomeResponse: List<OutcomeResponseItem>
 )
 
+open class TransactionItem(open val transactionTime: String)
+
 data class IncomeResponseItem(
 	@field:SerializedName("incomeId")
 	val incomeId: Int,
 
 	@field:SerializedName("transaction_time")
-	val transactionTime: String,
+	override val transactionTime: String,
 
 	@field:SerializedName("price")
 	val price: Int,
@@ -40,14 +42,14 @@ data class IncomeResponseItem(
 
 	@field:SerializedName("userId")
 	val userId: Int,
-)
+): TransactionItem(transactionTime)
 
 data class OutcomeResponseItem(
 	@field:SerializedName("outcomeId")
 	val outcomeId: Int,
 
 	@field:SerializedName("transaction_time")
-	val transactionTime: String,
+	override val transactionTime: String,
 
 	@field:SerializedName("total_outcome")
 	val total_outcome: Int,
@@ -63,7 +65,7 @@ data class OutcomeResponseItem(
 
 	@field:SerializedName("userId")
 	val userId: Int,
-)
+): TransactionItem(transactionTime)
 
 data class CombinedResponse(
 	val incomeItems: List<IncomeResponseItem>,
