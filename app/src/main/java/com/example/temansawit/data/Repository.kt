@@ -127,7 +127,7 @@ class Repository(private val apiService: ApiService) {
         try {
             val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), uri.readBytes())
             val imageMultiPart =
-                MultipartBody.Part.createFormData("file", "ahayyyy", requestFile)
+                    MultipartBody.Part.createFormData("file", "ahayyyy", requestFile)
 
             val response = apiService.changePhoto(imageMultiPart)
             Result.Success(response)
@@ -171,6 +171,7 @@ class Repository(private val apiService: ApiService) {
 
     fun getIncome(): Flow<List<IncomeResponseItem>> = flow {
         val response = apiService.getIncome()
+        Log.d("repository", "loading")
         emit(response)
     }
 
@@ -187,6 +188,14 @@ class Repository(private val apiService: ApiService) {
     fun getOutcomeById(outcomeId: Int): Flow<OutcomeResponseItem> = flow {
         val response = apiService.getOutcomeById(outcomeId).first()
         emit(response)
+    }
+    fun deleteIncome(incomeId: Int): LiveData<Result<IncomeResponseItem>> = liveData {
+        val response = apiService.deleteIncome(incomeId)
+        emit(Result.Success(response))
+    }
+    fun deleteOutcome(outcomeId: Int): LiveData<Result<OutcomeResponseItem>> = liveData {
+        val response = apiService.deleteOutcome(outcomeId)
+        emit(Result.Success(response))
     }
 
     fun createOutcome(

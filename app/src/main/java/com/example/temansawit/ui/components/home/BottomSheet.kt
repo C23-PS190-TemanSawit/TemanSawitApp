@@ -1,3 +1,6 @@
+package com.example.temansawit.ui.components.home
+
+import CameraScreen
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

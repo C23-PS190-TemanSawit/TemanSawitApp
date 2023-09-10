@@ -1,6 +1,5 @@
 package com.example.temansawit.ui.screen.faq
 
-import BottomSheet
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -20,6 +19,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.temansawit.R
 import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.model.Faqs.FAQS
+import com.example.temansawit.ui.components.home.BottomSheet
+import com.example.temansawit.ui.components.home.BottomSheetType
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.theme.Green700

@@ -1,7 +1,5 @@
 package com.example.temansawit.ui.screen.home
 
-import BottomSheet
-import BottomSheetType
 import android.content.Context
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -39,6 +37,7 @@ import com.example.temansawit.ui.screen.transaction.IncomeData
 import com.example.temansawit.ui.screen.transaction.OutcomeData
 import com.example.temansawit.ui.theme.Green700
 import com.example.temansawit.ui.theme.GreenPressed
+import com.example.temansawit.ui.theme.GreenPrimary
 import com.example.temansawit.ui.theme.GreenSurface
 import com.example.temansawit.util.TransactionViewModel
 import kotlinx.coroutines.launch
@@ -145,14 +144,26 @@ fun HomeScreen(
     modalSheetState: ModalBottomSheetState,
     onClick: () -> Unit
     ) {
+    LaunchedEffect(true) {
+        viewModel.fetchCombinedResponse()
+    }
         Column(
             modifier = Modifier
                         .verticalScroll(rememberScrollState())
         ) {
-            viewModel.combinedResponse.collectAsState(initial = UiState.Loading).value.let { uiState ->
+            viewModel.combinedResponse.collectAsState().value.let { uiState ->
                 when (uiState) {
                     is UiState.Loading -> {
-                        viewModel.fetchCombinedResponse()
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(Alignment.Center)
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(28.dp),
+                                color = GreenPrimary
+                            )
+                        }
                     }
                     is UiState.Success -> {
                         val mergedList = (uiState.data.incomeItems + uiState.data.outcomeItems)
@@ -287,11 +298,9 @@ fun Component1(
                 name = name,
                 imageUser = imageUser
             )
-            viewModel.name.collectAsState(initial = UiState.Loading).value.let { user ->
+            viewModel.name.collectAsState().value.let { user ->
                 when (user) {
-                    is UiState.Loading -> {
-                        viewModel.getUserProfile()
-                    }
+                    is UiState.Loading -> {}
                     is UiState.Success -> {
                         name = user.data.username.toString()
                         if (user.data.image != null ) {

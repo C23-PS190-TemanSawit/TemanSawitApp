@@ -1,7 +1,5 @@
 package com.example.temansawit.ui.screen.profile
 
-import BottomSheet
-import BottomSheetType
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -35,6 +33,8 @@ import com.example.temansawit.ScaffoldApp
 import com.example.temansawit.data.Result
 import com.example.temansawit.di.Preferences
 import com.example.temansawit.ui.common.UiState
+import com.example.temansawit.ui.components.home.BottomSheet
+import com.example.temansawit.ui.components.home.BottomSheetType
 import com.example.temansawit.ui.components.navigation.BottomBar
 import com.example.temansawit.ui.navigation.Screen
 import com.example.temansawit.ui.screen.ViewModelFactory

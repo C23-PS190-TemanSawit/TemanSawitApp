@@ -1,11 +1,10 @@
 package com.example.temansawit.ui.screen.camera.views
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import com.example.temansawit.ui.screen.camera.HasilScreen
-import com.example.temansawit.ui.screen.camera.viewmodel.Top2
 import com.example.temansawit.ui.theme.TemanSawitTheme
 import java.io.File
 

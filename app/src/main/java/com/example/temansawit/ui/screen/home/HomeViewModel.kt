@@ -1,5 +1,6 @@
 package com.example.temansawit.ui.screen.home
 
+import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,14 +12,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Date
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
     private val _name: MutableStateFlow<UiState<UserResponse>> = MutableStateFlow(UiState.Loading)
     val name: StateFlow<UiState<UserResponse>>
         get() = _name
 
-    private val _tanggalTrx = MutableLiveData("")
-    val tanggalTrx: LiveData<String> get() =  _tanggalTrx
+    init {
+        getUserProfile()
+    }
+
+    private val _tanggalTrx = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        MutableLiveData<LocalDate>(LocalDate.now())
+    } else {
+        TODO("VERSION.SDK_INT < O")
+    }
+    val tanggalTrx: LiveData<LocalDate> get() =  _tanggalTrx
     private val _harga = MutableLiveData<Int>()
     val harga: LiveData<Int> get() =  _harga
     private val _berat = MutableLiveData<Int>()
@@ -28,7 +39,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
     private val _deskripsi = MutableLiveData("")
     val deskripsi: LiveData<String> get() =  _deskripsi
 
-    fun onTanggalTrxChange(tanggalTrx: String) {
+    fun onTanggalTrxChange(tanggalTrx: LocalDate) {
         _tanggalTrx.value = tanggalTrx
     }
     fun onPriceChange(price: String) {

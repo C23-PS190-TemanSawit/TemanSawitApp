@@ -16,7 +16,10 @@ data class TrxResponse(
 	val outcomeResponse: List<OutcomeResponseItem>
 )
 
-open class TransactionItem(open val transactionTime: String)
+open class TransactionItem(
+	open val transactionTime: String,
+//	open val description: String
+	)
 
 data class IncomeResponseItem(
 	@field:SerializedName("incomeId")

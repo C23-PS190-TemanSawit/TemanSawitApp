@@ -7,6 +7,7 @@ import com.example.temansawit.data.Repository
 import com.example.temansawit.network.response.IncomeResponseItem
 import com.example.temansawit.network.response.OutcomeResponseItem
 import com.example.temansawit.ui.common.UiState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -67,4 +68,7 @@ class TransactiomViewModel(private val repository: Repository) : ViewModel() {
                 }
         }
     }
+
+    fun deleteIncome(incomeId: Int) = repository.deleteIncome(incomeId)
+    fun deleteOutcome(outcomeId: Int) = repository.deleteOutcome(outcomeId)
 }

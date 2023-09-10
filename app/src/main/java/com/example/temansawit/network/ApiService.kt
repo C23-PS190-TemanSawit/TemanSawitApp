@@ -67,4 +67,10 @@ interface ApiService {
 
     @GET("/api/outcome")
     suspend fun getOutcome(): List<OutcomeResponseItem>
+    @DELETE("/api/income/{incomeId}")
+    suspend fun deleteIncome(@Path("incomeId") incomeId: Int): IncomeResponseItem
+
+    @DELETE("/api/outcome/{outcomeId}")
+    suspend fun deleteOutcome(@Path("outcomeId") outcomeId: Int): OutcomeResponseItem
+
 }

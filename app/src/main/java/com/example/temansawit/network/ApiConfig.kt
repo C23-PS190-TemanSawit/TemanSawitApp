@@ -32,7 +32,8 @@ class ApiConfig {
             Log.d("ApiConfig", token)
 
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://temansawit-api-sqmlxtcfma-ts.a.run.app")
+//                .baseUrl("https://temansawit-api-sqmlxtcfma-ts.a.run.app")
+                .baseUrl("https://temansawit-api-khtk6p34bq-uc.a.run.app")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getInterceptor(token, context))
                 .build()

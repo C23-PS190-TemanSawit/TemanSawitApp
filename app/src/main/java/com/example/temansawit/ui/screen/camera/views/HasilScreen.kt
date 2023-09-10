@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.temansawit.R
-import com.example.temansawit.ui.screen.camera.views.DeteksiActivity
-import com.example.temansawit.ui.theme.GreenPrimary
+import com.example.temansawit.ui.screen.camera.views.DeteksiKematanganActivity
 import java.io.File
 
 
@@ -122,32 +121,32 @@ fun HasilScreen(
                 LazyColumn {
                     if (ripe != 0f) {
                         item {
-                            Result(tipe = "ripe", result = ripe, color = GreenPrimary)
+                            Result(tipe = "Matang", result = ripe, color = Color(0xFF51DD3B))
                         }
                     }
                     if (underripe != 0f) {
                         item {
-                            Result(tipe = "underripe", result = underripe, color = Color.Yellow)
+                            Result(tipe = "Kurang Matang", result = underripe, color = Color(0xFFFFA726))
                         }
                     }
                     if (unripe != 0f) {
                         item {
-                            Result(tipe = "unripe", result = unripe, color = Color.Red)
+                            Result(tipe = "Mentah", result = unripe, color = Color(0xFFFF3A72))
                         }
                     }
                     if (overripe != 0f) {
                         item {
-                            Result(tipe = "overripe", result = overripe, color = Color.Yellow)
+                            Result(tipe = "Terlalu Matang", result = overripe, color = Color(0xFFFFA726))
                         }
                     }
                     if (rotten != 0f) {
                         item {
-                            Result(tipe = "rotten", result = rotten, color = Color.Red)
+                            Result(tipe = "Busuk", result = rotten, color = Color(0xFFFF3A72))
                         }
                     }
                     if (empty_bunch != 0f) {
                         item {
-                            Result(tipe = "empty_bunch", result = empty_bunch, color = Color.Black)
+                            Result(tipe = "Kopong", result = empty_bunch, color = Color.Black)
                         }
                     }
                 }
@@ -156,7 +155,7 @@ fun HasilScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(100.dp)),
-                    onClick = {  val intent = Intent(context, DeteksiActivity::class.java)
+                    onClick = {  val intent = Intent(context, DeteksiKematanganActivity::class.java)
                         context.startActivity(intent) }
                 ) {
                     Text(text = "LANJUTKAN DETEKSI")
@@ -175,7 +174,7 @@ fun Result(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 20.dp),
+            .padding(vertical = 12.dp),
         backgroundColor = Color.White,
         shape = RoundedCornerShape(16.dp)
     ) {

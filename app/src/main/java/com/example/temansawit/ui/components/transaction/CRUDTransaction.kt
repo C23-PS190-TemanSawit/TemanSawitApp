@@ -1,6 +1,9 @@
 package com.example.temansawit.ui.components.transaction
 
+import android.app.DatePickerDialog
+import android.os.Build
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +26,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.temansawit.data.Result
 import com.example.temansawit.ui.screen.ViewModelFactory
 import com.example.temansawit.ui.screen.home.HomeViewModel
+import com.example.temansawit.util.TransactionViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -58,6 +63,9 @@ fun Income(
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
+    viewModel2: TransactionViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
     modalSheetState: ModalBottomSheetState,
     ) {
     val coroutineScope = rememberCoroutineScope()
@@ -71,6 +79,12 @@ fun Income(
     val price = priceInput.value
     val berat = beratInput.value
     val deskripsi = deskripsiInput.value.toString()
+    val selectedDate = remember { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        mutableStateOf(LocalDate.now())
+    } else {
+        TODO("VERSION.SDK_INT < O")
+    }
+    }
 
     Column(modifier = modifier
         .padding(16.dp)
@@ -78,10 +92,29 @@ fun Income(
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 8.dp)
+                .clickable {
+                    val year = selectedDate.value.year
+                    val month = selectedDate.value.monthValue - 1
+                    val day = selectedDate.value.dayOfMonth
+
+                    val datePicker = DatePickerDialog(
+                        context,
+                        { _, yearSelected, monthOfYear, dayOfMonth ->
+                            selectedDate.value =
+                                LocalDate.of(yearSelected, monthOfYear + 1, dayOfMonth)
+                        },
+                        year,
+                        month,
+                        day
+                    )
+
+                    datePicker.show()
+                },
             value = trxTime,
             label = { Text(text = "Tanggal Transaksi (YYYY-MM-DD)") },
-            onValueChange = viewModel::onTanggalTrxChange
+            onValueChange = { selectedDate.value.toString() },
+            readOnly = true
         )
 
         OutlinedTextField(
@@ -128,21 +161,26 @@ fun Income(
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(100.dp)),
             onClick = {
-                viewModel.createIncome(trxTime, price, berat, deskripsi).observe(lifecycleOwner, { saveTrx ->
+                viewModel.createIncome(trxTime, price, berat, deskripsi).observe(lifecycleOwner) { saveTrx ->
                     when (saveTrx) {
                         is Result.Loading -> {}
                         is Result.Success -> {
                             coroutineScope.launch {
-                                    modalSheetState.hide()
+                                modalSheetState.hide()
                             }
                             Toast.makeText(context, saveTrx.data.message, Toast.LENGTH_LONG).show()
+                            viewModel2.fetchCombinedResponse()
                         }
                         is Result.Error -> {
-                            Toast.makeText(context, "Gagal, masukkan data dengan benar", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context,
+                                "Gagal, masukkan data dengan benar",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
-                        else-> {}
+                        else -> {}
                     }
-                })
+                }
             }
         ) {
             Text(text = "Simpan Transaksi")
@@ -157,27 +195,58 @@ fun Outcome(
     viewModel: HomeViewModel = viewModel(
         factory = ViewModelFactory(LocalContext.current)
     ),
+    viewModel2: TransactionViewModel = viewModel(
+        factory = ViewModelFactory(LocalContext.current)
+    ),
     modalSheetState: ModalBottomSheetState,
     ) {
     val coroutineScope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
-    val trxTimeInput = viewModel.tanggalTrx.observeAsState(initial = "")
+    val trxTimeInput = viewModel.tanggalTrx.observeAsState()
     val totalOutcomeInput = viewModel.totalOutcome.observeAsState(initial = 0)
     val deskripsiInput = viewModel.deskripsi.observeAsState(initial = "")
-    val trxTime = trxTimeInput.value
+    val trxTime = trxTimeInput.value.toString()
     val totalOutcome = totalOutcomeInput.value
     val deskripsi = deskripsiInput.value
+    val selectedDate = remember { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        mutableStateOf(LocalDate.now())
+    } else {
+        TODO("VERSION.SDK_INT < O")
+    }
+    }
 
-    Column(modifier = modifier.padding(16.dp)) {
+    Column(modifier = modifier
+        .padding(16.dp)
+        .verticalScroll(rememberScrollState())) {
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 8.dp)
+                .clickable {
+                    val year = selectedDate.value.year
+                    val month = selectedDate.value.monthValue - 1
+                    val day = selectedDate.value.dayOfMonth
+
+                    val datePicker = DatePickerDialog(
+                        context,
+                        { _, yearSelected, monthOfYear, dayOfMonth ->
+                            selectedDate.value =
+                                LocalDate.of(yearSelected, monthOfYear + 1, dayOfMonth)
+                        },
+                        year,
+                        month,
+                        day
+                    )
+
+                    datePicker.show()
+                },
             value = trxTime,
-            label = { Text(text = "Tanggal (YYYY-MM-DD)") },
-            onValueChange = viewModel::onTanggalTrxChange
+            label = { Text(text = "Tanggal Transaksi (YYYY-MM-DD)") },
+            onValueChange = { selectedDate.value.toString() },
+            readOnly = true
         )
+
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
@@ -195,27 +264,33 @@ fun Outcome(
             label = { Text(text = "Deskripsi") },
             onValueChange = viewModel::onDescChange,
         )
-        Spacer(modifier = modifier.padding(26.dp))
+
+        Spacer(modifier = modifier.padding(16.dp))
         Button(
             modifier = modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(100.dp)),
             onClick = {
-                viewModel.createOutcome(trxTime, totalOutcome, deskripsi).observe(lifecycleOwner, { outcome ->
-                    when (outcome) {
+                viewModel.createOutcome(trxTime, totalOutcome, deskripsi).observe(lifecycleOwner) { saveTrx ->
+                    when (saveTrx) {
                         is Result.Loading -> {}
                         is Result.Success -> {
                             coroutineScope.launch {
                                 modalSheetState.hide()
                             }
-                            Toast.makeText(context, outcome.data.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, saveTrx.data.message, Toast.LENGTH_LONG).show()
+                            viewModel2.fetchCombinedResponse()
                         }
                         is Result.Error -> {
-                            Toast.makeText(context, "Gagal, masukkan data dengan benar", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context,
+                                "Gagal, masukkan data dengan benar",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                         else -> {}
                     }
-                })
+                }
             }
         ) {
             Text(text = "Simpan Transaksi")

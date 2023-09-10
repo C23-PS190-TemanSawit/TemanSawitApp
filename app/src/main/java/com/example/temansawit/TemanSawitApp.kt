@@ -56,6 +56,7 @@ fun TemanSawitApp() {
             }
         } else {
             "onboardingScreen"
+//            "mainScreen"
         },
     ) {
 //        splashScreen(navHostController)
@@ -109,6 +110,7 @@ fun TemanSawitApp() {
             DetailTrxScreen(
                 trxId = id as Int,
                 navigateBack = { navHostController.navigateUp() },
+                navHostController = navHostController
             )
         }
         composable(
@@ -121,6 +123,7 @@ fun TemanSawitApp() {
             DetailOutcomeScreen(
                 trxId = id as Int,
                 navigateBack = { navHostController.navigateUp() },
+                navHostController = navHostController
             )
         }
 

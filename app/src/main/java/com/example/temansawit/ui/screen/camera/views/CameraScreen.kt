@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.temansawit.ui.screen.camera.views.CameraTActivity
-import com.example.temansawit.ui.screen.camera.views.DeteksiActivity
+import com.example.temansawit.ui.screen.camera.views.DeteksiKematanganActivity
 import com.example.temansawit.ui.theme.OrangePrimary
 
 @Composable
@@ -85,7 +85,7 @@ fun CameraScreen() {
             shape = RoundedCornerShape(50),
             colors = customButtonColors,
             onClick = {
-                val intent = Intent(context, DeteksiActivity::class.java)
+                val intent = Intent(context, DeteksiKematanganActivity::class.java)
                 context.startActivity(intent)
             }
         ) {

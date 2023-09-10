@@ -15,11 +15,15 @@ class TransactionViewModel(private val repository: Repository) : ViewModel() {
     private val _combinedResponse = MutableStateFlow<UiState<CombinedResponse>>(UiState.Loading)
     val combinedResponse: StateFlow<UiState<CombinedResponse>> = _combinedResponse
 
+//    init {
+//        fetchCombinedResponse()
+//    }
     fun fetchCombinedResponse() {
         viewModelScope.launch {
             try {
                 val response1Flow = repository.getIncome()
                 val response2Flow = repository.getOutcome()
+                Log.d("viewmodel", response1Flow.toString())
 
                 response1Flow.zip(response2Flow) { response1, response2 ->
                     CombinedResponse(response1, response2)
@@ -28,6 +32,7 @@ class TransactionViewModel(private val repository: Repository) : ViewModel() {
                     Log.d("ahayy", combinedResponse.toString())
                 }
             } catch (e: Exception) {
+                Log.e("viewmodel", "error")
                 _combinedResponse.value = UiState.Error(e.message.toString())
             }
         }
